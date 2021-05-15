@@ -1,29 +1,30 @@
 package com.mygdx.game.model;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.math.Vector2;
 
 public class Gun {
 	
-	int damage;
-	int ammunition;
-	float range;
-	Vector2 aim;
-	ArrayList<Bullet> bullets;
-	ArrayList<Bullet> released;
+	private int damage;
+	private int ammunition;
+	private int loaded;
+	private float range;
+	private Vector2 direction;
 	
-	void reload() {
-		bullets.clear();
-		for (int i = 0; i < ammunition; i++) {
-			bullets.add(new Bullet());
-		}
+	public Gun(int damage, int ammunition, float range) {
+		this.damage = damage;
+		this.ammunition = ammunition;
+		loaded = ammunition;
+		this.range = range;
 	}
 	
-	void shoot() {
-		released.add(bullets.get(0));
-		bullets.remove(0);
-		released.get(released.size()-1).x = aim.x;
-		released.get(released.size()-1).y = aim.y;
+	public void reload() {
+		loaded = ammunition;
 	}
+	
+	public void shoot() {
+		loaded--;
+		Bullet b = new Bullet(direction);
+		//TODO: aggiungere proiettile a un 'qualcosa' per controllare dove va il proiettile
+	}
+		
 }
