@@ -25,6 +25,7 @@ public class GameView extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(img, GameModel.getInstance().getCharacter().getPosition().x, GameModel.getInstance().getCharacter().getPosition().y);
 		batch.end();
+		GameModel.getInstance().getCharacter().move(Gdx.graphics.getDeltaTime());
 	}
 	
 	@Override
