@@ -10,10 +10,11 @@ public class MeleeWeapon {
 	private float hitRange;
 	private float hitCooldown;
 	
-	public MeleeWeapon(float damage, float hitRange, float hitCooldown) {
+	public MeleeWeapon(float damage, float hitRange, float hitCooldown, Entity holder) {
 		this.damage = damage;
 		this.hitRange = hitRange;
 		this.hitCooldown = hitCooldown;
+		this.holder = holder;
 	}
 	
 	public float getDamage() {
