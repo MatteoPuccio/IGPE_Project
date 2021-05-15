@@ -30,4 +30,8 @@ public class Entity
 		return direction;
 	}
 	
+	public void takeDamage(float damage) {
+		//Da implementare
+	}
+	
 }

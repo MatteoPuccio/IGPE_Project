@@ -33,6 +33,9 @@ public class MeleeWeapon {
 		{
 			Circle c1 = new Circle(e.getPosition(), e.getDimension());
 			Circle c2 = new Circle(holder.getPosition().add(holder.getDirection().nor()), hitRange);
+			if(Intersector.overlaps(c1, c2))
+				e.takeDamage(damage);
+				
 		}
 	}
 	
