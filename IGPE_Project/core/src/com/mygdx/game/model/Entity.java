@@ -22,4 +22,12 @@ public class Entity
 		return health;
 	}
 	
+	public float getDimension() {
+		return dimension;
+	}
+	
+	public Vector2 getDirection() {
+		return direction;
+	}
+	
 }
