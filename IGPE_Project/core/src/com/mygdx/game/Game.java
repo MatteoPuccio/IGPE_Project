@@ -10,7 +10,7 @@ public class Game extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	
-	//COMMENTO DI PROVA
+	//Un commento di prova
 	
 	@Override
 	public void create () {
