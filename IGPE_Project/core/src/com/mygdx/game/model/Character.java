@@ -9,18 +9,25 @@ public class Character extends Entity{
 	public Character(Vector2 position) 
 	{
 		super(position);
+		leftMove = false;
+		rightMove = false;
+		downMove = false;
+		upMove = false;
 	}	
 	public void move(float deltaTime)
 	{
+		direction.x = 0;
+		direction.y = 0;
+		
 		if(leftMove)
 			direction.x = -1;
 		if(rightMove)
 			direction.x = 1;
 		if(downMove)
-			direction.y = 1;
+			direction.y = -1;
 		if(upMove)
-			direction.x = -1;
-		position.add(direction.scl(deltaTime*speed));
+			direction.y = 1;
+		position.add(direction.nor().scl(deltaTime*speed));
 	}
 	
 	public void setLeftMove(boolean leftMove) {
