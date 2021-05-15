@@ -13,6 +13,12 @@ public class Entity
 		this.position = position;
 	}
 	
+	public Vector2 getPosition() {
+		return position;
+	}
 	
+	public int getHealth() {
+		return health;
+	}
 	
 }
