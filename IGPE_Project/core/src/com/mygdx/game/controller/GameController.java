@@ -17,16 +17,16 @@ public class GameController implements InputProcessor
 	{
 		switch (keycode)
 	    {
-		case Keys.LEFT:
+		case Keys.A:
 			GameModel.getInstance().getCharacter().setLeftMove(true);
 			break;
-		case Keys.RIGHT:
+		case Keys.D:
 			GameModel.getInstance().getCharacter().setRightMove(true);
 			break;
-		case Keys.UP:
+		case Keys.W:
 			GameModel.getInstance().getCharacter().setUpMove(true);
 			break;
-		case Keys.DOWN:
+		case Keys.S:
 			GameModel.getInstance().getCharacter().setDownMove(true);
 			break;
 	    }
@@ -38,16 +38,16 @@ public class GameController implements InputProcessor
 	public boolean keyUp(int keycode) {
 		switch (keycode)
 	    {
-		case Keys.LEFT:
+		case Keys.A:
 			GameModel.getInstance().getCharacter().setLeftMove(false);
 			break;
-		case Keys.RIGHT:
+		case Keys.D:
 			GameModel.getInstance().getCharacter().setRightMove(false);
 			break;
-		case Keys.UP:
+		case Keys.W:
 			GameModel.getInstance().getCharacter().setUpMove(false);
 			break;
-		case Keys.DOWN:
+		case Keys.S:
 			GameModel.getInstance().getCharacter().setDownMove(false);
 			break;
 	    }
