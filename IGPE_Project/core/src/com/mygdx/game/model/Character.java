@@ -1,14 +1,15 @@
 package com.mygdx.game.model;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class Character extends Entity{
 	
 	boolean leftMove,rightMove,downMove,upMove;
 	
-	public Character(Vector2 position) 
+	public Character(World world, Vector2 position, float radius) 
 	{
-		super(position);
+		super(world, position, radius);
 		leftMove = false;
 		rightMove = false;
 		downMove = false;
@@ -27,7 +28,7 @@ public class Character extends Entity{
 			direction.y = -1;
 		if(upMove)
 			direction.y = 1;
-		position.add(direction.nor().scl(deltaTime*speed));
+		body.setLinearVelocity(speed * direction.x, speed * direction.y);
 	}
 	
 	public void setLeftMove(boolean leftMove) {

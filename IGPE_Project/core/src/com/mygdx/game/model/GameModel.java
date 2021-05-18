@@ -1,15 +1,18 @@
 package com.mygdx.game.model;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class GameModel {
 	
 	private Character character;
 	
 	private static GameModel gameModel = null;
+	private World world;
 	
 	private GameModel() {
-		character = new Character(new Vector2(0,0));
+		world = new World(new Vector2(0,0), false);
+		character = new Character(world, new Vector2(0,0), 10);
 	}
 	
 	public static GameModel getInstance() {
@@ -20,5 +23,9 @@ public class GameModel {
 	
 	public Character getCharacter() {
 		return character;
+	}
+	
+	public World getWorld() {
+		return world;
 	}
 }
