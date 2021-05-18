@@ -5,6 +5,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.mygdx.game.Settings;
@@ -18,6 +22,9 @@ public class GameView
 	Sprite sprite;
 	SpriteBatch batch;
 	
+	TiledMap tiledMap;
+	TiledMapRenderer tiledMapRenderer;
+	
 	public GameView()
 	{
 		batch = new SpriteBatch();
@@ -28,6 +35,9 @@ public class GameView
 		camera.update();
 		
 		debugRenderer = new Box2DDebugRenderer();
+		
+		tiledMap = new TmxMapLoader().load("0x72_16x16DungeonTileset_walls.v1.tmx");
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		
 		sprite = new Sprite(new Texture("badlogic.jpg"));
 		Vector3 pos = new Vector3(GameModel.getInstance().getCharacter().getPosition(), 0);
@@ -40,6 +50,10 @@ public class GameView
 		batch.begin();
 		sprite.draw(batch);
 		batch.end();
+		
+		tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
+        
 		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 }

@@ -13,6 +13,7 @@ public class Game extends ApplicationAdapter {
 	@Override
 	public void create() {
 		controller = new GameController();
+		
 	}
 
 	@Override
@@ -29,4 +30,5 @@ public class Game extends ApplicationAdapter {
 	public void dispose() {
 		GameModel.getInstance().getWorld().dispose();
 	}
+	
 }
