@@ -31,14 +31,14 @@ public class GameView
 		batch = new SpriteBatch();
 		
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, Gdx.graphics.getWidth() / Settings.PPM, Gdx.graphics.getHeight() / Settings.PPM);
+		camera.setToOrtho(false, Gdx.graphics.getWidth() / Settings.PPM / 4, Gdx.graphics.getHeight() / Settings.PPM / 4);
 		camera.position.set(0,0,0);
 		camera.update();
 		
 		debugRenderer = new Box2DDebugRenderer();
 		
 		tiledMap = new TmxMapLoader().load("0x72_16x16DungeonTileset_walls.v1.tmx");
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, Settings.PPM);
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1f / Settings.PPM);
 		
 		sprite = new Sprite(new Texture("badlogic.jpg"));
 		Vector3 pos = new Vector3(GameModel.getInstance().getCharacter().getPosition(), 0);

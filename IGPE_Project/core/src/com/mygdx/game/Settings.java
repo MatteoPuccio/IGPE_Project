@@ -1,7 +1,7 @@
 package com.mygdx.game;
 
 public class Settings {
-	public final static int PPM = 32;
+	public final static int PPM = 16;
 	
 	public final static int UP = 0;
 	public final static int RIGHT = 1;

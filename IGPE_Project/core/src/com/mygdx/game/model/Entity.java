@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 public class Entity 
 {
 	protected Vector2 direction;
-	protected float speed = 20;
+	protected float speed = 4;
 	protected int health;
 	protected Body body;
 	protected float radius;
