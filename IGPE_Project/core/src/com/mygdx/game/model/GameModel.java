@@ -12,7 +12,7 @@ public class GameModel {
 	
 	private GameModel() {
 		world = new World(new Vector2(0,0), false);
-		character = new Character(world, new Vector2(0,0), 10);
+		character = new Character(world, new Vector2(0,0), 1);
 	}
 	
 	public static GameModel getInstance() {

@@ -15,11 +15,13 @@ public class Entity
 	protected float speed = 2000;
 	protected int health;
 	protected Body body;
+	protected float radius;
 	
 	public Entity(World world, Vector2 position, float radius)
 	{
 		body = createBody(world, position, radius);
 		direction = new Vector2(0,0);
+		this.radius = radius;
 	}
 	
 	private Body createBody(World world, Vector2 position, float radius) {
@@ -48,6 +50,14 @@ public class Entity
 	
 	public Vector2 getDirection() {
 		return direction;
+	}
+	
+	public Body getBody() {
+		return body;
+	}
+	
+	public float getRadius() {
+		return radius;
 	}
 	
 	public void takeDamage(float damage) {
