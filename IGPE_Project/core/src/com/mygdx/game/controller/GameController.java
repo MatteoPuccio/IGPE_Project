@@ -3,57 +3,68 @@ package com.mygdx.game.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.mygdx.game.Settings;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.view.GameView;
 
 public class GameController implements InputProcessor 
 {
 	private GameView view;
-	public GameController() 
-	{
+	
+	public GameController() {
 		Gdx.input.setInputProcessor(this);
 		view = new GameView();
 	}
 	@Override
-	public boolean keyDown(int keycode) 
-	{
+	public boolean keyDown(int keycode) {
+		
+		int direction = -1;
+		
 		switch (keycode)
 	    {
 		case Keys.A:
-			GameModel.getInstance().getCharacter().setLeftMove(true);
+			direction = Settings.LEFT;
 			break;
 		case Keys.D:
-			GameModel.getInstance().getCharacter().setRightMove(true);
+			direction = Settings.RIGHT;
 			break;
 		case Keys.W:
-			GameModel.getInstance().getCharacter().setUpMove(true);
+			direction = Settings.UP;
 			break;
 		case Keys.S:
-			GameModel.getInstance().getCharacter().setDownMove(true);
+			direction = Settings.DOWN;
 			break;
 	    }
+		GameModel.getInstance().getCharacter().setMove(direction, true);
 		return true;
-	    
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
+		
+		int direction = -1;
+		
 		switch (keycode)
 	    {
 		case Keys.A:
-			GameModel.getInstance().getCharacter().setLeftMove(false);
+			direction = Settings.LEFT;
 			break;
 		case Keys.D:
-			GameModel.getInstance().getCharacter().setRightMove(false);
+			direction = Settings.RIGHT;
 			break;
 		case Keys.W:
-			GameModel.getInstance().getCharacter().setUpMove(false);
+			direction = Settings.UP;
 			break;
 		case Keys.S:
-			GameModel.getInstance().getCharacter().setDownMove(false);
+			direction = Settings.DOWN;
 			break;
 	    }
+		GameModel.getInstance().getCharacter().setMove(direction, false);
 		return true;
+	}
+	
+	public GameView getView(){
+		return view;
 	}
 
 	@Override
@@ -91,11 +102,5 @@ public class GameController implements InputProcessor
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	public GameView getView()
-	{
-		return view;
-	}
-	
 	
 }
