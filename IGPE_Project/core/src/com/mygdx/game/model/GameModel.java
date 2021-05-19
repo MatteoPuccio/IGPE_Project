@@ -12,7 +12,7 @@ public class GameModel {
 	
 	private GameModel() {
 		world = new World(new Vector2(0,0), false);
-		character = new Character(world, new Vector2(0,0), 0.4f);
+		character = new Character(world, new Vector2(5,5), 0.4f);
 	}
 	
 	public static GameModel getInstance() {
@@ -27,5 +27,9 @@ public class GameModel {
 	
 	public World getWorld() {
 		return world;
+	}
+	
+	public void dispose() {
+		world.dispose();
 	}
 }
