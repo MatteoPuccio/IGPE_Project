@@ -32,4 +32,9 @@ public class Game extends ApplicationAdapter {
 		GameModel.getInstance().getWorld().dispose();
 	}
 	
+	@Override
+	public void resize(int width, int height) {
+		controller.getView().resize(width, height);
+	}
+	
 }

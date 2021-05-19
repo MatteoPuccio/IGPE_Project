@@ -12,19 +12,22 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.GameModel;
 
 public class GameView 
 {
-	OrthographicCamera camera;
-	Box2DDebugRenderer debugRenderer;
+	private OrthographicCamera camera;
+	private Box2DDebugRenderer debugRenderer;
+	private Viewport gamePort;
 	
-	Sprite sprite;
-	SpriteBatch batch;
+	private Sprite sprite;
+	private SpriteBatch batch;
 	
-	TiledMap tiledMap;
-	TiledMapRenderer tiledMapRenderer;
+	private TiledMap tiledMap;
+	private TiledMapRenderer tiledMapRenderer;
 	
 	public GameView()
 	{
@@ -34,6 +37,7 @@ public class GameView
 		camera.setToOrtho(false, Gdx.graphics.getWidth() / Settings.PPM / 4, Gdx.graphics.getHeight() / Settings.PPM / 4);
 		camera.position.set(0,0,0);
 		camera.update();
+		gamePort = new FitViewport(16, 9, camera);
 		
 		debugRenderer = new Box2DDebugRenderer();
 		
@@ -63,5 +67,9 @@ public class GameView
 		Vector2 pos = GameModel.getInstance().getCharacter().getPosition();
 		camera.position.set(pos.x, pos.y, 0);
 		camera.update();
+	}
+	
+	public void resize(int width, int height) {
+		gamePort.update(width, height);
 	}
 }
