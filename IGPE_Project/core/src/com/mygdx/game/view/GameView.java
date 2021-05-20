@@ -92,9 +92,10 @@ public class GameView {
 	private void updateAnimations(float deltaTime) {
 		float x = GameModel.getInstance().getCharacter().getPosition().x;
 		float y = GameModel.getInstance().getCharacter().getPosition().y;
-		TextureRegion currentFrame = animations.get(GameModel.getInstance().getCharacter().getCurrentAnimationString()).getFrame();
+		TextureRegion currentFrame = animations.get(GameModel.getInstance().getCharacter().getCurrentAnimationString()).getFrame(); 
 		if(!currentFrame.isFlipX())
-			currentFrame.flip(true, false);
+			currentFrame.flip(true, false); 
+		
 		float w =  currentFrame.getRegionWidth() / Settings.PPM;
 		float h = currentFrame.getRegionHeight() / Settings.PPM;
 		
