@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -26,7 +25,6 @@ public class GameView {
 	private Box2DDebugRenderer debugRenderer;
 	private Viewport gamePort;
 	
-	private Texture playerSprite;
 	private SpriteBatch batch;
 	
 	private TiledMap tiledMap;
@@ -62,17 +60,10 @@ public class GameView {
         
 		batch.begin();
 		batch.setProjectionMatrix(camera.combined);
-		
-		float x = GameModel.getInstance().getCharacter().getPosition().x;
-		float y = GameModel.getInstance().getCharacter().getPosition().y;
-		float w =  animations.get("knight idle animation").getFrame().getRegionWidth() / Settings.PPM;
-		float h = animations.get("knight idle animation").getFrame().getRegionHeight() / Settings.PPM;
-		
-		batch.draw(animations.get("knight idle animation").getFrame(), x - w / 2, y - h / 2, w, h);
-		animations.get("knight idle animation").update(deltaTime);
+		updateAnimations(deltaTime);
 		batch.end();
         
-//		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void updateCamera() {
@@ -88,11 +79,26 @@ public class GameView {
 	public void dispose() {
 		debugRenderer.dispose();
 		tiledMap.dispose();
+		batch.dispose();
 	}
 	
 	private void initAnimations() {
 		animations = new HashMap<String, Animation>();
 		
 		animations.put("knight idle animation",  new Animation(new TextureRegion(new Texture("knight_idle_spritesheet.png")), 6, 0.5f));
+		animations.put("knight run animation", new Animation(new TextureRegion(new Texture("knight_run_spritesheet.png")), 6, 0.5f));
+	}
+	
+	private void updateAnimations(float deltaTime) {
+		float x = GameModel.getInstance().getCharacter().getPosition().x;
+		float y = GameModel.getInstance().getCharacter().getPosition().y;
+		TextureRegion currentFrame = animations.get(GameModel.getInstance().getCharacter().getCurrentAnimationString()).getFrame();
+		if(!currentFrame.isFlipX())
+			currentFrame.flip(true, false);
+		float w =  currentFrame.getRegionWidth() / Settings.PPM;
+		float h = currentFrame.getRegionHeight() / Settings.PPM;
+		
+		batch.draw(currentFrame, x - w / 2, y - h / 2, w, h);
+		animations.get(GameModel.getInstance().getCharacter().getCurrentAnimationString()).update(deltaTime);
 	}
 }

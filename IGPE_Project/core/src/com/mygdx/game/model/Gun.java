@@ -4,21 +4,19 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Gun {
 	
-	private Entity entity;
+	private Character holder;
 	
 	private int damage;
 	private int ammunition;
 	private int loaded;
 	private float range;
-	private Vector2 direction;
 	
-	public Gun(int damage, int ammunition, float range, Character character) {
+	public Gun(int damage, int ammunition, float range, Character holder) {
 		this.damage = damage;
 		this.ammunition = ammunition;
 		loaded = ammunition;
 		this.range = range;
-		this.entity = character;
-		this.direction = character.getLastDirection().scl(1.2f);
+		this.holder = holder;
 	}
 	
 	public void reload() {
@@ -27,7 +25,7 @@ public class Gun {
 	
 	public void shoot() {
 		loaded--;
-		Bullet b = new Bullet(this, entity.getPosition().add(direction));
+		Bullet b = new Bullet(this, holder.getPosition().add(holder.getLastDirection().scl(0.5f)));
 		//TODO: aggiungere proiettile a un 'qualcosa' per controllare dove va il proiettile
 	}
 	

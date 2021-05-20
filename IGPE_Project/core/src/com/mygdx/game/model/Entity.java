@@ -8,8 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
-public class Entity 
-{
+public abstract class Entity implements Animated {
 	protected Vector2 direction;
 	protected float speed = 4;
 	protected int health;

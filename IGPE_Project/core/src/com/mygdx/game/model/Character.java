@@ -23,19 +23,19 @@ public class Character extends Entity{
 		
 		if(leftMove) {
 			direction.x = -1;
-			lastDirection.set(-0.5f, 0);
+			lastDirection.set(-1, 0);
 		}
 		if(rightMove) {
 			direction.x = 1;
-			lastDirection.set(0.5f, 0);
+			lastDirection.set(1f, 0);
 		}
 		if(downMove) {
 			direction.y = -1;
-			lastDirection.set(0, -0.5f);
+			lastDirection.set(0, -1f);
 		}
 		if(upMove) {
 			direction.y = 1;
-			lastDirection.set(0, 0.5f);
+			lastDirection.set(0, 1f);
 		}
 		body.setLinearVelocity(speed * direction.x, speed * direction.y);
 	}
@@ -63,4 +63,18 @@ public class Character extends Entity{
 			break;
 		}
 	}
+	
+	public String getCurrentAnimationString() {
+		if(direction.x == 0 && direction.y == 0)
+			return "knight idle animation";
+		else
+			return "knight run animation";
+	}
+	
+	public boolean isFlipped() {
+		if(direction.x == -1)
+			return true;
+		return false;
+	}
 }
+
