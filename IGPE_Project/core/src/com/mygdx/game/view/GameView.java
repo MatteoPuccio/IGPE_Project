@@ -99,6 +99,7 @@ public class GameView {
 		float h = currentFrame.getRegionHeight() / Settings.PPM;
 		
 		batch.draw(currentFrame, x - w / 2, y - h / 2, w, h);
+		
 		animations.get(GameModel.getInstance().getCharacter().getCurrentAnimationString()).update(deltaTime);
 	}
 }
