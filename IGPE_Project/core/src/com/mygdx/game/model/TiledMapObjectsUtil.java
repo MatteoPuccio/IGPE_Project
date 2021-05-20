@@ -33,14 +33,13 @@ public class TiledMapObjectsUtil {
 	
 	private static ChainShape createPolygon(PolygonMapObject polygon) {
 		float[] vertices = polygon.getPolygon().getTransformedVertices();
-		Vector2[] worldVertices = new Vector2[vertices.length / 2 + 1];
-		for(int i=0;i<worldVertices.length - 1;++i)
+		Vector2[] worldVertices = new Vector2[vertices.length / 2];
+		for(int i=0;i<worldVertices.length;++i)
 		{
-			worldVertices[i] = new Vector2(vertices[i * 2] / Settings.PPM, vertices[i*2 + 1] / Settings.PPM);
+			worldVertices[i] = new Vector2(vertices[i * 2] / Settings.PPM, vertices[i * 2 + 1] / Settings.PPM);
 		}
-		worldVertices[worldVertices.length - 1] = worldVertices[0];
 		ChainShape cs = new ChainShape();
-		cs.createChain(worldVertices);
+		cs.createLoop(worldVertices);
 		
 		return cs;
 	}

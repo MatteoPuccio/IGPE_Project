@@ -1,7 +1,14 @@
 package com.mygdx.game.view;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -14,38 +21,58 @@ import com.mygdx.game.Settings;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.TiledMapObjectsUtil;
 
-public class GameView 
-{
+public class GameView {
 	private OrthographicCamera camera;
 	private Box2DDebugRenderer debugRenderer;
 	private Viewport gamePort;
 	
+	private Texture playerSprite;
+	private SpriteBatch batch;
+	
 	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
 	
-	public GameView()
-	{	
+	private HashMap<String, Animation> animations;
+	
+	public GameView() {	
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, Gdx.graphics.getWidth() / Settings.PPM / 4, Gdx.graphics.getHeight() / Settings.PPM / 4);
+		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.set(0,0,0);
 		camera.update();
 		gamePort = new FitViewport(16, 9, camera);
 		
 		debugRenderer = new Box2DDebugRenderer();
 		
+		initAnimations();
+		batch = new SpriteBatch();
+		
 		tiledMap = new TmxMapLoader().load("0x72_16x16DungeonTileset_walls.v1.tmx");
 		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
 	}
 	
-	public void render()
-	{
+	public void render(float deltaTime) {
 		updateCamera();
+		
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
         
-		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+		batch.begin();
+		batch.setProjectionMatrix(camera.combined);
+		
+		float x = GameModel.getInstance().getCharacter().getPosition().x;
+		float y = GameModel.getInstance().getCharacter().getPosition().y;
+		float w =  animations.get("knight idle animation").getFrame().getRegionWidth() / Settings.PPM;
+		float h = animations.get("knight idle animation").getFrame().getRegionHeight() / Settings.PPM;
+		
+		batch.draw(animations.get("knight idle animation").getFrame(), x - w / 2, y - h / 2, w, h);
+		animations.get("knight idle animation").update(deltaTime);
+		batch.end();
+        
+//		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void updateCamera() {
@@ -61,5 +88,11 @@ public class GameView
 	public void dispose() {
 		debugRenderer.dispose();
 		tiledMap.dispose();
+	}
+	
+	private void initAnimations() {
+		animations = new HashMap<String, Animation>();
+		
+		animations.put("knight idle animation",  new Animation(new TextureRegion(new Texture("knight_idle_spritesheet.png")), 6, 0.5f));
 	}
 }

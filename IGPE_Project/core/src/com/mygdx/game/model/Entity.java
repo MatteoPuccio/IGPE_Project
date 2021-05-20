@@ -1,6 +1,5 @@
 package com.mygdx.game.model;
 
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -46,10 +45,6 @@ public class Entity
 	
 	public int getHealth() {
 		return health;
-	}
-	
-	public Vector2 getDirection() {
-		return direction;
 	}
 	
 	public Body getBody() {
