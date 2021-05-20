@@ -11,6 +11,7 @@ public class Character extends Entity{
 	
 	public Character(World world, Vector2 position, float radius) {
 		super(world, position, radius);
+		body.setUserData("character");
 		leftMove = false;
 		rightMove = false;
 		downMove = false;

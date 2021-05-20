@@ -23,8 +23,13 @@ public class Bullet {
 		CircleShape circle = new CircleShape();
 		circle.setRadius(size);
 		body.createFixture(circle, 0f);
+		body.setUserData("bullet");
 		circle.dispose();
 		body.setLinearVelocity(speed * direction.x, speed * direction.y);
+	}
+	
+	public Body getBody() {
+		return body;
 	}
 	
 }

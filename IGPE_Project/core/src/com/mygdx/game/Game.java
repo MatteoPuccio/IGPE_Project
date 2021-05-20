@@ -25,6 +25,8 @@ public class Game extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);	
 		
 		controller.getView().render(Gdx.graphics.getDeltaTime());
+		
+		GameModel.getInstance().disposeBodies();
 	}
 
 	@Override
