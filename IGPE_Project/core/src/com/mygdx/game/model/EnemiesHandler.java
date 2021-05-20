@@ -1,15 +1,15 @@
 package com.mygdx.game.model;
 
-import java.util.ArrayList;
+import com.badlogic.gdx.utils.Array;
 
 public class EnemiesHandler {
 	
 	private static EnemiesHandler enemiesHandler = null;
 	
-	private ArrayList<Entity> enemies;
+	private Array<Entity> enemies;
 	
 	private EnemiesHandler() {
-		enemies = new ArrayList<Entity>();
+		enemies = new Array<Entity>();
 	}
 	
 	public static EnemiesHandler getInstance() {
@@ -18,7 +18,7 @@ public class EnemiesHandler {
 		return enemiesHandler;
 	}
 	
-	public ArrayList<Entity> getEnemies() {
+	public Array<Entity> getEnemies() {
 		return enemies;
 	}
 	
