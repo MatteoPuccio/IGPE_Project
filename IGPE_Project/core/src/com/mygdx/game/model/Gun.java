@@ -8,13 +8,15 @@ public class Gun {
 	private int ammunition;
 	private int loaded;
 	private float range;
+	private float speed;
 	
-	public Gun(int damage, int ammunition, float range, Character holder) {
+	public Gun(int damage, int ammunition, float range, Character holder, float speed) {
 		this.damage = damage;
 		this.ammunition = ammunition;
 		loaded = ammunition;
 		this.range = range;
 		this.holder = holder;
+		this.speed = speed;
 	}
 	
 	public void reload() {
@@ -22,13 +24,20 @@ public class Gun {
 	}
 	
 	public void shoot() {
-		loaded--;
-		Bullet b = new Bullet(this, holder.getPosition().add(holder.getLastDirection().scl(0.5f)));
-		//TODO: aggiungere proiettile a un 'qualcosa' per controllare dove va il proiettile
+		if (loaded != 0) {
+			loaded--;
+			Bullet b = new Bullet(this, holder.getPosition().add(holder.getLastDirection().scl(0.5f)), speed);
+			//TODO: aggiungere proiettile a un 'qualcosa' per controllare dove va il proiettile			
+		}
+		return;
 	}
 	
 	public int getDamage() {
 		return damage;
+	}
+	
+	public float getRange() {
+		return range;
 	}
 		
 }

@@ -58,6 +58,8 @@ public class GameController implements InputProcessor
 		case Keys.S:
 			direction = Settings.DOWN;
 			break;
+		case Keys.R:
+			GameModel.getInstance().getGun().reload();
 	    }
 		GameModel.getInstance().getCharacter().setMove(direction, false);
 		return true;

@@ -14,7 +14,7 @@ public class GameModel {
 	private GameModel() {
 		world = new World(new Vector2(0,0), false);
 		character = new Character(world, new Vector2(5,5), 0.4f);
-		gun = new Gun(0, 10, 100, character);
+		gun = new Gun(0, 10, 100, character, 2);
 	}
 	
 	public static GameModel getInstance() {
