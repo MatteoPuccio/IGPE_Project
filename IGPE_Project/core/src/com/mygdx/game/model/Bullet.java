@@ -13,7 +13,7 @@ public class Bullet {
 	BodyDef bDef;
 	float size = 0.1f;
 	
-	public Bullet(Gun gun, Vector2 position, float speed) {
+	public Bullet(Gun gun, Vector2 position, Vector2 direction, float speed) {
 		this.gun = gun;
 		bDef = new BodyDef();
 		bDef.type = BodyType.DynamicBody;
@@ -24,7 +24,7 @@ public class Bullet {
 		circle.setRadius(size);
 		body.createFixture(circle, 0f);
 		circle.dispose();
-		body.setLinearVelocity(speed * position.x, speed * position.y);
+		body.setLinearVelocity(speed * direction.x, speed * direction.y);
 	}
 	
 }

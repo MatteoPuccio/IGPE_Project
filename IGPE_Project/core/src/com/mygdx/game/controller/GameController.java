@@ -3,6 +3,8 @@ package com.mygdx.game.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.view.GameView;
@@ -53,8 +55,8 @@ public class GameController implements InputProcessor
 			direction = Settings.RIGHT;
 			break;
 		case Keys.W:
-			direction = Settings.UP;
-			break;
+				direction = Settings.UP;
+				break;
 		case Keys.S:
 			direction = Settings.DOWN;
 			break;
@@ -77,8 +79,8 @@ public class GameController implements InputProcessor
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		GameModel.getInstance().getGun().shoot();
+		Vector3 pointClicked = view.getCamera().unproject(new Vector3(screenX, screenY, 0));
+		GameModel.getInstance().getGun().shoot(new Vector2(pointClicked.x, pointClicked.y));
 		return true;
 	}
 

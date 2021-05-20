@@ -92,15 +92,20 @@ public class GameView {
 	private void updateAnimations(float deltaTime) {
 		float x = GameModel.getInstance().getCharacter().getPosition().x;
 		float y = GameModel.getInstance().getCharacter().getPosition().y;
-		TextureRegion currentFrame = animations.get(GameModel.getInstance().getCharacter().getCurrentAnimationString()).getFrame(); 
-		if(!currentFrame.isFlipX())
-			currentFrame.flip(true, false); 
-		
+		TextureRegion currentFrame = animations.get(GameModel.getInstance().getCharacter().getCurrentAnimationString()).getFrame();
 		float w =  currentFrame.getRegionWidth() / Settings.PPM;
 		float h = currentFrame.getRegionHeight() / Settings.PPM;
 		
-		batch.draw(currentFrame, x - w / 2, y - h / 2, w, h);
-		
+		int flip = 1;
+		if(GameModel.getInstance().getCharacter().isFlipped())
+			flip = -1;
+		batch.draw(currentFrame, x - (w / 2 * flip), y - h / 2, 0, 0, w, h, flip, 1, 0);
 		animations.get(GameModel.getInstance().getCharacter().getCurrentAnimationString()).update(deltaTime);
 	}
+	
+	public OrthographicCamera getCamera() {
+		return camera;
+	}
 }
+
+

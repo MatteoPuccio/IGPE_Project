@@ -26,6 +26,7 @@ public abstract class Entity implements Animated {
 		BodyDef bDef = new BodyDef();
 		bDef.type = BodyType.DynamicBody;
 		bDef.position.set(position);
+		bDef.fixedRotation = true;
 		Body b = world.createBody(bDef);
 		FixtureDef fDef = new FixtureDef();
 		CircleShape circle = new CircleShape();

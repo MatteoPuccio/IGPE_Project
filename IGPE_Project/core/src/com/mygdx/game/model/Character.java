@@ -7,7 +7,7 @@ import com.mygdx.game.Settings;
 public class Character extends Entity{
 	
 	boolean leftMove,rightMove,downMove,upMove;
-	Vector2 lastDirection = new Vector2(0.5f,0);
+	boolean flippedX;
 	
 	public Character(World world, Vector2 position, float radius) {
 		super(world, position, radius);
@@ -15,6 +15,8 @@ public class Character extends Entity{
 		rightMove = false;
 		downMove = false;
 		upMove = false;
+		
+		flippedX = false;
 	}
 	
 	public void move(float deltaTime) {
@@ -23,25 +25,20 @@ public class Character extends Entity{
 		
 		if(leftMove) {
 			direction.x = -1;
-			lastDirection.set(-1, 0);
+			flippedX = true;
 		}
 		if(rightMove) {
 			direction.x = 1;
-			lastDirection.set(1f, 0);
+			flippedX = false;
 		}
 		if(downMove) {
 			direction.y = -1;
-			lastDirection.set(0, -1f);
 		}
 		if(upMove) {
 			direction.y = 1;
-			lastDirection.set(0, 1f);
 		}
+		
 		body.setLinearVelocity(speed * direction.x, speed * direction.y);
-	}
-	
-	public Vector2 getLastDirection() {
-		return lastDirection;
 	}
 	
 	public void setMove(int direction, boolean moving) {
@@ -72,9 +69,7 @@ public class Character extends Entity{
 	}
 	
 	public boolean isFlipped() {
-		if(direction.x == -1)
-			return true;
-		return false;
+		return flippedX;
 	}
 }
 

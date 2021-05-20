@@ -1,5 +1,7 @@
 package com.mygdx.game.model;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Gun {
 	
 	private Character holder;
@@ -23,11 +25,12 @@ public class Gun {
 		loaded = ammunition;
 	}
 	
-	public void shoot() {
+	public void shoot(Vector2 pointClicked) {
 		if (loaded != 0) {
 			loaded--;
-			Bullet b = new Bullet(this, holder.getPosition().add(holder.getLastDirection().scl(0.5f)), speed);
-			//TODO: aggiungere proiettile a un 'qualcosa' per controllare dove va il proiettile			
+		
+		Bullet b = new Bullet(this, holder.getPosition().add(pointClicked.sub(holder.getPosition()).nor().scl(0.5f)), pointClicked.nor(), speed);
+		//TODO: aggiungere proiettile a un 'qualcosa' per controllare dove va il proiettile			
 		}
 		return;
 	}
