@@ -76,7 +76,8 @@ public class GameController implements InputProcessor
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		return false;
+		GameModel.getInstance().getGun().shoot();
+		return true;
 	}
 
 	@Override

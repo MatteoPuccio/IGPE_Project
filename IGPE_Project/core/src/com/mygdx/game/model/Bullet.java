@@ -1,13 +1,29 @@
 package com.mygdx.game.model;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 
 public class Bullet {
 	
-	Vector2 position;
+	private Gun gun;
+	Body body;
+	BodyDef bDef;
+	float size = 0.1f;
 	
-	public Bullet(Vector2 position) {
-		this.position.x = position.x;
-		this.position.y = position.y;
+	public Bullet(Gun gun, Vector2 position) {
+		this.gun = gun;
+		bDef = new BodyDef();
+		bDef.type = BodyType.DynamicBody;
+		bDef.bullet = true;
+		bDef.position.set(position);
+		body = GameModel.getInstance().getWorld().createBody(bDef);
+		CircleShape circle = new CircleShape();
+		circle.setRadius(size);
+		body.createFixture(circle, 0f);
+		circle.dispose();
 	}
+	
 }

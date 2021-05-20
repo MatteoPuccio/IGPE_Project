@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class GameModel {
 	
 	private Character character;
+	private Gun gun;
 	
 	private static GameModel gameModel = null;
 	private World world;
@@ -13,6 +14,7 @@ public class GameModel {
 	private GameModel() {
 		world = new World(new Vector2(0,0), false);
 		character = new Character(world, new Vector2(5,5), 0.4f);
+		gun = new Gun(0, 10, 100, character);
 	}
 	
 	public static GameModel getInstance() {
@@ -23,6 +25,10 @@ public class GameModel {
 	
 	public Character getCharacter() {
 		return character;
+	}
+	
+	public Gun getGun() {
+		return gun;
 	}
 	
 	public World getWorld() {

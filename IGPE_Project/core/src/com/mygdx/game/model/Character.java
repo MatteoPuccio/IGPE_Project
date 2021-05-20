@@ -7,6 +7,7 @@ import com.mygdx.game.Settings;
 public class Character extends Entity{
 	
 	boolean leftMove,rightMove,downMove,upMove;
+	Vector2 lastDirection = new Vector2(0.5f,0);
 	
 	public Character(World world, Vector2 position, float radius) {
 		super(world, position, radius);
@@ -20,15 +21,27 @@ public class Character extends Entity{
 		direction.x = 0;
 		direction.y = 0;
 		
-		if(leftMove)
+		if(leftMove) {
 			direction.x = -1;
-		if(rightMove)
+			lastDirection.set(-0.5f, 0);
+		}
+		if(rightMove) {
 			direction.x = 1;
-		if(downMove)
+			lastDirection.set(0.5f, 0);
+		}
+		if(downMove) {
 			direction.y = -1;
-		if(upMove)
+			lastDirection.set(0, -0.5f);
+		}
+		if(upMove) {
 			direction.y = 1;
+			lastDirection.set(0, 0.5f);
+		}
 		body.setLinearVelocity(speed * direction.x, speed * direction.y);
+	}
+	
+	public Vector2 getLastDirection() {
+		return lastDirection;
 	}
 	
 	public void setMove(int direction, boolean moving) {
