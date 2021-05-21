@@ -15,7 +15,7 @@ public class CollisionHandler implements ContactListener
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
 		
-		if(fb.getBody().getUserData() == "bullet" && fa.getBody().getUserData() != "character")
+		if(fb.getBody().getUserData() != null && fb.getBody().getUserData().equals("bullet") && (fa.getBody().getUserData() == null || !fa.getBody().getUserData().equals("character")))
 		{
 			GameModel.getInstance().addBodyToDispose(fb.getBody());
 			System.out.println(fa.getBody().getUserData() + " " + fb.getBody().getUserData());

@@ -26,6 +26,7 @@ public class TiledMapObjectsUtil {
 			BodyDef bDef = new BodyDef();
 			bDef.type = BodyType.StaticBody;
 			body = GameModel.getInstance().getWorld().createBody(bDef);
+			body.setUserData("wall");
 			body.createFixture(shape, 1f);
 			shape.dispose();
 		}
