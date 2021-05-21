@@ -80,6 +80,7 @@ public class GameController implements InputProcessor
 		Vector3 pointClicked = view.getCamera().unproject(new Vector3(screenX, screenY, 0));
 		GameModel.getInstance().getCharacter().getWeapon().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
 		GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
+		view.getSounds().fire.play(0.2f);
 		return true;
 	}
 

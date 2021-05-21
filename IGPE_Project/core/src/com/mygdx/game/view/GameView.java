@@ -34,6 +34,8 @@ public class GameView {
 	
 	private HashMap<String, Animation> animations;
 	
+	private Sounds sounds;
+	
 	public GameView() {	
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -49,6 +51,8 @@ public class GameView {
 		tiledMap = new TmxMapLoader().load("0x72_16x16DungeonTileset_walls.v1.tmx");
 		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
+		
+		sounds = new Sounds();
 	}
 	
 	public void render(float deltaTime) {
@@ -82,6 +86,7 @@ public class GameView {
 		debugRenderer.dispose();
 		tiledMap.dispose();
 		batch.dispose();
+		sounds.dispose();
 	}
 	
 	private void initAnimations() {
@@ -119,6 +124,10 @@ public class GameView {
 	
 	public OrthographicCamera getCamera() {
 		return camera;
+	}
+	
+	public Sounds getSounds() {
+		return sounds;
 	}
 }
 
