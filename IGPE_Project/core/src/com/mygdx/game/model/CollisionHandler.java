@@ -6,8 +6,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class CollisionHandler implements ContactListener
-{ 
+public class CollisionHandler implements ContactListener { 
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -18,6 +17,7 @@ public class CollisionHandler implements ContactListener
 		if(fb.getBody().getUserData() != null && fb.getBody().getUserData().equals("bullet") && (fa.getBody().getUserData() == null || !fa.getBody().getUserData().equals("character")))
 		{
 			GameModel.getInstance().addBodyToDispose(fb.getBody());
+			BulletHandler.getInstance().removeBullet(fb.getBody());
 			System.out.println(fa.getBody().getUserData() + " " + fb.getBody().getUserData());
 		}
 	}

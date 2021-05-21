@@ -60,8 +60,6 @@ public class GameController implements InputProcessor
 		case Keys.S:
 			direction = Settings.DOWN;
 			break;
-		case Keys.R:
-			GameModel.getInstance().getGun().reload();
 	    }
 		GameModel.getInstance().getCharacter().setMove(direction, false);
 		return true;
@@ -80,19 +78,21 @@ public class GameController implements InputProcessor
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Vector3 pointClicked = view.getCamera().unproject(new Vector3(screenX, screenY, 0));
-		GameModel.getInstance().getGun().shoot(new Vector2(pointClicked.x, pointClicked.y));
+		GameModel.getInstance().getCharacter().getWeapon().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
+		GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
 		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		GameModel.getInstance().getCharacter().getWeapon().setAttacking(false);
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
+		Vector3 pointClicked = view.getCamera().unproject(new Vector3(screenX, screenY, 0));	
+		GameModel.getInstance().getCharacter().getWeapon().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
 		return false;
 	}
 

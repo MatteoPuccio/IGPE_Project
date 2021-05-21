@@ -6,12 +6,17 @@ import com.mygdx.game.Settings;
 
 public class Character extends Entity{
 	
-	boolean leftMove,rightMove,downMove,upMove;
+	private Weapon weapon;
+	
+	private boolean leftMove,rightMove,downMove,upMove;
 	boolean flippedX;
 	
 	public Character(World world, Vector2 position, float radius) {
 		super(world, position, radius);
 		body.setUserData("character");
+		
+		weapon = new Magic(0, 10, 0.2f, this, 10);
+		
 		leftMove = false;
 		rightMove = false;
 		downMove = false;
@@ -71,6 +76,10 @@ public class Character extends Entity{
 	
 	public boolean isFlipped() {
 		return flippedX;
+	}
+	
+	public Weapon getWeapon() {
+		return weapon;
 	}
 }
 

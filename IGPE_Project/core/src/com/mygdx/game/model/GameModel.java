@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 public class GameModel {
 	
 	private Character character;
-	private Gun gun;
+	private Magic magic;
 	
 	private static GameModel gameModel = null;
 	private World world;
@@ -20,7 +20,6 @@ public class GameModel {
 		world = new World(new Vector2(0,0), false);
 		world.setContactListener(new CollisionHandler());
 		character = new Character(world, new Vector2(5,5), 0.4f);
-		gun = new Gun(0, 10, 100, character, 10);
 	}
 	
 	public static GameModel getInstance() {
@@ -33,10 +32,6 @@ public class GameModel {
 		return character;
 	}
 	
-	public Gun getGun() {
-		return gun;
-	}
-	
 	public World getWorld() {
 		return world;
 	}
@@ -45,20 +40,25 @@ public class GameModel {
 		world.dispose();
 	}
 	
-	public void addBodyToDispose(Body b)
-	{
+	public void addBodyToDispose(Body b) {
 		bodiesToDispose.add(b);
 	}
 	
-	public void disposeBodies()
-	{
+	private void disposeBodies() {
 		Array<Fixture> fixtures;
 		for(Body b:bodiesToDispose)
 		{
 			fixtures = b.getFixtureList();
-			for(Fixture f:fixtures)
+			for(Fixture f : fixtures)
 				b.destroyFixture(f);
 		}
 		bodiesToDispose.clear();
+	}
+
+	public void update(float deltaTime) {
+		world.step(deltaTime, 6, 2);
+		character.move(deltaTime);
+		character.getWeapon().attack(deltaTime);
+		disposeBodies();
 	}
 }

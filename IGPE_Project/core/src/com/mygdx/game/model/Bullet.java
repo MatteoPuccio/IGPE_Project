@@ -6,15 +6,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 
-public class Bullet {
+public class Bullet implements Animated {
 	
-	private Gun gun;
+	private Magic parent;
 	Body body;
 	BodyDef bDef;
 	float size = 0.1f;
 	
-	public Bullet(Gun gun, Vector2 position, Vector2 direction, float speed) {
-		this.gun = gun;
+	public Bullet(Magic parent, Vector2 position, Vector2 direction) {
+		this.parent = parent;
 		bDef = new BodyDef();
 		bDef.type = BodyType.DynamicBody;
 		bDef.bullet = true;
@@ -25,11 +25,28 @@ public class Bullet {
 		body.createFixture(circle, 0f);
 		body.setUserData("bullet");
 		circle.dispose();
-		body.setLinearVelocity(speed * direction.x, speed * direction.y);
+		body.setLinearVelocity(parent.getSpeed() * direction.x, parent.getSpeed() * direction.y);
 	}
 	
 	public Body getBody() {
 		return body;
 	}
+
+	@Override
+	public String getCurrentAnimationString() {
+		return "fireball animation";
+	}
+
+	@Override
+	public boolean isFlipped() {
+		return false;
+	}
 	
+	public Vector2 getPosition() {
+		return body.getPosition();
+	}
+	
+	public float getSize() {
+		return size;
+	}
 }
