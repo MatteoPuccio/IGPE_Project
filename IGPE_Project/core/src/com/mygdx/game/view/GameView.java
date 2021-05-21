@@ -37,7 +37,7 @@ public class GameView {
 	
 	private HashMap<String, Animation> animations;
 	
-	
+	private Sounds sounds;
 	
 	public GameView() {	
 		camera = new OrthographicCamera();
@@ -107,6 +107,7 @@ public class GameView {
 		debugRenderer.dispose();
 		tiledMap.dispose();
 		batch.dispose();
+		sounds.dispose();
 		batchUI.dispose();
 	}
 	
@@ -145,6 +146,10 @@ public class GameView {
 	
 	public OrthographicCamera getCamera() {
 		return camera;
+	}
+	
+	public Sounds getSounds() {
+		return sounds;
 	}
 }
 
