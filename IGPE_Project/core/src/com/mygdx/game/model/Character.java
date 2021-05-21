@@ -9,6 +9,7 @@ public class Character extends Entity{
 	private Weapon weapon;
 	
 	private boolean leftMove,rightMove,downMove,upMove;
+	
 	boolean flippedX;
 	
 	public Character(World world, Vector2 position, float radius) {
@@ -25,7 +26,7 @@ public class Character extends Entity{
 		flippedX = false;
 	}
 	
-	public void move(float deltaTime) {
+	private void move(float deltaTime) {
 		direction.x = 0;
 		direction.y = 0;
 		
@@ -80,6 +81,14 @@ public class Character extends Entity{
 	
 	public Weapon getWeapon() {
 		return weapon;
+	}
+
+	public void update(float deltaTime) 
+	{
+		move(deltaTime);
+		weapon.attack(deltaTime);
+		if(weapon instanceof Magic)
+			((Magic)weapon).rechargeMana(deltaTime);
 	}
 }
 

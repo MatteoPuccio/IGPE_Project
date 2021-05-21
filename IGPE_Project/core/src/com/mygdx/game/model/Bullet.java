@@ -13,7 +13,7 @@ public class Bullet implements Animated {
 	BodyDef bDef;
 	float size = 0.1f;
 	
-	public Bullet(Magic parent, Vector2 position, Vector2 direction) {
+	Bullet(Magic parent, Vector2 position, Vector2 direction) {
 		this.parent = parent;
 		bDef = new BodyDef();
 		bDef.type = BodyType.DynamicBody;
@@ -28,7 +28,7 @@ public class Bullet implements Animated {
 		body.setLinearVelocity(parent.getSpeed() * direction.x, parent.getSpeed() * direction.y);
 	}
 	
-	public Body getBody() {
+	Body getBody() {
 		return body;
 	}
 

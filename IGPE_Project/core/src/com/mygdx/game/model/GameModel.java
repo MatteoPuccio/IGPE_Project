@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 public class GameModel {
 	
 	private Character character;
-	private Magic magic;
+	
 	
 	private static GameModel gameModel = null;
 	private World world;
@@ -57,8 +57,8 @@ public class GameModel {
 
 	public void update(float deltaTime) {
 		world.step(deltaTime, 6, 2);
-		character.move(deltaTime);
-		character.getWeapon().attack(deltaTime);
+		character.update(deltaTime);
+		
 		disposeBodies();
 	}
 }

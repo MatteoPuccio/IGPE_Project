@@ -55,8 +55,8 @@ public class GameController implements InputProcessor
 			direction = Settings.RIGHT;
 			break;
 		case Keys.W:
-				direction = Settings.UP;
-				break;
+			direction = Settings.UP;
+			break;
 		case Keys.S:
 			direction = Settings.DOWN;
 			break;

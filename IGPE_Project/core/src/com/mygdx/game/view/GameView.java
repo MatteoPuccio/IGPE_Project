@@ -21,18 +21,23 @@ import com.mygdx.game.model.Bullet;
 import com.mygdx.game.model.BulletHandler;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.TiledMapObjectsUtil;
+import com.mygdx.game.view.ui.InterfaceBar;
+import com.mygdx.game.view.ui.UserInterface;
 
 public class GameView {
+
 	private OrthographicCamera camera;
 	private Box2DDebugRenderer debugRenderer;
 	private Viewport gamePort;
 	
-	private SpriteBatch batch;
+	private SpriteBatch batch,batchUI;
 	
 	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
 	
 	private HashMap<String, Animation> animations;
+	
+	
 	
 	public GameView() {	
 		camera = new OrthographicCamera();
@@ -45,7 +50,7 @@ public class GameView {
 		
 		initAnimations();
 		batch = new SpriteBatch();
-		
+		batchUI = new SpriteBatch();
 		tiledMap = new TmxMapLoader().load("0x72_16x16DungeonTileset_walls.v1.tmx");
 		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
@@ -60,14 +65,34 @@ public class GameView {
 		tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
         
-		batch.begin();
-		batch.setProjectionMatrix(camera.combined);
+        UserInterface.getInstance().update();
+        
+        batchUI.begin();
+        drawInterfaceBar(UserInterface.getInstance().manaBar);
+        batchUI.end();
+        
+		batch.begin();	
+		batch.setProjectionMatrix(camera.combined);		
 		updateAnimations(deltaTime);
 		batch.end();
+		
+		
         
 //		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
+	private void drawInterfaceBar(InterfaceBar bar) {
+		Texture background = bar.background;
+		
+		TextureRegion barFilled = bar.barFilled;
+		
+		Vector2 position = bar.position;
+		Vector2 barPosition = bar.barPosition;
+		
+		batchUI.draw(background, position.x,position.y,background.getWidth(),background.getHeight());
+		batchUI.draw(barFilled,barPosition.x,barPosition.y,barFilled.getRegionWidth(),barFilled.getRegionHeight());	
+	}
+
 	private void updateCamera() {
 		Vector2 pos = GameModel.getInstance().getCharacter().getPosition();
 		camera.position.set(pos.x, pos.y, 0);
@@ -82,6 +107,7 @@ public class GameView {
 		debugRenderer.dispose();
 		tiledMap.dispose();
 		batch.dispose();
+		batchUI.dispose();
 	}
 	
 	private void initAnimations() {

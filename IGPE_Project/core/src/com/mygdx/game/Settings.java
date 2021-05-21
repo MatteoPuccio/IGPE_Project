@@ -7,4 +7,7 @@ public class Settings {
 	public final static int RIGHT = 1;
 	public final static int DOWN = 2;
 	public final static int LEFT = 3;
+	
+	public static final int V_WIDTH = 600;
+	public static final int V_HEIGHT = 200;
 }
