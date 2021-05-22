@@ -102,7 +102,7 @@ public class GameController implements InputProcessor
 		setWeaponAttackPoint();
 		settingAttackPoint = true;
 		GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
-		//view.getSounds().fire.play(0.2f);
+		view.getSounds().fire.play(0.1f);
 		return true;
 	}
 
