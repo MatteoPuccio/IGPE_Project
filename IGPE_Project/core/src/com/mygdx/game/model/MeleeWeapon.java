@@ -1,7 +1,5 @@
 package com.mygdx.game.model;
 
-import com.badlogic.gdx.math.Vector2;
-
 public class MeleeWeapon extends Weapon {
 	
 	public MeleeWeapon(int damage, float range, float cooldown, Character holder, float hitCooldown) {

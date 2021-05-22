@@ -107,7 +107,7 @@ public class GameView {
 		debugRenderer.dispose();
 		tiledMap.dispose();
 		batch.dispose();
-		sounds.dispose();
+//		sounds.dispose();
 		batchUI.dispose();
 	}
 	

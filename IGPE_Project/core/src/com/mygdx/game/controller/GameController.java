@@ -12,11 +12,33 @@ import com.mygdx.game.view.GameView;
 public class GameController implements InputProcessor 
 {
 	private GameView view;
+	private boolean settingAttackPoint;
 	
 	public GameController() {
 		Gdx.input.setInputProcessor(this);
 		view = new GameView();
+		settingAttackPoint = false;
 	}
+	
+	public void update(float deltaTime) {
+		GameModel.getInstance().update(deltaTime);
+		if(settingAttackPoint)
+		{
+			setWeaponAttackPoint();
+		}
+		view.render(deltaTime);
+	}
+	
+	public void dispose() {
+		GameModel.getInstance().dispose();
+		view.dispose();
+	}
+	
+	private void setWeaponAttackPoint() {
+		Vector3 pointClicked = view.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+		GameModel.getInstance().getCharacter().getWeapon().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
+	}
+	
 	@Override
 	public boolean keyDown(int keycode) {
 		
@@ -77,8 +99,8 @@ public class GameController implements InputProcessor
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		Vector3 pointClicked = view.getCamera().unproject(new Vector3(screenX, screenY, 0));
-		GameModel.getInstance().getCharacter().getWeapon().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
+		setWeaponAttackPoint();
+		settingAttackPoint = true;
 		GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
 		//view.getSounds().fire.play(0.2f);
 		return true;
@@ -87,13 +109,13 @@ public class GameController implements InputProcessor
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		GameModel.getInstance().getCharacter().getWeapon().setAttacking(false);
+		settingAttackPoint = false;
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		Vector3 pointClicked = view.getCamera().unproject(new Vector3(screenX, screenY, 0));	
-		GameModel.getInstance().getCharacter().getWeapon().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
+		// TODO Auto-generated method stub
 		return false;
 	}
 

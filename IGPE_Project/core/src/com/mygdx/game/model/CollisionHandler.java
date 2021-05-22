@@ -18,7 +18,6 @@ public class CollisionHandler implements ContactListener {
 		{
 			GameModel.getInstance().addBodyToDispose(fb.getBody());
 			BulletHandler.getInstance().removeBullet(fb.getBody());
-			System.out.println(fa.getBody().getUserData() + " " + fb.getBody().getUserData());
 		}
 	}
 

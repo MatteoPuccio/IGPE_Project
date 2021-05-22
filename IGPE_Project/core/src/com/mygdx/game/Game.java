@@ -18,18 +18,12 @@ public class Game extends ApplicationAdapter {
 
 	@Override
 	public void render() {
-		GameModel.getInstance().update(Gdx.graphics.getDeltaTime());
-		
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);	
-		
-		controller.getView().render(Gdx.graphics.getDeltaTime());
+		controller.update(Gdx.graphics.getDeltaTime());
 	}
 
 	@Override
 	public void dispose() {
-		GameModel.getInstance().dispose();
-		controller.getView().dispose();
+		controller.dispose();
 	}
 	
 	@Override
