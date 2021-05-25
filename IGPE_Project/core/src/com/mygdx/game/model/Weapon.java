@@ -3,8 +3,6 @@ package com.mygdx.game.model;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Weapon {
-
-	protected Character holder;
 	
 	protected Vector2 attackPoint;
 	
@@ -14,11 +12,10 @@ public abstract class Weapon {
 	protected float range;
 	protected float cooldown;
 	
-	public Weapon(int damage, float range, float cooldown, Character holder) {
+	public Weapon(int damage, float range, float cooldown) {
 		this.damage = damage;
 		this.range = range;
 		this.cooldown = cooldown;
-		this.holder = holder;
 		
 		attacking = false;
 	}
@@ -31,10 +28,6 @@ public abstract class Weapon {
 	
 	public float getRange() {
 		return range;
-	}
-	
-	public Character getHolder() {
-		return holder;
 	}
 
 	public float getCooldown() {

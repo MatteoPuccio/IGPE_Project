@@ -30,7 +30,11 @@ public class InterfaceBar
 		barFilled.setRegionWidth((int)(maxWidth * percentage));
 	}
 
-	
+	public void dispose()
+	{
+		background.dispose();
+		foreground.dispose();
+	}
 
 	public void update(float percentage)
 	{
