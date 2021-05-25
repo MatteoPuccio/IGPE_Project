@@ -62,10 +62,10 @@ public class GameController implements InputProcessor
 			direction = Settings.DOWN;
 			break;
 		case Keys.NUM_1:
-			GameModel.getInstance().getCharacter().setWeapon(new Magic(0, 10, 0.2f, 10));
+			GameModel.getInstance().getCharacter().setWeapon(1);
 			break;
 		case Keys.NUM_2:
-			GameModel.getInstance().getCharacter().setWeapon(new MeleeWeapon(1,2.0f,1.0f));
+			GameModel.getInstance().getCharacter().setWeapon(2);
 			break;
 	    }
 		GameModel.getInstance().getCharacter().setMove(direction, true);

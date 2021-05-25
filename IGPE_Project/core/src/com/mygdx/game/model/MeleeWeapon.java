@@ -11,6 +11,7 @@ public class MeleeWeapon extends Weapon {
 
 	@Override
 	public void attack(float deltaTime) {
+		
 		for(Entity e : EnemiesHandler.getInstance().getEnemies())
 		{
 			Circle c1 = new Circle(e.getPosition(), e.getRadius());
