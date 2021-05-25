@@ -90,5 +90,8 @@ public class Character extends Entity{
 		if(weapon instanceof Magic)
 			((Magic)weapon).rechargeMana(deltaTime);
 	}
+
+	@Override
+	public void takeDamage(float damage) {}
 }
 

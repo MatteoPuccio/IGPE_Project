@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 public abstract class Entity implements Animated {
 	protected Vector2 direction;
 	protected float speed = 4;
-	protected int health;
+	protected int health = 5;
 	protected Body body;
 	protected float radius;
 	
@@ -55,8 +55,6 @@ public abstract class Entity implements Animated {
 		return radius;
 	}
 	
-	public void takeDamage(float damage) {
-		//Da implementare
-	}
+	public abstract void takeDamage(float damage);
 	
 }

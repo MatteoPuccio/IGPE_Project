@@ -20,6 +20,9 @@ public class GameModel {
 		world = new World(new Vector2(0,0), false);
 		world.setContactListener(new CollisionHandler());
 		character = new Character(world, new Vector2(5,5), 0.4f);
+		
+		Slime slime = new Slime(world, new Vector2(6,6), 0.4f);
+		EnemiesHandler.getInstance().addEnemy(slime);
 	}
 	
 	public static GameModel getInstance() {

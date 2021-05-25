@@ -19,6 +19,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.Bullet;
 import com.mygdx.game.model.BulletHandler;
+import com.mygdx.game.model.EnemiesHandler;
+import com.mygdx.game.model.Enemy;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.TiledMapObjectsUtil;
 import com.mygdx.game.view.ui.InterfaceBar;
@@ -119,6 +121,7 @@ public class GameView {
 		animations.put("knight idle animation",  new Animation(new TextureRegion(new Texture("knight_idle_spritesheet.png")), 6, 0.5f));
 		animations.put("knight run animation", new Animation(new TextureRegion(new Texture("knight_run_spritesheet.png")), 6, 0.5f));
 		animations.put("fireball animation", new Animation(new TextureRegion(new Texture("fireball_anim_spritesheet.png")), 4, 0.1f));
+		animations.put("slime idle animation", new Animation(new TextureRegion(new Texture("slime_idle_spritesheet.png")),6, 0.5f));
 	}
 	
 	private void updateAnimations(float deltaTime) {
@@ -143,6 +146,17 @@ public class GameView {
 			h = currentFrame.getRegionHeight() / Settings.PPM * b.getSize() * 2;
 			batch.draw(currentFrame, x - w / 2, y - h / 2, w, h);
 			animations.get(b.getCurrentAnimationString()).update(deltaTime);
+		}
+		
+		for(Enemy e : EnemiesHandler.getInstance().getEnemies())
+		{
+			x = e.getPosition().x;
+			y = e.getPosition().y;
+			currentFrame = animations.get(e.getCurrentAnimationString()).getFrame();
+			w =  currentFrame.getRegionWidth() / Settings.PPM * e.getRadius() * 2;
+			h = currentFrame.getRegionHeight() / Settings.PPM * e.getRadius() * 2;
+			batch.draw(currentFrame, x - w / 2, y - h / 2, w, h);
+			animations.get(e.getCurrentAnimationString()).update(deltaTime);
 		}
 	}
 	
