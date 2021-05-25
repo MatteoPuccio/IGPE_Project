@@ -6,6 +6,8 @@ import com.mygdx.game.Settings;
 
 public class Character extends Entity{
 	
+	private MeleeWeapon meleeWeapon;
+	private Magic magic;
 	private Weapon weapon;
 	
 	private boolean leftMove,rightMove,downMove,upMove;
@@ -16,7 +18,9 @@ public class Character extends Entity{
 		super(world, position, radius);
 		body.setUserData("character");
 		
-		weapon = new Magic(0, 10, 0.2f, 10);
+		magic = new Magic(1, 10, 0.2f, 10);
+		meleeWeapon = new MeleeWeapon(1,2.0f,0.5f);		
+		weapon = magic;
 		
 		leftMove = false;
 		rightMove = false;
@@ -91,8 +95,16 @@ public class Character extends Entity{
 			((Magic)weapon).rechargeMana(deltaTime);
 	}
 
-	public void setWeapon(Weapon weapon) {
-		this.weapon = weapon;
+	public void setWeapon(int i) {
+		switch(i)
+		{
+		case 1:
+			weapon = magic;
+			break;
+		case 2:
+			weapon = meleeWeapon;
+			break;
+		}
 		
 	}
 }
