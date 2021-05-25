@@ -16,7 +16,7 @@ public class Character extends Entity{
 		super(world, position, radius);
 		body.setUserData("character");
 		
-		weapon = new Magic(0, 10, 0.2f, this, 10);
+		weapon = new Magic(0, 10, 0.2f, 10);
 		
 		leftMove = false;
 		rightMove = false;
@@ -89,6 +89,11 @@ public class Character extends Entity{
 		weapon.attack(deltaTime);
 		if(weapon instanceof Magic)
 			((Magic)weapon).rechargeMana(deltaTime);
+	}
+
+	public void setWeapon(Weapon weapon) {
+		this.weapon = weapon;
+		
 	}
 }
 

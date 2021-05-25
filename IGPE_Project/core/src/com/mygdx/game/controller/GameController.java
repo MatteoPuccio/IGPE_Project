@@ -7,6 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.Magic;
+import com.mygdx.game.model.MeleeWeapon;
+import com.mygdx.game.model.Weapon;
 import com.mygdx.game.view.GameView;
 
 public class GameController implements InputProcessor 
@@ -57,6 +60,12 @@ public class GameController implements InputProcessor
 			break;
 		case Keys.S:
 			direction = Settings.DOWN;
+			break;
+		case Keys.NUM_1:
+			GameModel.getInstance().getCharacter().setWeapon(new Magic(0, 10, 0.2f, 10));
+			break;
+		case Keys.NUM_2:
+			GameModel.getInstance().getCharacter().setWeapon(new MeleeWeapon(1,2.0f,1.0f));
 			break;
 	    }
 		GameModel.getInstance().getCharacter().setMove(direction, true);
