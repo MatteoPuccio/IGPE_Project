@@ -54,6 +54,8 @@ public class GameView {
 		tiledMap = new TmxMapLoader().load("0x72_16x16DungeonTileset_walls.v1.tmx");
 		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
+		
+		sounds = new Sounds();
 	}
 	
 	public void render(float deltaTime) {
