@@ -96,6 +96,7 @@ public class Character extends Entity{
 
 	public void setWeapon(Weapon weapon) {
 		this.weapon = weapon;
+		
 	}
 }
 
