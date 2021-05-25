@@ -31,4 +31,9 @@ public class UserInterface
 	{
 		manaBar.update(((Magic)GameModel.getInstance().getCharacter().getWeapon()).getPercentage());
 	}
+	
+	public void dispose()
+	{
+		manaBar.dispose();
+	}
 }

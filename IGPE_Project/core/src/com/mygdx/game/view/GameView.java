@@ -108,6 +108,7 @@ public class GameView {
 		tiledMap.dispose();
 		batch.dispose();
 //		sounds.dispose();
+		UserInterface.getInstance().dispose();
 		batchUI.dispose();
 	}
 	
