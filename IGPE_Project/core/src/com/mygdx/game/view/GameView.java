@@ -22,6 +22,7 @@ import com.mygdx.game.model.BulletHandler;
 import com.mygdx.game.model.EnemiesHandler;
 import com.mygdx.game.model.Enemy;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.MeleeWeapon;
 import com.mygdx.game.model.TiledMapObjectsUtil;
 import com.mygdx.game.view.ui.InterfaceBar;
 import com.mygdx.game.view.ui.UserInterface;
@@ -38,9 +39,9 @@ public class GameView {
 	private TiledMapRenderer tiledMapRenderer;
 	
 	private HashMap<String, Animation> animations;
-	
+	float angle = 0;
 	private Sounds sounds;
-	
+	private WeaponSlashAnimation weaponAnimation;
 	public GameView() {	
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -56,7 +57,7 @@ public class GameView {
 		tiledMap = new TmxMapLoader().load("0x72_16x16DungeonTileset_walls.v1.tmx");
 		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
-		
+		weaponAnimation = new WeaponSlashAnimation();
 		sounds = new Sounds();
 	}
 	
@@ -78,6 +79,12 @@ public class GameView {
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
 		updateAnimations(deltaTime);
+		if(GameModel.getInstance().getCharacter().getWeapon() instanceof MeleeWeapon) {
+			if(GameModel.getInstance().getCharacter().getWeapon().isAttacking())
+				swingAnimation(deltaTime);
+			else
+				getWeaponAnimation().reset();
+		}
 		batch.end();
 		
 		
@@ -135,6 +142,7 @@ public class GameView {
 		int flip = 1;
 		if(GameModel.getInstance().getCharacter().isFlipped())
 			flip = -1;
+		
 		batch.draw(currentFrame, x - (w / 2 * flip), y - h / 2, 0, 0, w, h, flip, 1, 0);
 		animations.get(GameModel.getInstance().getCharacter().getCurrentAnimationString()).update(deltaTime);
 		
@@ -167,6 +175,22 @@ public class GameView {
 	
 	public Sounds getSounds() {
 		return sounds;
+	}
+	
+	public void swingAnimation(float deltaTime) {
+		weaponAnimation.playSwingAnimation(deltaTime);
+		float x = weaponAnimation.getPosition().x;
+		float y = weaponAnimation.getPosition().y;
+		float w =  weaponAnimation.getTexture().getRegionWidth() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
+		float h = weaponAnimation.getTexture().getRegionHeight() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
+		int flip = 1;
+		if(GameModel.getInstance().getCharacter().isFlipped())
+			flip = -1;
+		batch.draw(weaponAnimation.getTexture(), x, y,0,0, w, h,flip,1,weaponAnimation.getAngle() * -flip);
+	}
+	
+	public WeaponSlashAnimation getWeaponAnimation() {
+		return weaponAnimation;
 	}
 }
 

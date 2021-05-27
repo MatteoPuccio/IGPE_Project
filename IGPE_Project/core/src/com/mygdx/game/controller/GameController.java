@@ -63,9 +63,11 @@ public class GameController implements InputProcessor
 			break;
 		case Keys.NUM_1:
 			GameModel.getInstance().getCharacter().setWeapon(1);
+			GameModel.getInstance().getCharacter().getWeapon().setAttacking(false);
 			break;
 		case Keys.NUM_2:
 			GameModel.getInstance().getCharacter().setWeapon(2);
+			GameModel.getInstance().getCharacter().getWeapon().setAttacking(false);
 			break;
 	    }
 		GameModel.getInstance().getCharacter().setMove(direction, true);
