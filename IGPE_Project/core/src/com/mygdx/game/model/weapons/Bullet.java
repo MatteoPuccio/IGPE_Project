@@ -1,9 +1,11 @@
-package com.mygdx.game.model;
+package com.mygdx.game.model.weapons;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.mygdx.game.model.Animated;
+import com.mygdx.game.model.GameModel;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 
 public class Bullet implements Animated {
@@ -28,7 +30,7 @@ public class Bullet implements Animated {
 		body.setLinearVelocity(parent.getSpeed() * direction.x, parent.getSpeed() * direction.y);
 	}
 	
-	Body getBody() {
+	public Body getBody() {
 		return body;
 	}
 

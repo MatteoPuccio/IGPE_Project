@@ -1,8 +1,11 @@
-package com.mygdx.game.model;
+package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Settings;
+import com.mygdx.game.model.weapons.Magic;
+import com.mygdx.game.model.weapons.MeleeWeapon;
+import com.mygdx.game.model.weapons.Weapon;
 
 public class Character extends Entity{
 	

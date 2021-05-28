@@ -1,4 +1,4 @@
-package com.mygdx.game.view;
+package com.mygdx.game.view.animations;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,13 +11,13 @@ public class WeaponSlashAnimation
 	private TextureRegion texture;
 	private Vector2 position;
 	private float angle;
-	WeaponSlashAnimation()	//aggiungere tipo di arma
+	public WeaponSlashAnimation()	//aggiungere tipo di arma
 	{
 		texture = new TextureRegion(new Texture("weapon_sword_1.png"));
 		position = new Vector2();
 		angle = 0;
 	}
-	void playSwingAnimation(float deltaTime)
+	public void playSwingAnimation(float deltaTime)
 	{
 		angle += deltaTime * 200;
 		if(angle >= 90)
