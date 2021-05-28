@@ -75,9 +75,7 @@ public class GameView {
         
         UserInterface.getInstance().update();
         
-        batchUI.begin();
-        drawInterfaceBar(UserInterface.getInstance().manaBar);
-        batchUI.end();
+        
         
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
@@ -90,7 +88,9 @@ public class GameView {
 		}
 		batch.end();
 		
-		
+		batchUI.begin();
+        drawInterfaceBar(UserInterface.getInstance().manaBar);
+        batchUI.end();
         
 //		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
