@@ -1,10 +1,6 @@
 package com.mygdx.game.view.ui;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.Magic;
 
 public class UserInterface 
 {
@@ -29,8 +25,7 @@ public class UserInterface
 	
 	public void update()
 	{
-		if(GameModel.getInstance().getCharacter().getWeapon() instanceof Magic)
-			manaBar.update(((Magic)GameModel.getInstance().getCharacter().getWeapon()).getPercentage());
+		manaBar.update(GameModel.getInstance().getCharacter().getMagic().getPercentage());
 	}
 	
 	public void dispose()

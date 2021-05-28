@@ -1,8 +1,11 @@
-package com.mygdx.game.model;
+package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Settings;
+import com.mygdx.game.model.weapons.Magic;
+import com.mygdx.game.model.weapons.MeleeWeapon;
+import com.mygdx.game.model.weapons.Weapon;
 
 public class Character extends Entity{
 	
@@ -19,7 +22,7 @@ public class Character extends Entity{
 		body.setUserData("character");
 		
 		magic = new Magic(1, 10, 0.2f, 10);
-		meleeWeapon = new MeleeWeapon(1,2.0f,0.5f);		
+		meleeWeapon = new MeleeWeapon(1,0.5f,0.5f);		
 		weapon = magic;
 		
 		leftMove = false;
@@ -90,9 +93,9 @@ public class Character extends Entity{
 	public void update(float deltaTime) 
 	{
 		move(deltaTime);
-		weapon.attack(deltaTime);
-		if(weapon instanceof Magic)
-			((Magic)weapon).rechargeMana(deltaTime);
+		if(weapon.isAttacking())
+			weapon.attack(deltaTime);
+		magic.rechargeMana(deltaTime);
 	}
 
 	@Override
@@ -109,6 +112,10 @@ public class Character extends Entity{
 			break;
 		}
 		
+	}
+
+	public Magic getMagic() {
+		return magic;
 	}
 }
 

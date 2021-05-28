@@ -7,9 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.Magic;
-import com.mygdx.game.model.MeleeWeapon;
-import com.mygdx.game.model.Weapon;
+import com.mygdx.game.model.weapons.Magic;
+import com.mygdx.game.model.weapons.MeleeWeapon;
+import com.mygdx.game.model.weapons.Weapon;
 import com.mygdx.game.view.GameView;
 
 public class GameController implements InputProcessor 
@@ -63,9 +63,11 @@ public class GameController implements InputProcessor
 			break;
 		case Keys.NUM_1:
 			GameModel.getInstance().getCharacter().setWeapon(1);
+			GameModel.getInstance().getCharacter().getWeapon().setAttacking(false);
 			break;
 		case Keys.NUM_2:
 			GameModel.getInstance().getCharacter().setWeapon(2);
+			GameModel.getInstance().getCharacter().getWeapon().setAttacking(false);
 			break;
 	    }
 		GameModel.getInstance().getCharacter().setMove(direction, true);

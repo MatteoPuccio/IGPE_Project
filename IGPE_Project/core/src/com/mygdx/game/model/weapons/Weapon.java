@@ -1,4 +1,4 @@
-package com.mygdx.game.model;
+package com.mygdx.game.model.weapons;
 
 import com.badlogic.gdx.math.Vector2;
 

@@ -1,7 +1,8 @@
-package com.mygdx.game.model;
+package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.game.model.GameModel;
 
 public abstract class Enemy extends Entity {
 

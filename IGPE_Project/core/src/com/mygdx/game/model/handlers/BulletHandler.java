@@ -1,7 +1,8 @@
-package com.mygdx.game.model;
+package com.mygdx.game.model.handlers;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.model.weapons.Bullet;
 
 public class BulletHandler {
 	
