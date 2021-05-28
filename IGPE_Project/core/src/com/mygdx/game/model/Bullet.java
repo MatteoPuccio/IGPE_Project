@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Bullet implements Animated {
 	
@@ -15,14 +16,21 @@ public class Bullet implements Animated {
 	
 	Bullet(Magic parent, Vector2 position, Vector2 direction) {
 		this.parent = parent;
+		
 		bDef = new BodyDef();
 		bDef.type = BodyType.DynamicBody;
 		bDef.bullet = true;
 		bDef.position.set(position);
 		body = GameModel.getInstance().getWorld().createBody(bDef);
+		
 		CircleShape circle = new CircleShape();
 		circle.setRadius(size);
-		body.createFixture(circle, 0f);
+		FixtureDef fDef = new FixtureDef();
+		fDef.density = 0;
+		fDef.isSensor = true;
+		fDef.shape = circle;
+		body.createFixture(fDef);
+		
 		body.setUserData("bullet");
 		circle.dispose();
 		body.setLinearVelocity(parent.getSpeed() * direction.x, parent.getSpeed() * direction.y);
