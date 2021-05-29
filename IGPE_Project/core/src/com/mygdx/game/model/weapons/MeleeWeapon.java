@@ -2,9 +2,10 @@ package com.mygdx.game.model.weapons;
 
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Settings;
+import com.mygdx.game.model.EnemiesHandler;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Entity;
 
 public class MeleeWeapon extends Weapon {
@@ -18,14 +19,13 @@ public class MeleeWeapon extends Weapon {
 		
 		for(Entity e : EnemiesHandler.getInstance().getEnemies())
 		{
-			int flip = 1;
-			if(GameModel.getInstance().getCharacter().isFlipped())
-				flip = -1;
+			Vector2 weaponDirection = GameModel.getInstance().getCharacter().getPosition().sub(attackPoint);
+			System.out.println(weaponDirection);
+			System.out.println(GameModel.getInstance().getCharacter().getPosition());
 			Circle c1 = new Circle(e.getPosition(), e.getRadius());
-			Circle c2 = new Circle(GameModel.getInstance().getCharacter().getPosition().x + (range*flip),GameModel.getInstance().getCharacter().getPosition().y, GameModel.getInstance().getCharacter().getRadius());
+			Circle c2 = new Circle(weaponDirection, range);
 			if(Intersector.overlaps(c1, c2)) {
 				e.takeDamage(damage);
-				System.out.println("attacco per "+ damage);
 			}
 		}
 	}

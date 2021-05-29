@@ -17,11 +17,13 @@ public class Bullet implements Animated {
 	
 	Bullet(Magic parent, Vector2 position, Vector2 direction) {
 		this.parent = parent;
+		
 		bDef = new BodyDef();
 		bDef.type = BodyType.DynamicBody;
 		bDef.bullet = true;
 		bDef.position.set(position);
 		body = GameModel.getInstance().getWorld().createBody(bDef);
+		
 		CircleShape circle = new CircleShape();
 		circle.setRadius(size);
 		body.createFixture(circle, 0f);

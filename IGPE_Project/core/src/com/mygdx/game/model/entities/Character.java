@@ -22,7 +22,7 @@ public class Character extends Entity{
 		body.setUserData("character");
 		
 		magic = new Magic(1, 10, 0.2f, 10);
-		meleeWeapon = new MeleeWeapon(1,0.5f,0.5f);		
+		meleeWeapon = new MeleeWeapon(1,0.8f,0.5f);		
 		weapon = magic;
 		
 		leftMove = false;

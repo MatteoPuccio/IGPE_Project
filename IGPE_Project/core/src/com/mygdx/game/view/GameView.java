@@ -17,11 +17,11 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Settings;
+import com.mygdx.game.model.BulletHandler;
+import com.mygdx.game.model.EnemiesHandler;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.TiledMapObjectsUtil;
-import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
-import com.mygdx.game.model.handlers.BulletHandler;
 import com.mygdx.game.model.weapons.Bullet;
 import com.mygdx.game.model.weapons.MeleeWeapon;
 import com.mygdx.game.view.animations.Animation;
@@ -80,11 +80,8 @@ public class GameView {
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
 		updateAnimations(deltaTime);
-		if(GameModel.getInstance().getCharacter().getWeapon() instanceof MeleeWeapon) {
-			if(GameModel.getInstance().getCharacter().getWeapon().isAttacking())
-				swingAnimation(deltaTime);
-			else
-				getWeaponAnimation().reset();
+		if(weaponAnimation.isPlaying()) {
+			swingAnimation(deltaTime);
 		}
 		batch.end();
 		
@@ -92,7 +89,7 @@ public class GameView {
         drawInterfaceBar(UserInterface.getInstance().manaBar);
         batchUI.end();
         
-//		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+		//debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {
@@ -186,10 +183,8 @@ public class GameView {
 		float y = weaponAnimation.getPosition().y;
 		float w =  weaponAnimation.getTexture().getRegionWidth() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
 		float h = weaponAnimation.getTexture().getRegionHeight() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
-		int flip = 1;
-		if(GameModel.getInstance().getCharacter().isFlipped())
-			flip = -1;
-		batch.draw(weaponAnimation.getTexture(), x, y,0,0, w, h,flip,1,weaponAnimation.getAngle() * -flip);
+
+		batch.draw(weaponAnimation.getTexture(), x, y,0,0, w, h,1,1,weaponAnimation.getAngle() - 90f);
 	}
 	
 	public WeaponSlashAnimation getWeaponAnimation() {

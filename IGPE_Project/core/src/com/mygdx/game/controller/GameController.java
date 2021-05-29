@@ -112,7 +112,13 @@ public class GameController implements InputProcessor
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		setWeaponAttackPoint();
 		settingAttackPoint = true;
-		GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
+		if(!view.getWeaponAnimation().isPlaying()) {
+			GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
+			if(GameModel.getInstance().getCharacter().getWeapon() instanceof MeleeWeapon) {
+				Vector2 vector = GameModel.getInstance().getCharacter().getWeapon().getAttackPoint().sub(GameModel.getInstance().getCharacter().getPosition());
+				view.getWeaponAnimation().play(vector.angleDeg());
+			}
+		}
 //		view.getSounds().fire.play(0.1f);
 		return true;
 	}
