@@ -1,9 +1,9 @@
 package com.mygdx.game.view.animations;
 
 import com.badlogic.gdx.graphics.Texture;
+
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.Settings;
 import com.mygdx.game.model.GameModel;
 
 public class WeaponSlashAnimation 
@@ -19,7 +19,7 @@ public class WeaponSlashAnimation
 	}
 	public void playSwingAnimation(float deltaTime)
 	{
-		angle += deltaTime * 200;
+		angle += deltaTime * 500;
 		if(angle >= 90)
 			angle = 0;
 		position = GameModel.getInstance().getCharacter().getPosition();

@@ -1,15 +1,13 @@
 package com.mygdx.game.controller;
 
 import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.weapons.Magic;
-import com.mygdx.game.model.weapons.MeleeWeapon;
-import com.mygdx.game.model.weapons.Weapon;
 import com.mygdx.game.view.GameView;
 
 public class GameController implements InputProcessor 

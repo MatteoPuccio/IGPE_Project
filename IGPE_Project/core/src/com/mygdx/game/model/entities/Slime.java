@@ -1,12 +1,11 @@
 package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 
 public class Slime extends Enemy {
 
-	public Slime(World world, Vector2 position, float radius) {
-		super(world, position, radius);
+	public Slime(Vector2 position, float radius) {
+		super(position, radius);
 	}
 
 	@Override
@@ -17,6 +16,21 @@ public class Slime extends Enemy {
 	@Override
 	public boolean isFlipped() {
 		return false;
+	}
+
+	@Override
+	public Vector2 getAnimationPosition() {
+		return body.getPosition();
+	}
+
+	@Override
+	public float getAnimationWidth() {
+		return radius;
+	}
+
+	@Override
+	public float getAnimationHeigth() {
+		return radius;
 	}
 	
 }

@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Settings;
+import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.TiledMapObjectsUtil;
 import com.mygdx.game.model.entities.EnemiesHandler;
@@ -136,40 +137,32 @@ public class GameView {
 	}
 	
 	private void updateAnimations(float deltaTime) {
-		float x = GameModel.getInstance().getCharacter().getPosition().x;
-		float y = GameModel.getInstance().getCharacter().getPosition().y;
-		TextureRegion currentFrame = animations.get(GameModel.getInstance().getCharacter().getCurrentAnimationString()).getFrame();
-		float w =  currentFrame.getRegionWidth() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
-		float h = currentFrame.getRegionHeight() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
-		
-		int flip = 1;
-		if(GameModel.getInstance().getCharacter().isFlipped())
-			flip = -1;
-		
-		batch.draw(currentFrame, x - (w / 2 * flip), y - h / 2, 0, 0, w, h, flip, 1, 0);
-		animations.get(GameModel.getInstance().getCharacter().getCurrentAnimationString()).update(deltaTime);
+		animate(GameModel.getInstance().getCharacter(), deltaTime);
 		
 		for(Bullet b : BulletHandler.getInstance().getBullets())
 		{
-			x = b.getPosition().x;
-			y = b.getPosition().y;
-			currentFrame = animations.get(b.getCurrentAnimationString()).getFrame();
-			w =  currentFrame.getRegionWidth() / Settings.PPM * b.getSize() * 2;
-			h = currentFrame.getRegionHeight() / Settings.PPM * b.getSize() * 2;
-			batch.draw(currentFrame, x - w / 2, y - h / 2, w, h);
-			animations.get(b.getCurrentAnimationString()).update(deltaTime);
+			animate(b, deltaTime);
 		}
 		
 		for(Enemy e : EnemiesHandler.getInstance().getEnemies())
 		{
-			x = e.getPosition().x;
-			y = e.getPosition().y;
-			currentFrame = animations.get(e.getCurrentAnimationString()).getFrame();
-			w =  currentFrame.getRegionWidth() / Settings.PPM * e.getRadius() * 2;
-			h = currentFrame.getRegionHeight() / Settings.PPM * e.getRadius() * 2;
-			batch.draw(currentFrame, x - w / 2, y - h / 2, w, h);
-			animations.get(e.getCurrentAnimationString()).update(deltaTime);
+			animate(e, deltaTime);
 		}
+	}
+	
+	private void animate(Animated a, float deltaTime) {
+		float x = a.getAnimationPosition().x;
+		float y = a.getAnimationPosition().y;
+		TextureRegion currentFrame = animations.get(a.getCurrentAnimationString()).getFrame();
+		float w =  currentFrame.getRegionWidth() / Settings.PPM * a.getAnimationWidth() * 2;
+		float h = currentFrame.getRegionHeight() / Settings.PPM * a.getAnimationHeigth() * 2;
+		
+		int flip = 1;
+		if(a.isFlipped())
+			flip = -1;
+		
+		batch.draw(currentFrame, x - (w / 2 * flip), y - h / 2, 0, 0, w, h, flip, 1, 0);
+		animations.get(a.getCurrentAnimationString()).update(deltaTime);
 	}
 	
 	public OrthographicCamera getCamera() {

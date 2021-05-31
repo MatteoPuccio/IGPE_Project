@@ -1,7 +1,6 @@
 package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.weapons.Magic;
 import com.mygdx.game.model.weapons.MeleeWeapon;
@@ -17,8 +16,8 @@ public class Character extends Entity{
 	
 	boolean flippedX;
 	
-	public Character(World world, Vector2 position, float radius) {
-		super(world, position, radius);
+	public Character(Vector2 position, float radius) {
+		super(position, radius);
 		body.setUserData("character");
 		
 		magic = new Magic(1, 10, 0.2f, 10);
@@ -75,17 +74,6 @@ public class Character extends Entity{
 		}
 	}
 	
-	public String getCurrentAnimationString() {
-		if(direction.x == 0 && direction.y == 0)
-			return "knight idle animation";
-		else
-			return "knight run animation";
-	}
-	
-	public boolean isFlipped() {
-		return flippedX;
-	}
-	
 	public Weapon getWeapon() {
 		return weapon;
 	}
@@ -117,5 +105,33 @@ public class Character extends Entity{
 	public Magic getMagic() {
 		return magic;
 	}
+	
+	public String getCurrentAnimationString() {
+		if(direction.x == 0 && direction.y == 0)
+			return "knight idle animation";
+		else
+			return "knight run animation";
+	}
+	
+	public boolean isFlipped() {
+		return flippedX;
+	}
+
+	@Override
+	public Vector2 getAnimationPosition() {
+		return body.getPosition();
+	}
+
+	@Override
+	public float getAnimationWidth() {
+		return radius;
+	}
+
+	@Override
+	public float getAnimationHeigth() {
+		return radius;
+	}
+	
+	
 }
 

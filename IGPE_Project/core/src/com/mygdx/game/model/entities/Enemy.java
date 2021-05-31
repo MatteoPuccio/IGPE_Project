@@ -1,13 +1,12 @@
 package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.model.GameModel;
 
 public abstract class Enemy extends Entity {
 
-	public Enemy(World world, Vector2 position, float radius) {
-		super(world, position, radius);
+	public Enemy(Vector2 position, float radius) {
+		super(position, radius);
 		body.setUserData("enemy");
 	}
 	

@@ -7,24 +7,31 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Bullet implements Animated {
 	
 	private Magic parent;
-	Body body;
-	BodyDef bDef;
-	float size = 0.1f;
+	private Body body;
+	private float size = 0.1f;
 	
 	Bullet(Magic parent, Vector2 position, Vector2 direction) {
 		this.parent = parent;
-		bDef = new BodyDef();
+		
+		BodyDef bDef = new BodyDef();
 		bDef.type = BodyType.DynamicBody;
 		bDef.bullet = true;
 		bDef.position.set(position);
 		body = GameModel.getInstance().getWorld().createBody(bDef);
+		
+		FixtureDef fDef = new FixtureDef();
 		CircleShape circle = new CircleShape();
 		circle.setRadius(size);
-		body.createFixture(circle, 0f);
+		fDef.density = 0;
+		fDef.shape = circle;
+		fDef.isSensor = true;
+		body.createFixture(fDef);
+		
 		body.setUserData("bullet");
 		circle.dispose();
 		body.setLinearVelocity(parent.getSpeed() * direction.x, parent.getSpeed() * direction.y);
@@ -32,16 +39,6 @@ public class Bullet implements Animated {
 	
 	public Body getBody() {
 		return body;
-	}
-
-	@Override
-	public String getCurrentAnimationString() {
-		return "fireball animation";
-	}
-
-	@Override
-	public boolean isFlipped() {
-		return false;
 	}
 	
 	public Vector2 getPosition() {
@@ -51,4 +48,31 @@ public class Bullet implements Animated {
 	public float getSize() {
 		return size;
 	}
+	
+	@Override
+	public String getCurrentAnimationString() {
+		return "fireball animation";
+	}
+	
+	@Override
+	public boolean isFlipped() {
+		return false;
+	}
+
+	@Override
+	public Vector2 getAnimationPosition() {
+		return body.getPosition();
+	}
+
+	@Override
+	public float getAnimationWidth() {
+		return size;
+	}
+
+	@Override
+	public float getAnimationHeigth() {
+		return size;
+	}
+	
+	
 }
