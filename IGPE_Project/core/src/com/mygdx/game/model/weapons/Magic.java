@@ -8,7 +8,7 @@ public class Magic extends Weapon {
 
 	private float speed;
 	private float timeSinceLastAttack;
-	private static int manaCapacity = 10;
+	private static int manaCapacity = 100;
 	private float currentMana;
 	
 	
