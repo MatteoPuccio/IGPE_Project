@@ -1,4 +1,4 @@
-package com.mygdx.game.model.handlers;
+package com.mygdx.game.model;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;

@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.weapons.MeleeWeapon;
 import com.mygdx.game.view.GameView;
 
 public class GameController implements InputProcessor 
@@ -110,7 +111,13 @@ public class GameController implements InputProcessor
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		setWeaponAttackPoint();
 		settingAttackPoint = true;
-		GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
+		if(!view.getWeaponAnimation().isPlaying()) {
+			GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
+			if(GameModel.getInstance().getCharacter().getWeapon() instanceof MeleeWeapon) {
+				Vector2 vector = GameModel.getInstance().getCharacter().getWeapon().getAttackPoint().sub(GameModel.getInstance().getCharacter().getPosition());
+				view.getWeaponAnimation().play(vector.angleDeg());
+			}
+		}
 //		view.getSounds().fire.play(0.1f);
 		return true;
 	}

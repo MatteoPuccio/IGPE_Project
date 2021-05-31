@@ -1,6 +1,11 @@
 package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
+<<<<<<< HEAD
+=======
+import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.game.model.EnemiesHandler;
+>>>>>>> branch 'main' of https://github.com/MatteoPuccio/IGPE_Project.git
 import com.mygdx.game.model.GameModel;
 
 public abstract class Enemy extends Entity {
