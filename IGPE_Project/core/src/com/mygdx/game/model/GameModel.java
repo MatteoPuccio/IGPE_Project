@@ -32,7 +32,7 @@ public class GameModel {
 	}
 	
 	public void initEntities() {
-		character = new Character(new Vector2(5,5), 0.4f);
+		character = new Character(new Vector2(7,7), 0.4f);
 		
 		Slime slime = new Slime(new Vector2(6,6), 0.4f);
 		EnemiesHandler.getInstance().addEnemy(slime);

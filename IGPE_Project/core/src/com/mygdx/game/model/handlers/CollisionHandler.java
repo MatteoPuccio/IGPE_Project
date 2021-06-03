@@ -18,8 +18,10 @@ public class CollisionHandler implements ContactListener {
 		
 		if(fb.getBody().getUserData() != null && fb.getBody().getUserData().equals("bullet") && (fa.getBody().getUserData() == null || !fa.getBody().getUserData().equals("character")))
 		{
-			GameModel.getInstance().addBodyToDispose(fb.getBody());
-			BulletHandler.getInstance().removeBullet(fb.getBody());
+			if (!fa.getBody().getUserData().equals("void")) {
+				GameModel.getInstance().addBodyToDispose(fb.getBody());
+				BulletHandler.getInstance().removeBullet(fb.getBody());
+			}
 			if(fa.getBody().getUserData() != null && fa.getBody().getUserData().equals("enemy"))
 			{
 				EnemiesHandler.getInstance().hitEnemy(fa.getBody());

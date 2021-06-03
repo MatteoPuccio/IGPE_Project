@@ -19,7 +19,7 @@ public class WeaponSlashAnimation
 	}
 	public void playSwingAnimation(float deltaTime)
 	{
-		angle += deltaTime * 500;
+		angle += deltaTime * 200;
 		if(angle >= 90)
 			angle = 0;
 		position = GameModel.getInstance().getCharacter().getPosition();

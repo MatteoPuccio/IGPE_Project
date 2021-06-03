@@ -58,7 +58,7 @@ public class GameView {
 		initAnimations();
 		batch = new SpriteBatch();
 		batchUI = new SpriteBatch();
-		tiledMap = new TmxMapLoader().load("0x72_16x16DungeonTileset_walls.v1.tmx");
+		tiledMap = new TmxMapLoader().load("rooms/r01_w-e.tmx");
 		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
 		weaponAnimation = new WeaponSlashAnimation();
@@ -93,7 +93,7 @@ public class GameView {
         drawInterfaceBar(UserInterface.getInstance().manaBar);
         batchUI.end();
         
-//		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {
