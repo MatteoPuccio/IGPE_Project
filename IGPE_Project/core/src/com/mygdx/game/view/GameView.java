@@ -17,15 +17,12 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Settings;
-<<<<<<< HEAD
 import com.mygdx.game.model.Animated;
-=======
-import com.mygdx.game.model.BulletHandler;
-import com.mygdx.game.model.EnemiesHandler;
->>>>>>> branch 'main' of https://github.com/MatteoPuccio/IGPE_Project.git
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.TiledMapObjectsUtil;
+import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
+import com.mygdx.game.model.handlers.BulletHandler;
 import com.mygdx.game.model.weapons.Bullet;
 import com.mygdx.game.model.weapons.MeleeWeapon;
 import com.mygdx.game.view.animations.Animation;
@@ -61,7 +58,7 @@ public class GameView {
 		initAnimations();
 		batch = new SpriteBatch();
 		batchUI = new SpriteBatch();
-		tiledMap = new TmxMapLoader().load("0x72_16x16DungeonTileset_walls.v1.tmx");
+		tiledMap = new TmxMapLoader().load("rooms/r01_w-e.tmx");
 		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
 		weaponAnimation = new WeaponSlashAnimation();
@@ -84,16 +81,15 @@ public class GameView {
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
 		updateAnimations(deltaTime);
-		if(weaponAnimation.isPlaying()) {
+		if(weaponAnimation.isPlaying())
 			swingAnimation(deltaTime);
-		}
 		batch.end();
 		
 		batchUI.begin();
         drawInterfaceBar(UserInterface.getInstance().manaBar);
         batchUI.end();
         
-		//debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+//		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {

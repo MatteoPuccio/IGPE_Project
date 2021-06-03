@@ -6,7 +6,9 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.entities.Character;
+import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Slime;
+import com.mygdx.game.model.handlers.CollisionHandler;
 
 public class GameModel {
 	
@@ -30,7 +32,7 @@ public class GameModel {
 	}
 	
 	public void initEntities() {
-		character = new Character(new Vector2(5,5), 0.4f);
+		character = new Character(new Vector2(7,7), 0.4f);
 		
 		Slime slime = new Slime(new Vector2(6,6), 0.4f);
 		EnemiesHandler.getInstance().addEnemy(slime);

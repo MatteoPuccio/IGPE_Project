@@ -18,20 +18,13 @@ public class Bullet implements Animated {
 	Bullet(Magic parent, Vector2 position, Vector2 direction) {
 		this.parent = parent;
 		
-<<<<<<< HEAD
 		BodyDef bDef = new BodyDef();
-=======
-		bDef = new BodyDef();
->>>>>>> branch 'main' of https://github.com/MatteoPuccio/IGPE_Project.git
 		bDef.type = BodyType.DynamicBody;
 		bDef.bullet = true;
 		bDef.position.set(position);
 		body = GameModel.getInstance().getWorld().createBody(bDef);
 		
-<<<<<<< HEAD
 		FixtureDef fDef = new FixtureDef();
-=======
->>>>>>> branch 'main' of https://github.com/MatteoPuccio/IGPE_Project.git
 		CircleShape circle = new CircleShape();
 		circle.setRadius(size);
 		fDef.density = 0;
