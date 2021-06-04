@@ -22,15 +22,9 @@ public class WeaponSlashAnimation
 	}
 	public void playSwingAnimation(float deltaTime)
 	{
-<<<<<<< HEAD
 		angle += deltaTime * 250;
 		if(angle >= 90 + startingAngle) 
 			stopPlaying();
-=======
-		angle += deltaTime * 200;
-		if(angle >= 90)
-			angle = 0;
->>>>>>> branch 'main' of https://github.com/MatteoPuccio/IGPE_Project.git
 		position = GameModel.getInstance().getCharacter().getPosition();
 	}
 	private void stopPlaying() {

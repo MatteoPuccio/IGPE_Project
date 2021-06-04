@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Slime;
-import com.mygdx.game.model.handlers.CollisionHandler;
 
 public class GameModel {
 	

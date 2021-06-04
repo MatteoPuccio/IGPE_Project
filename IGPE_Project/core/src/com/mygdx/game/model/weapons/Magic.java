@@ -1,14 +1,14 @@
 package com.mygdx.game.model.weapons;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.model.BulletHandler;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.handlers.BulletHandler;
 
 public class Magic extends Weapon {
 
 	private float speed;
 	private float timeSinceLastAttack;
-	private static int manaCapacity = 100;
+	private static int manaCapacity = 10;
 	private float currentMana;
 	
 	

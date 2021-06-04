@@ -20,7 +20,7 @@ public class MeleeWeapon extends Weapon {
 			Circle c1 = new Circle(e.getPosition(), e.getRadius());
 			Circle c2 = new Circle(GameModel.getInstance().getCharacter().getPosition().mulAdd(weaponPosition, range), range);
 			if(Intersector.overlaps(c1, c2)) {
-				e.takeDamage(damage*0);
+				e.takeDamage(damage);
 				System.out.println("attacco per "+ damage);
 			}
 		}
