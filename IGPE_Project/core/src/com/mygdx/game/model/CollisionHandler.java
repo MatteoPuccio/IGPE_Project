@@ -26,7 +26,7 @@ public class CollisionHandler implements ContactListener {
 				EnemiesHandler.getInstance().hitEnemy(fa.getBody());
 			}
 		}
-		
+//
 //		if (fa.getBody().getUserData().equals("character") && fb.getBody().getUserData().equals("gate") 
 //				|| fb.getBody().getUserData().equals("character") && fa.getBody().getUserData().equals("gate")) {
 //			//GameModel.getInstance().changeMap();
