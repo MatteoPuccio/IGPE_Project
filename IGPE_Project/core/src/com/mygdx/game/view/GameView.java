@@ -88,7 +88,7 @@ public class GameView {
         drawInterfaceBar(UserInterface.getInstance().manaBar);
         batchUI.end();
         
-//		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {
