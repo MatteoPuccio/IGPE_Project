@@ -14,7 +14,9 @@ public class CollisionHandler implements ContactListener {
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
 		
-		if(fb.getBody().getUserData() != null && fb.getBody().getUserData().equals("bullet") && (fa.getBody().getUserData() == null || !fa.getBody().getUserData().equals("character")))
+		if(fb.getBody().getUserData() != null && fb.getBody().getUserData().equals("bullet") && 
+				(fa.getBody().getUserData() == null	|| !fa.getBody().getUserData().equals("character"))
+				&& !(fa.getBody().getUserData() == "void" && fb.getBody().getUserData() == "bullet"))
 		{
 			GameModel.getInstance().addBodyToDispose(fb.getBody());
 			BulletHandler.getInstance().removeBullet(fb.getBody());
@@ -23,6 +25,12 @@ public class CollisionHandler implements ContactListener {
 				EnemiesHandler.getInstance().hitEnemy(fa.getBody());
 			}
 		}
+		
+//		if (fa.getBody().getUserData().equals("character") && fb.getBody().getUserData().equals("gate") 
+//				|| fb.getBody().getUserData().equals("character") && fa.getBody().getUserData().equals("gate")) {
+//			//GameModel.getInstance().changeMap();
+//			System.out.println("gate");
+//		}
 	}
 
 	@Override
