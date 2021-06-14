@@ -17,11 +17,13 @@ public class GameModel {
 	private static GameModel gameModel = null;
 	private World world;
 	private Array<Body> bodiesToDispose;
+	public boolean toChangeMap;
 	
 	private GameModel() {
 		bodiesToDispose = new Array<Body>();
 		world = new World(new Vector2(0,0), false);
 		world.setContactListener(new CollisionHandler());
+		toChangeMap = false;
 	}
 	
 	public static GameModel getInstance() {
@@ -64,10 +66,30 @@ public class GameModel {
 		bodiesToDispose.clear();
 	}
 
+	public void disposeMapBodies() {
+		Array<Body> oldBodies = new Array<Body>();
+		world.getBodies(oldBodies);
+		for (Body b: oldBodies) {
+			if (b.getUserData() != "character") {
+				addBodyToDispose(b);
+			}
+		}
+	}
+	
 	public void update(float deltaTime) {
 		world.step(deltaTime, 6, 2);
 		character.update(deltaTime);
 		
 		disposeBodies();
+	}
+	
+	public boolean changeMap() {
+		if (toChangeMap) {
+//			TODO: posizionamento nemici e personaggio nelle nuove stanze + animazione per cambio stanza
+			disposeMapBodies();
+			toChangeMap = false;
+			return true;
+		}
+		return false;
 	}
 }

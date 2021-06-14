@@ -181,6 +181,13 @@ public class GameView {
 	public WeaponSlashAnimation getWeaponAnimation() {
 		return weaponAnimation;
 	}
+	
+	public void changeMap(TiledMap map) {
+		tiledMap.dispose();
+		tiledMap = map;
+		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
+	}
 }
 
 

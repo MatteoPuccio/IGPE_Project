@@ -10,12 +10,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.mygdx.game.Settings;
 import com.badlogic.gdx.physics.box2d.ChainShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 
 public class TiledMapObjectsUtil {
 	public static void parseTiledObjectsLayer(TiledMap tilemap) {
 		MapObjects objects = tilemap.getLayers().get("Collisions").getObjects();
 		MapObjects voidObjects = tilemap.getLayers().get("EntityCollisions").getObjects();
+		MapObjects gatesObjects = tilemap.getLayers().get("Gates").getObjects(); 
 
 		for(MapObject object : objects)
 		{
@@ -31,6 +33,7 @@ public class TiledMapObjectsUtil {
 			body.createFixture(shape, 1f);
 			shape.dispose();
 		}
+		
 		for(MapObject object : voidObjects)
 		{
 			Shape shape = null;
@@ -43,6 +46,25 @@ public class TiledMapObjectsUtil {
 			body = GameModel.getInstance().getWorld().createBody(bDef);
 			body.setUserData("void");
 			body.createFixture(shape, 1f);
+			shape.dispose();
+		}
+		
+		for(MapObject object : gatesObjects)
+		{
+			Shape shape = null;
+			if(object instanceof PolygonMapObject)
+				shape = createPolygon((PolygonMapObject) object);
+			
+			Body body;
+			BodyDef bDef = new BodyDef();
+			bDef.type = BodyType.StaticBody;
+			body = GameModel.getInstance().getWorld().createBody(bDef);
+			body.setUserData("gate");
+			FixtureDef gateFixture = new FixtureDef();
+			gateFixture.shape = shape;
+			gateFixture.density = 1f;
+			gateFixture.isSensor = true;
+			body.createFixture(gateFixture);
 			shape.dispose();
 		}
 	}

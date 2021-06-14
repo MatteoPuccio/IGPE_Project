@@ -1,9 +1,9 @@
 package com.mygdx.game.controller;
 
 import com.badlogic.gdx.Gdx;
-
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Settings;
@@ -29,6 +29,10 @@ public class GameController implements InputProcessor
 			setWeaponAttackPoint();
 		}
 		view.render(deltaTime);
+		if (GameModel.getInstance().changeMap()) {
+//			TODO: automatizzare il processo per ogni livello
+			view.changeMap(new TmxMapLoader().load("rooms/r02_w-e.tmx"));
+		}
 	}
 	
 	public void dispose() {
@@ -67,6 +71,11 @@ public class GameController implements InputProcessor
 		case Keys.NUM_2:
 			GameModel.getInstance().getCharacter().setWeapon(2);
 			GameModel.getInstance().getCharacter().getWeapon().setAttacking(false);
+			break;
+//		TODO: delete after automatic implementation complete
+		case Keys.C:
+			GameModel.getInstance().disposeMapBodies();
+			view.changeMap(new TmxMapLoader().load("rooms/r02_w-e.tmx"));
 			break;
 	    }
 		GameModel.getInstance().getCharacter().setMove(direction, true);
