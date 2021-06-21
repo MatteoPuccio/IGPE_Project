@@ -21,11 +21,9 @@ public class TiledMapObjectsUtil {
 		MapObjects voidObjects = tilemap.getLayers().get("Void").getObjects();
 		MapObjects gatesObjects = tilemap.getLayers().get("Gates").getObjects();
 				
-		parseObjects(tilemap, objects);
-		
-		parseVoid(tilemap, voidObjects);
-		
-		parseGates(tilemap, gatesObjects);
+		parseObjects(tilemap, objects, "Collisions");
+		parseObjects(tilemap, voidObjects, "Void");
+		parseObjects(tilemap, gatesObjects, "Gates");
 		
 	}
 	
@@ -49,7 +47,7 @@ public class TiledMapObjectsUtil {
 		
 	}
 	
-	private static void parseObjects(TiledMap tilemap, MapObjects objects) {
+	private static void parseObjects(TiledMap tilemap, MapObjects objects, String tag) {
 		
 		for(MapObject object : objects)
 		{
@@ -61,52 +59,20 @@ public class TiledMapObjectsUtil {
 			BodyDef bDef = new BodyDef();
 			bDef.type = BodyType.StaticBody;
 			body = GameModel.getInstance().getWorld().createBody(bDef);
-			body.setUserData("wall");
-			body.createFixture(shape, 1f);
+			body.setUserData(tag);
+			setFixtureToBody(body, tag, shape);
 			shape.dispose();
 		}
 		
 	}
 	
-	private static void parseVoid(TiledMap tilemap, MapObjects voidObjects) {
-		
-		for(MapObject object : voidObjects)
-		{
-			Shape shape = null;
-			if(object instanceof PolygonMapObject)
-				shape = createPolygon((PolygonMapObject) object);
-			
-			Body body;
-			BodyDef bDef = new BodyDef();
-			bDef.type = BodyType.StaticBody;
-			body = GameModel.getInstance().getWorld().createBody(bDef);
-			body.setUserData("void");
-			body.createFixture(shape, 1f);
-			shape.dispose();
+	private static void setFixtureToBody(Body b, String tag, Shape s) {
+		FixtureDef f = new FixtureDef();
+		f.shape = s;
+		f.density = 1f;
+		if (tag == "gate") {
+			f.isSensor = true; 
 		}
-		
-	}
-	
-	private static void parseGates(TiledMap tilemap, MapObjects gatesObjects) {
-		
-		for(MapObject object : gatesObjects)
-		{
-			Shape shape = null;
-			if(object instanceof PolygonMapObject)
-				shape = createPolygon((PolygonMapObject) object);
-			
-			Body body;
-			BodyDef bDef = new BodyDef();
-			bDef.type = BodyType.StaticBody;
-			body = GameModel.getInstance().getWorld().createBody(bDef);
-			body.setUserData("gate");
-			FixtureDef gateFixture = new FixtureDef();
-			gateFixture.shape = shape;
-			gateFixture.density = 1f;
-			gateFixture.isSensor = true;
-			body.createFixture(gateFixture);
-			shape.dispose();
-		}
-		
+		b.createFixture(f);
 	}
 }	
