@@ -24,6 +24,8 @@ public class GameController implements InputProcessor
 	
 	public void update(float deltaTime) {
 		
+		view.render(deltaTime);
+		
 		if(settingAttackPoint) {
 			setWeaponAttackPoint();
 		}
@@ -37,8 +39,6 @@ public class GameController implements InputProcessor
 				view.getWeaponAnimation().play(startingAngle);
 			}
 		}
-		
-		view.render(deltaTime);
 	}
 	
 	public void dispose() {
@@ -47,7 +47,7 @@ public class GameController implements InputProcessor
 	}
 	
 	private void setWeaponAttackPoint() {
-		Vector3 pointClicked = view.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+		Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 		GameModel.getInstance().getCharacter().getWeapon().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
 	}
 	
@@ -124,7 +124,6 @@ public class GameController implements InputProcessor
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//		setWeaponAttackPoint();
 		settingAttackPoint = true;
 		GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
 //		view.getSounds().fire.play(0.1f);

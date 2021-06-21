@@ -3,11 +3,11 @@ package com.mygdx.game.model.level;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.TiledMapObjectsUtil;
+import com.mygdx.game.model.ai.NavTmxMapLoader;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.FlyingCreature;
 import com.mygdx.game.model.entities.Goblin;
 import com.mygdx.game.model.entities.Slime;
-import com.mygdx.game.model.pathfinding.NavTmxMapLoader;
 
 public class Room2 extends Room {
 

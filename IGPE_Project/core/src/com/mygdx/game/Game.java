@@ -8,7 +8,6 @@ import com.mygdx.game.model.GameModel;
 public class Game extends ApplicationAdapter {
 	
 	GameController controller;
-	
 	@Override
 	public void create() {
 		GameModel.getInstance().init();

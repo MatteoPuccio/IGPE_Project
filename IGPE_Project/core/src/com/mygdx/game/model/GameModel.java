@@ -34,13 +34,13 @@ public class GameModel {
 	}
 	
 	public void init() {
-		character = new Character(new Vector2(8.5f,7.5f), 0.4f);
+		character = new Character(new Vector2(8.5f,7.5f));
 		createRooms();
 	}
 	
 	private void createRooms() {
 		//RandomRoomGenerator.getInstance().createRooms();
-		RoomHandler.getInstance().setCurrentRoom(new Room1());
+		RoomHandler.getInstance().setCurrentRoom(new Room2());
 		RoomHandler.getInstance().getCurrentRoom().init();
 	}
 	

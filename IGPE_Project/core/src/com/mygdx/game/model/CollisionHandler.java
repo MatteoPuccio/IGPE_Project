@@ -34,8 +34,10 @@ public class CollisionHandler implements ContactListener {
 					}
 					GameModel.getInstance().addBodyToDispose(fb.getBody());
 					BulletHandler.getInstance().removeBullet(fb.getBody());
-					if(userDataA.equals("enemy bullet"))
+					if(userDataA.equals("enemy bullet")) {
 						BulletHandler.getInstance().removeBullet(fa.getBody());
+						GameModel.getInstance().addBodyToDispose(fa.getBody());
+					}
 				}
 				break;
 			case "enemy bullet":
@@ -51,11 +53,9 @@ public class CollisionHandler implements ContactListener {
 					}
 					GameModel.getInstance().addBodyToDispose(fb.getBody());
 					BulletHandler.getInstance().removeBullet(fb.getBody());
-					if(userDataA.equals("character bullet"))
-						BulletHandler.getInstance().removeBullet(fa.getBody());
 				}
 				break;
-			case "flyingCreature":
+			case "flying creature":
 				if(userDataA.equals("character"))
 					GameModel.getInstance().getCharacter().takeDamage(1);
 				break;

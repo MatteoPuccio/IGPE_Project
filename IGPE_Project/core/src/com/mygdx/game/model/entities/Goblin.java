@@ -9,8 +9,8 @@ import org.xguzm.pathfinding.grid.finders.GridFinderOptions;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.ai.AStarUtils;
 import com.mygdx.game.model.level.RoomHandler;
-import com.mygdx.game.model.pathfinding.AStarUtils;
 import com.mygdx.game.model.weapons.MeleeWeapon;
 
 public class Goblin extends Enemy {

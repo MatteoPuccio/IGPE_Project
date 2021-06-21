@@ -21,9 +21,9 @@ public class TiledMapObjectsUtil {
 		MapObjects voidObjects = tilemap.getLayers().get("Void").getObjects();
 		MapObjects gatesObjects = tilemap.getLayers().get("Gates").getObjects();
 				
-		parseObjects(tilemap, objects, "Collisions");
-		parseObjects(tilemap, voidObjects, "Void");
-		parseObjects(tilemap, gatesObjects, "Gates");
+		parseObjects(tilemap, objects, "collision");
+		parseObjects(tilemap, voidObjects, "void");
+		parseObjects(tilemap, gatesObjects, "gate");
 		
 	}
 	

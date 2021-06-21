@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -50,7 +51,7 @@ public class GameView {
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.set(0,0,0);
 		camera.update();
-		gamePort = new FitViewport(16, 9, camera);
+		gamePort = new FitViewport(16, 10, camera);
 		
 		debugRenderer = new Box2DDebugRenderer();
 		
@@ -60,6 +61,10 @@ public class GameView {
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
 		weaponAnimation = new WeaponSlashAnimation();
 		sounds = new Sounds();
+		
+		Pixmap pm = new Pixmap(Gdx.files.internal("cursor.png"));
+		Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
+		pm.dispose();
 	}
 	
 	public void render(float deltaTime) {
@@ -72,9 +77,7 @@ public class GameView {
         tiledMapRenderer.render();
         
         UserInterface.getInstance().update();
-        
-        
-        
+           
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
 		updateAnimations(deltaTime);
@@ -168,7 +171,7 @@ public class GameView {
 		if(a.isFlipped())
 			flip = -1;
 		
-		batch.draw(currentFrame, x - (w / 2 * flip), y - h / 2, 0, 0, w, h, flip, 1, a.getRotation());
+		batch.draw(currentFrame, x - (w / 2 ), y - h / 2, w / 2 , h / 2, w, h, flip, 1, a.getRotation());
 	}
 	
 	public OrthographicCamera getCamera() {
@@ -178,6 +181,10 @@ public class GameView {
 	public Sounds getSounds() {
 		return sounds;
 	}
+
+	public Viewport getGamePort() {
+		return gamePort;
+	}
 	
 	public void swingAnimation(float deltaTime) {
 		weaponAnimation.playSwingAnimation(deltaTime);
@@ -186,7 +193,7 @@ public class GameView {
 		float w =  weaponAnimation.getTexture().getRegionWidth() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
 		float h = weaponAnimation.getTexture().getRegionHeight() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
 
-		batch.draw(weaponAnimation.getTexture(), x, y,0,0, w, h,1,1,weaponAnimation.getAngle() - 90f);
+		batch.draw(weaponAnimation.getTexture(), x, y,0,0, w, h, 1, 1, weaponAnimation.getAngle() - 90f);
 	}
 	
 	public WeaponSlashAnimation getWeaponAnimation() {

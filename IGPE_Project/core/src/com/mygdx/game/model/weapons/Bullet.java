@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.pathfinding.SteeringUtils;
+import com.mygdx.game.model.ai.SteeringUtils;
 
 public class Bullet implements Animated {
 	
@@ -38,7 +38,7 @@ public class Bullet implements Animated {
 		
 		body.setUserData(userData);
 		circle.dispose();
-		body.setLinearVelocity(parent.getSpeed() * direction.x, parent.getSpeed() * direction.y);
+		body.setLinearVelocity(direction.scl(parent.getSpeed()));
 	}
 	
 	public Body getBody() {

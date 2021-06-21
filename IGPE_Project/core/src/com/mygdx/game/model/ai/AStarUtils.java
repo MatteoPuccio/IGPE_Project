@@ -1,4 +1,4 @@
-package com.mygdx.game.model.pathfinding;
+package com.mygdx.game.model.ai;
 
 import java.util.List;
 
@@ -17,7 +17,6 @@ public class AStarUtils {
 	public static final List<GridCell> findPathNextToPlayer(int startX, int startY) {
 		
 		NavigationTiledMapLayer navLayer = RoomHandler.getInstance().getCurrentRoom().getNavigationLayer();
-		GridCell freeCellNextToPlayer;
 		
 		float playerX = (float) Math.floor(GameModel.getInstance().getCharacter().getPosition().x);
 		float playerY = (float) Math.floor(GameModel.getInstance().getCharacter().getPosition().y);

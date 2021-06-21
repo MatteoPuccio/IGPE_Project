@@ -39,12 +39,14 @@ public abstract class Magic extends Weapon implements Animated {
 	
 	private Bullet createBullet() {
 		Vector2 position = new Vector2(owner.getPosition());
-		Vector2 tempAttackPoint = new Vector2(attackPoint);
+		Vector2 direction = new Vector2(attackPoint);
+		direction.sub(position);
+		direction.nor();
 		String bulletUserData = "character bullet";
 		if(owner instanceof Enemy)
 			bulletUserData = "enemy bullet";
 		
-		return new Bullet(this, position.add(tempAttackPoint.sub(position).nor().scl(0.5f)), tempAttackPoint.nor(), bulletUserData);
+		return new Bullet(this, position, direction, bulletUserData);
 	}
 	
 	public float getSpeed() {

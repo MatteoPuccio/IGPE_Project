@@ -1,4 +1,4 @@
-package com.mygdx.game.model.pathfinding;
+package com.mygdx.game.model.ai;
 
 import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer;
 import org.xguzm.pathfinding.grid.GridCell;

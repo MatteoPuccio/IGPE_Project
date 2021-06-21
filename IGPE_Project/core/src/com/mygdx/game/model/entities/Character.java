@@ -3,6 +3,7 @@ package com.mygdx.game.model.entities;
 import com.badlogic.gdx.math.Vector2;
 
 import com.mygdx.game.Settings;
+import com.mygdx.game.model.weapons.FireMagic;
 import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
 import com.mygdx.game.model.weapons.MeleeWeapon;
@@ -23,11 +24,12 @@ public class Character extends Entity{
 	private float invincibilityTimer;
 	private float invincibilityElapsed;
 		
-	public Character(Vector2 position, float radius) {
-		super(position, radius, false, 20);
+	public Character(Vector2 position) {
+		super(position, 0.4f, false, 20);
 		body.setUserData("character");
+		health = 10;
 		
-		magic = new LightningMagic(this);
+		magic = new FireMagic(this);
 		meleeWeapon = new MeleeWeapon(1, 1f,0.4f, this);		
 		weapon = magic;
 				
