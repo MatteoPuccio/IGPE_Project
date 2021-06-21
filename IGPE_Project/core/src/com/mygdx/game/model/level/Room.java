@@ -1,14 +1,22 @@
 package com.mygdx.game.model.level;
 
-import java.util.ArrayList;
 import java.util.Random;
 
+import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer;
+
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.utils.Array;
+
 public class Room {
-	static int rooms = 0;
-	int roomIndex;
-	Connection [] connections;
-	Random r;
+	protected TiledMap tileMap;
+	protected NavigationTiledMapLayer navigationLayer;
+	
+	private static int rooms = 0;
+	private int roomIndex;
+	private Connection [] connections;
+	private Random r;
 	private boolean deadend;
+	
 	public Room() {
 		roomIndex = rooms;
 		rooms++;
@@ -16,6 +24,7 @@ public class Room {
 		Connection c = new Connection(this);
 		connections[c.getStartingPoint()] = c;
 	}
+	
 	public Room(Connection connection,boolean deadend) {
 		roomIndex = rooms;
 		rooms++;
@@ -28,7 +37,7 @@ public class Room {
 			generateDoors();
 	}
 
-	void generateDoors() {
+	public void generateDoors() {
 		r = new Random();
 		double chance = r.nextDouble();
 		int doorsNumber = 0,counter = 0;
@@ -47,6 +56,7 @@ public class Room {
 		}
 		
 	}
+	
 	public boolean hasFreeConnection() {
 		boolean freeConnection = false;
 		for(int i = 0; i < 4;++i) {
@@ -71,13 +81,30 @@ public class Room {
 		Room newRoom = new Room(roomConnection,false);
 		return newRoom;
 	}
-	public ArrayList<Room> createAdjacentRooms(boolean deadend) {
-		ArrayList<Room> rooms = new ArrayList<Room>();
+	
+	public Array<Room> createAdjacentRooms(boolean deadend) {
+		Array<Room> rooms = new Array<Room>();
 		while(hasFreeConnection()) {
 			Connection roomConnection = getFreeConnection();
 			Room newRoom = new Room(roomConnection,deadend);
 			rooms.add(newRoom);
 		}
 		return rooms;
+	}
+	
+	public NavigationTiledMapLayer getNavigationLayer() {
+		return navigationLayer;
+	}
+	
+	public TiledMap getTileMap() {
+		return tileMap;
+	}
+	
+	public int getRoomIndex() {
+		return roomIndex;
+	}
+	
+	public Connection[] getConnections() {
+		return connections;
 	}
 }

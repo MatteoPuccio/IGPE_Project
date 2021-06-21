@@ -11,11 +11,11 @@ import com.mygdx.game.model.GameModel;
 
 public class Bullet implements Animated {
 	
-	private Magic parent;
-	private Body body;
-	private float size = 0.1f;
+	Magic parent;
 	
-	Bullet(Magic parent, Vector2 position, Vector2 direction) {
+	private Body body;
+	
+	Bullet(Magic parent, Vector2 position, Vector2 direction, String userData) {
 		this.parent = parent;
 		
 		BodyDef bDef = new BodyDef();
@@ -26,13 +26,13 @@ public class Bullet implements Animated {
 		
 		FixtureDef fDef = new FixtureDef();
 		CircleShape circle = new CircleShape();
-		circle.setRadius(size);
+		circle.setRadius(parent.getBulletSize());
 		fDef.density = 0;
 		fDef.shape = circle;
 		fDef.isSensor = true;
 		body.createFixture(fDef);
 		
-		body.setUserData("bullet");
+		body.setUserData(userData);
 		circle.dispose();
 		body.setLinearVelocity(parent.getSpeed() * direction.x, parent.getSpeed() * direction.y);
 	}
@@ -46,12 +46,12 @@ public class Bullet implements Animated {
 	}
 	
 	public float getSize() {
-		return size;
+		return parent.getBulletSize();
 	}
 	
 	@Override
 	public String getCurrentAnimationString() {
-		return "fireball animation";
+		return parent.getCurrentAnimationString();
 	}
 	
 	@Override
@@ -66,12 +66,12 @@ public class Bullet implements Animated {
 
 	@Override
 	public float getAnimationWidth() {
-		return size;
+		return getSize();
 	}
 
 	@Override
 	public float getAnimationHeigth() {
-		return size;
+		return getSize();
 	}
 	
 	

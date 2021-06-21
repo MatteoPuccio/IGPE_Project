@@ -11,7 +11,7 @@ public class Game extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
-		GameModel.getInstance().initEntities();
+		GameModel.getInstance().init();
 		controller = new GameController();
 	}
 

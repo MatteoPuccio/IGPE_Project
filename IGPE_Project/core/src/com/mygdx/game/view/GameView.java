@@ -2,6 +2,7 @@ package com.mygdx.game.view;
 
 import java.util.HashMap;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -20,9 +20,9 @@ import com.mygdx.game.Settings;
 import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.BulletHandler;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.TiledMapObjectsUtil;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
+import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.model.weapons.Bullet;
 import com.mygdx.game.view.animations.Animation;
 import com.mygdx.game.view.animations.WeaponSlashAnimation;
@@ -38,13 +38,13 @@ public class GameView {
 	
 	private SpriteBatch batch,batchUI;
 	
-	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
 	
 	private HashMap<String, Animation> animations;
 	float angle = 0;
 	private Sounds sounds;
 	private WeaponSlashAnimation weaponAnimation;
+	
 	public GameView() {	
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -57,9 +57,7 @@ public class GameView {
 		initAnimations();
 		batch = new SpriteBatch();
 		batchUI = new SpriteBatch();
-		tiledMap = new TmxMapLoader().load("rooms/r01_w-e.tmx");
-		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
 		weaponAnimation = new WeaponSlashAnimation();
 		sounds = new Sounds();
 	}
@@ -88,7 +86,7 @@ public class GameView {
         drawInterfaceBar(UserInterface.getInstance().manaBar);
         batchUI.end();
         
-		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+//		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {
@@ -115,7 +113,6 @@ public class GameView {
 	
 	public void dispose() {
 		debugRenderer.dispose();
-		tiledMap.dispose();
 		batch.dispose();
 //		sounds.dispose();
 		UserInterface.getInstance().dispose();
@@ -127,7 +124,13 @@ public class GameView {
 		
 		animations.put("knight idle animation",  new Animation(new TextureRegion(new Texture("knight_idle_spritesheet.png")), 6, 0.5f));
 		animations.put("knight run animation", new Animation(new TextureRegion(new Texture("knight_run_spritesheet.png")), 6, 0.5f));
+		
 		animations.put("fireball animation", new Animation(new TextureRegion(new Texture("fireball_anim_spritesheet.png")), 4, 0.1f));
+		animations.put("slimeball animation", new Animation(new TextureRegion(new Texture("fireball_anim_spritesheet.png")), 4, 0.1f));
+
+		animations.put("goblin idle animation", new Animation(new TextureRegion(new Texture("goblin_idle_spritesheet.png")), 6, 0.5f));
+		animations.put("goblin run animation", new Animation(new TextureRegion(new Texture("goblin_run_spritesheet.png")), 6, 0.5f));
+		animations.put("flying creature flying animation", new Animation(new TextureRegion(new Texture("fly_anim_spritesheet.png")), 4, 0.5f));
 		animations.put("slime idle animation", new Animation(new TextureRegion(new Texture("slime_idle_spritesheet.png")),6, 0.5f));
 	}
 	
@@ -143,6 +146,11 @@ public class GameView {
 		{
 			animate(e, deltaTime);
 		}
+		
+		for(String s : animations.keySet())
+		{
+			animations.get(s).update(deltaTime);
+		}
 	}
 	
 	private void animate(Animated a, float deltaTime) {
@@ -157,7 +165,6 @@ public class GameView {
 			flip = -1;
 		
 		batch.draw(currentFrame, x - (w / 2 * flip), y - h / 2, 0, 0, w, h, flip, 1, 0);
-		animations.get(a.getCurrentAnimationString()).update(deltaTime);
 	}
 	
 	public OrthographicCamera getCamera() {
@@ -183,10 +190,6 @@ public class GameView {
 	}
 	
 	public void changeMap(TiledMap map) {
-		tiledMap.dispose();
-		tiledMap = map;
-		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
 	}
 }
 

@@ -24,8 +24,16 @@ public class GameController implements InputProcessor
 	
 	public void update(float deltaTime) {
 		GameModel.getInstance().update(deltaTime);
-		if(settingAttackPoint)
-		{
+		
+		if(GameModel.getInstance().getCharacter().getWeapon() instanceof MeleeWeapon && GameModel.getInstance().getCharacter().getWeapon().isAttacking()) {
+			float startingAngle = GameModel.getInstance().getCharacter().getWeapon().getAttackPoint().sub(GameModel.getInstance().getCharacter().getPosition()).angleDeg();
+			if(!view.getWeaponAnimation().isPlaying()) {
+				GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
+				view.getWeaponAnimation().play(startingAngle);
+			}
+		}
+		
+		if(settingAttackPoint) {
 			setWeaponAttackPoint();
 		}
 		view.render(deltaTime);
@@ -120,13 +128,6 @@ public class GameController implements InputProcessor
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		setWeaponAttackPoint();
 		settingAttackPoint = true;
-		if(GameModel.getInstance().getCharacter().getWeapon() instanceof MeleeWeapon) {
-			float startingAngle = GameModel.getInstance().getCharacter().getWeapon().getAttackPoint().sub(GameModel.getInstance().getCharacter().getPosition()).angleDeg();
-			if(!view.getWeaponAnimation().isPlaying()) {
-				GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
-				view.getWeaponAnimation().play(startingAngle);
-			}
-		}
 		GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
 //		view.getSounds().fire.play(0.1f);
 		return true;

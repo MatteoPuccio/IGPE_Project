@@ -2,11 +2,14 @@ package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.level.Room;
 
 public abstract class Enemy extends Entity {
-
-	public Enemy(Vector2 position, float radius) {
-		super(position, radius);
+	
+	protected Room home;
+	
+	public Enemy(Vector2 position, float radius, boolean isSensor) {
+		super(position, radius, isSensor);
 		body.setUserData("enemy");
 	}
 	
@@ -19,5 +22,8 @@ public abstract class Enemy extends Entity {
 			EnemiesHandler.getInstance().removeEnemy(this);
 		}
 	}
-
+	
+	public void update(float deltaTime) {
+		super.update(deltaTime);
+	}
 }

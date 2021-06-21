@@ -1,4 +1,4 @@
-package com.mygdx.game.model;
+ package com.mygdx.game.model;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -14,22 +14,44 @@ public class CollisionHandler implements ContactListener {
 			
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
-		
-		if(fb.getBody().getUserData() != null && fb.getBody().getUserData().equals("bullet") && 
-				(fa.getBody().getUserData() == null	|| !fa.getBody().getUserData().equals("character"))
-				&& !(fa.getBody().getUserData() == "void" && fb.getBody().getUserData() == "bullet"))
-		{
-			GameModel.getInstance().addBodyToDispose(fb.getBody());
-			BulletHandler.getInstance().removeBullet(fb.getBody());
-			if(fa.getBody().getUserData() != null && fa.getBody().getUserData().equals("enemy"))
-			{
-				EnemiesHandler.getInstance().hitEnemy(fa.getBody());
-			}
-		}
 
-		if (fb.getBody().getUserData().equals("character") && fa.getBody().getUserData().equals("gate")) {
-			GameModel.getInstance().toChangeMap = true;
-		}
+		if(fa.getBody().getUserData() != null && fb.getBody().getUserData() != null && fa.getBody().getUserData() instanceof String && fb.getBody().getUserData() instanceof String) {
+			
+			String userDataA = (String) fa.getBody().getUserData();
+			String userDataB = (String) fb.getBody().getUserData();
+			
+			switch (userDataB) {
+			case "character bullet":
+				if(!userDataA.equals("character") && !userDataA.equals("void"))
+				{
+					GameModel.getInstance().addBodyToDispose(fb.getBody());
+					BulletHandler.getInstance().removeBullet(fb.getBody());
+					if(userDataA.equals("enemy"))
+						EnemiesHandler.getInstance().hitEnemy(fa.getBody());
+					if(userDataA.equals("enemy bullet"))
+						BulletHandler.getInstance().removeBullet(fa.getBody());
+				}
+				break;
+			case "enemy bullet":
+				if(!userDataA.equals("enemy") && !userDataA.equals("void"))
+				{
+					GameModel.getInstance().addBodyToDispose(fb.getBody());
+					BulletHandler.getInstance().removeBullet(fb.getBody());
+					if(userDataA.equals("character"))
+						GameModel.getInstance().getCharacter().takeDamage(1);
+					if(userDataA.equals("character bullet"))
+						BulletHandler.getInstance().removeBullet(fa.getBody());
+				}
+				break;
+			default:
+				break;
+			}
+			
+		}		
+
+//		if (fb.getBody().getUserData().equals("character") && fa.getBody().getUserData().equals("gate")) {
+//			GameModel.getInstance().toChangeMap = true;
+//		}
 	}
 	
 	@Override

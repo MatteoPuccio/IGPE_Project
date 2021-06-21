@@ -2,6 +2,7 @@ package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Settings;
+import com.mygdx.game.model.weapons.FireMagic;
 import com.mygdx.game.model.weapons.Magic;
 import com.mygdx.game.model.weapons.MeleeWeapon;
 import com.mygdx.game.model.weapons.Weapon;
@@ -12,24 +13,22 @@ public class Character extends Entity{
 	private Magic magic;
 	private Weapon weapon;
 	
+	private float speed = 4;
+	
 	private boolean leftMove,rightMove,downMove,upMove;
-	
-	boolean flippedX;
-	
+		
 	public Character(Vector2 position, float radius) {
-		super(position, radius);
+		super(position, radius, false);
 		body.setUserData("character");
 		
-		magic = new Magic(1, 10, 0.2f, 10);
-		meleeWeapon = new MeleeWeapon(1,0.5f,0.5f);		
+		magic = new FireMagic(this);
+		meleeWeapon = new MeleeWeapon(1,0.5f,0.4f, this);		
 		weapon = magic;
-		
+				
 		leftMove = false;
 		rightMove = false;
 		downMove = false;
-		upMove = false;
-		
-		flippedX = false;
+		upMove = false;		
 	}
 	
 	private void move(float deltaTime) {
