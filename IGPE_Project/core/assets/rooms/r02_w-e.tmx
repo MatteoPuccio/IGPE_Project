@@ -245,7 +245,7 @@
    <polygon points="0,-8 16,-8 16,-248 32,-248 36,-244 44,-244 48,-248 304,-248 308,-244 316,-244 320,-248 336,-248 336,-232 352,-232 352,-196 336,-196 336,44 16,44 16,28 0,28"/>
   </object>
  </objectgroup>
- <objectgroup id="9" name="EntityCollisions">
+ <objectgroup id="9" name="Void">
   <object id="7" x="400" y="160">
    <polygon points="0,0 -272,0 -272,24 0,24"/>
   </object>
