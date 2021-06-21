@@ -12,13 +12,11 @@ public abstract class Weapon {
 	protected boolean attacking;
 	
 	protected int damage;
-	protected float range;
 	protected float cooldown;
 	protected float timePassed;
 	
-	public Weapon(int damage, float range, float cooldown, Entity owner) {
+	public Weapon(int damage, float cooldown, Entity owner) {
 		this.damage = damage;
-		this.range = range;
 		this.cooldown = cooldown;
 		this.owner = owner;
 		
@@ -33,10 +31,6 @@ public abstract class Weapon {
 		return damage;
 	}
 	
-	public float getRange() {
-		return range;
-	}
-
 	public float getCooldown() {
 		return cooldown;
 	}

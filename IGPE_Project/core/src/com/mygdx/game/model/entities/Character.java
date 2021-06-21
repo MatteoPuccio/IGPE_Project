@@ -1,8 +1,9 @@
 package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
+
 import com.mygdx.game.Settings;
-import com.mygdx.game.model.weapons.FireMagic;
+import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
 import com.mygdx.game.model.weapons.MeleeWeapon;
 import com.mygdx.game.model.weapons.Weapon;
@@ -16,19 +17,29 @@ public class Character extends Entity{
 	private float speed = 4;
 	
 	private boolean leftMove,rightMove,downMove,upMove;
+	
+	private boolean invincible;
+	
+	private float invincibilityTimer;
+	private float invincibilityElapsed;
 		
 	public Character(Vector2 position, float radius) {
-		super(position, radius, false);
+		super(position, radius, false, 20);
 		body.setUserData("character");
 		
-		magic = new FireMagic(this);
-		meleeWeapon = new MeleeWeapon(1,0.5f,0.4f, this);		
+		magic = new LightningMagic(this);
+		meleeWeapon = new MeleeWeapon(1, 1f,0.4f, this);		
 		weapon = magic;
 				
 		leftMove = false;
 		rightMove = false;
 		downMove = false;
 		upMove = false;		
+		
+		invincible = false;
+		
+		invincibilityTimer = 1.5f;
+		invincibilityElapsed = 0;
 	}
 	
 	private void move(float deltaTime) {
@@ -79,14 +90,27 @@ public class Character extends Entity{
 
 	public void update(float deltaTime) 
 	{
+		super.update(deltaTime);
 		move(deltaTime);
-		if(weapon.isAttacking())
-			weapon.attack(deltaTime);
-		magic.rechargeMana(deltaTime);
+		weapon.attack(deltaTime);
+		if(invincible) {
+			invincibilityElapsed += deltaTime;
+			if(invincibilityElapsed >= invincibilityTimer) {
+				invincibilityElapsed = 0;
+				invincible = false;
+			}
+		}
 	}
 
 	@Override
-	public void takeDamage(float damage) {}
+	public void takeDamage(float damage) {
+		if(!invincible) {
+			health -= damage;
+			invincible = true;
+			if(health <= 0)
+				System.exit(0);
+		}
+	}
 
 	public void setWeapon(int i) {
 		switch(i)
@@ -106,10 +130,16 @@ public class Character extends Entity{
 	}
 	
 	public String getCurrentAnimationString() {
-		if(direction.x == 0 && direction.y == 0)
+		if(direction.x == 0 && direction.y == 0) {
+			if(invincible)
+				return "knight invincible idle animation";
 			return "knight idle animation";
-		else
+		}
+		else {
+			if(invincible)
+				return "knight invincible run animation";
 			return "knight run animation";
+		}
 	}
 	
 	public boolean isFlipped() {
@@ -129,6 +159,11 @@ public class Character extends Entity{
 	@Override
 	public float getAnimationHeigth() {
 		return radius;
+	}
+
+	@Override
+	public float getRotation() {
+		return 0;
 	}
 	
 	

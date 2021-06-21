@@ -8,8 +8,8 @@ public abstract class Enemy extends Entity {
 	
 	protected Room home;
 	
-	public Enemy(Vector2 position, float radius, boolean isSensor) {
-		super(position, radius, isSensor);
+	public Enemy(Vector2 position, float radius, boolean isSensor, int manaPool) {
+		super(position, radius, isSensor, manaPool);
 		body.setUserData("enemy");
 	}
 	

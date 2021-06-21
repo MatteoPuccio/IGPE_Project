@@ -32,11 +32,11 @@ public class EnemiesHandler {
 		enemies.removeValue(enemy, true);
 	}
 	
-	public void hitEnemy(Body enemyBody) {
+	public void hitEnemy(Body enemyBody, int damage) {
 		for(int i = 0; i < enemies.size; ++i)
 			if(enemies.get(i).getBody().equals(enemyBody))
 			{
-				enemies.get(i).takeDamage(1);
+				enemies.get(i).takeDamage(damage);
 				return;
 			}
 	}

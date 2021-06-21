@@ -122,20 +122,22 @@ public class GameView {
 	private void initAnimations() {
 		animations = new HashMap<String, Animation>();
 		
-		animations.put("knight idle animation",  new Animation(new TextureRegion(new Texture("knight_idle_spritesheet.png")), 6, 0.5f));
-		animations.put("knight run animation", new Animation(new TextureRegion(new Texture("knight_run_spritesheet.png")), 6, 0.5f));
+		animations.put("knight idle animation",  new Animation(new TextureRegion(new Texture("animations/knight_idle_spritesheet.png")), 6, 0.5f));
+		animations.put("knight run animation", new Animation(new TextureRegion(new Texture("animations/knight_run_spritesheet.png")), 6, 0.5f));
+		animations.put("knight invincible idle animation", new Animation(new TextureRegion(new Texture("animations/knight_invincible_idle_spritesheet.png")), 12, 0.25f));
+		animations.put("knight invincible run animation", new Animation(new TextureRegion(new Texture("animations/knight_invincible_run_spritesheet.png")), 12, 0.25f));
 		
-		animations.put("fireball animation", new Animation(new TextureRegion(new Texture("fireball_anim_spritesheet.png")), 4, 0.1f));
-		animations.put("slimeball animation", new Animation(new TextureRegion(new Texture("fireball_anim_spritesheet.png")), 4, 0.1f));
+		animations.put("fireball animation", new Animation(new TextureRegion(new Texture("animations/fireball_anim_spritesheet.png")), 4, 0.2f));
+		animations.put("slimeball animation", new Animation(new TextureRegion(new Texture("animations/slimeball_anim_spritesheet.png")), 4, 0.2f));
+		animations.put("lightningbolt animation", new Animation(new TextureRegion(new Texture("animations/lightningbolt_anim_spritesheet.png")), 4, 0.1f));
 
-		animations.put("goblin idle animation", new Animation(new TextureRegion(new Texture("goblin_idle_spritesheet.png")), 6, 0.5f));
-		animations.put("goblin run animation", new Animation(new TextureRegion(new Texture("goblin_run_spritesheet.png")), 6, 0.5f));
-		animations.put("flying creature flying animation", new Animation(new TextureRegion(new Texture("fly_anim_spritesheet.png")), 4, 0.5f));
-		animations.put("slime idle animation", new Animation(new TextureRegion(new Texture("slime_idle_spritesheet.png")),6, 0.5f));
+		animations.put("goblin idle animation", new Animation(new TextureRegion(new Texture("animations/goblin_idle_spritesheet.png")), 6, 0.5f));
+		animations.put("goblin run animation", new Animation(new TextureRegion(new Texture("animations/goblin_run_spritesheet.png")), 6, 0.5f));
+		animations.put("flying creature flying animation", new Animation(new TextureRegion(new Texture("animations/fly_anim_spritesheet.png")), 4, 0.5f));
+		animations.put("slime idle animation", new Animation(new TextureRegion(new Texture("animations/slime_idle_spritesheet.png")),6, 0.5f));
 	}
 	
 	private void updateAnimations(float deltaTime) {
-		animate(GameModel.getInstance().getCharacter(), deltaTime);
 		
 		for(Bullet b : BulletHandler.getInstance().getBullets())
 		{
@@ -151,6 +153,8 @@ public class GameView {
 		{
 			animations.get(s).update(deltaTime);
 		}
+		
+		animate(GameModel.getInstance().getCharacter(), deltaTime);
 	}
 	
 	private void animate(Animated a, float deltaTime) {
@@ -164,7 +168,7 @@ public class GameView {
 		if(a.isFlipped())
 			flip = -1;
 		
-		batch.draw(currentFrame, x - (w / 2 * flip), y - h / 2, 0, 0, w, h, flip, 1, 0);
+		batch.draw(currentFrame, x - (w / 2 * flip), y - h / 2, 0, 0, w, h, flip, 1, a.getRotation());
 	}
 	
 	public OrthographicCamera getCamera() {

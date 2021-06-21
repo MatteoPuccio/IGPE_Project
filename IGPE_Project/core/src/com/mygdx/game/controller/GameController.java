@@ -23,6 +23,11 @@ public class GameController implements InputProcessor
 	}
 	
 	public void update(float deltaTime) {
+		
+		if(settingAttackPoint) {
+			setWeaponAttackPoint();
+		}
+		
 		GameModel.getInstance().update(deltaTime);
 		
 		if(GameModel.getInstance().getCharacter().getWeapon() instanceof MeleeWeapon && GameModel.getInstance().getCharacter().getWeapon().isAttacking()) {
@@ -33,14 +38,7 @@ public class GameController implements InputProcessor
 			}
 		}
 		
-		if(settingAttackPoint) {
-			setWeaponAttackPoint();
-		}
 		view.render(deltaTime);
-		if (GameModel.getInstance().changeMap()) {
-//			TODO: automatizzare il processo per ogni livello
-			view.changeMap(new TmxMapLoader().load("rooms/r02_w-e.tmx"));
-		}
 	}
 	
 	public void dispose() {
@@ -126,7 +124,7 @@ public class GameController implements InputProcessor
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		setWeaponAttackPoint();
+//		setWeaponAttackPoint();
 		settingAttackPoint = true;
 		GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
 //		view.getSounds().fire.play(0.1f);

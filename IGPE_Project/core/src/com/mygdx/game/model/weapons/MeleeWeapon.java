@@ -5,26 +5,40 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.entities.EnemiesHandler;
+import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.entities.Entity;
 
 public class MeleeWeapon extends Weapon {
 	
+	protected float range;
+	
 	public MeleeWeapon(int damage, float range, float cooldown, Entity owner) {
-		super(damage,range, cooldown, owner);
+		super(damage, cooldown, owner);
+		this.range = range;
 	}
 
 	@Override
 	public void attack(float deltaTime) {
 		timePassed += deltaTime;
 		
-		if(timePassed >= cooldown) {
+		if(timePassed >= cooldown && attacking) {
 			timePassed = 0;
-			Vector2 weaponPosition = GameModel.getInstance().getCharacter().getWeapon().getAttackPoint().sub(GameModel.getInstance().getCharacter().getPosition()).nor();
-			for(Entity e : EnemiesHandler.getInstance().getEnemies()) {
-				Circle c1 = new Circle(e.getPosition(), e.getRadius());
-				Circle c2 = new Circle(GameModel.getInstance().getCharacter().getPosition().mulAdd(weaponPosition, range), range);
-				if(Intersector.overlaps(c1, c2)) {
-					e.takeDamage(damage);
+			Vector2 weaponPosition = new Vector2(attackPoint);
+			weaponPosition.sub(GameModel.getInstance().getCharacter().getPosition()).nor();
+			
+			if(owner instanceof Enemy) {
+				Circle c1 = new Circle(GameModel.getInstance().getCharacter().getPosition(), GameModel.getInstance().getCharacter().getRadius());
+				Circle c2 = new Circle(owner.getPosition().mulAdd(weaponPosition, range), range);
+				if(Intersector.overlaps(c1, c2))
+					GameModel.getInstance().getCharacter().takeDamage(damage);
+			}
+			else {
+				for(Enemy e : EnemiesHandler.getInstance().getEnemies()) {
+					Circle c1 = new Circle(e.getPosition(), e.getRadius());
+					Circle c2 = new Circle(owner.getPosition().mulAdd(weaponPosition, range), range);
+					if(Intersector.overlaps(c1, c2)) {
+						e.takeDamage(damage);
+					}
 				}
 			}
 		}

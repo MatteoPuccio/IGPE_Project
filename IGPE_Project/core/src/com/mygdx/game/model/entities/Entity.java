@@ -14,6 +14,7 @@ import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.pathfinding.SteeringUtils;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.MassData;
 
 public abstract class Entity implements Animated, Steerable<Vector2> {
 	
@@ -21,6 +22,8 @@ public abstract class Entity implements Animated, Steerable<Vector2> {
 	protected int health = 5;
 	protected Body body;
 	protected float radius;
+	protected int manaPool;
+	protected float currentMana;
 	
 	protected boolean flippedX;
 	
@@ -31,14 +34,17 @@ public abstract class Entity implements Animated, Steerable<Vector2> {
 	
 	protected boolean tagged;
 	
-	public Entity(Vector2 position, float radius, boolean isSensor) {
+	public Entity(Vector2 position, float radius, boolean isSensor, int manaPool) {
 		this.radius = radius;
+		this.manaPool = manaPool;
+		currentMana = manaPool;
+		
 		body = createBody(position, isSensor);
 		direction = new Vector2(0,0);
 		flippedX = false;
 		
 		maxLinearSpeed = 10;
-		maxLinearAcceleration = 400;
+		maxLinearAcceleration = 200;
 		
 		tagged = false;
 		
@@ -82,43 +88,49 @@ public abstract class Entity implements Animated, Steerable<Vector2> {
 		return radius;
 	}
 	
+	public float getCurrentMana() {
+		return currentMana;
+	}
+	
+	public void useMana(float usedMana) {
+		currentMana -= usedMana;
+	}
+	
 	public void update(float deltaTime) {
 		if(behavior != null) {
 			behavior.calculateSteering(steerOutput);
 			applySteering(deltaTime);
 		}
+		
+		rechargeMana(deltaTime);
 	}
 	
 	protected void applySteering(float deltaTime) {
-//		Vector2 position = body.getPosition();
-//		position.mulAdd(body.getLinearVelocity(), deltaTime);
-//		body.setTransform(position, body.getAngle());
-//		body.setLinearVelocity(body.getLinearVelocity().mulAdd(steerOutput.linear, deltaTime).limit(maxLinearSpeed));
 		
 		if(!steerOutput.linear.isZero()) {
-		Vector2 force = steerOutput.linear.scl(deltaTime);
-		body.applyForceToCenter(force, true);
-
-		Vector2 velocity = body.getLinearVelocity();
-		float currentSpeedSquare = velocity.len2();
-		if(currentSpeedSquare > maxLinearSpeed * maxLinearSpeed)
-			body.setLinearVelocity(velocity.scl(maxLinearSpeed / (float) Math.sqrt(currentSpeedSquare)));
+			Vector2 force = steerOutput.linear.scl(deltaTime);
+			body.applyForceToCenter(force, true);
+	
+			Vector2 velocity = body.getLinearVelocity();
+			float currentSpeedSquare = velocity.len2();
+			if(currentSpeedSquare > maxLinearSpeed * maxLinearSpeed)
+				body.setLinearVelocity(velocity.scl(maxLinearSpeed / (float) Math.sqrt(currentSpeedSquare)));
+		}
 	}
+	
+	private void rechargeMana(float deltaTime) {
+		if(currentMana + deltaTime <= manaPool)
+			currentMana += deltaTime;
+		else
+			currentMana = manaPool;
+	}
+	
+	public float getManaPercentage() {
+		return (float)(currentMana/manaPool);
 	}
 	
 	public abstract void takeDamage(float damage);
-	
-	@Override
-	public float getOrientation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-	@Override
-	public void setOrientation(float orientation) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public float vectorToAngle(Vector2 vector) {
@@ -128,24 +140,6 @@ public abstract class Entity implements Animated, Steerable<Vector2> {
 	@Override
 	public Vector2 angleToVector(Vector2 outVector, float angle) {
 		return SteeringUtils.angleToVector(outVector, angle);
-	}
-
-	@Override
-	public Location<Vector2> newLocation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public float getZeroLinearSpeedThreshold() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setZeroLinearSpeedThreshold(float value) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -169,6 +163,43 @@ public abstract class Entity implements Animated, Steerable<Vector2> {
 	}
 
 	@Override
+	public Vector2 getLinearVelocity() {
+		return body.getLinearVelocity();
+	}
+
+	@Override
+	public float getBoundingRadius() {
+		return radius;
+	}
+
+	@Override
+	public boolean isTagged() {
+		return tagged;
+	}
+
+	@Override
+	public void setTagged(boolean tagged) {
+		this.tagged = tagged;
+	}
+	
+	@Override
+	public float getOrientation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setOrientation(float orientation) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public float getAngularVelocity() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
 	public float getMaxAngularSpeed() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -191,31 +222,22 @@ public abstract class Entity implements Animated, Steerable<Vector2> {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
-	public Vector2 getLinearVelocity() {
-		return body.getLinearVelocity();
+	public Location<Vector2> newLocation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public float getAngularVelocity() {
+	public float getZeroLinearSpeedThreshold() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public float getBoundingRadius() {
-		return radius;
+	public void setZeroLinearSpeedThreshold(float value) {
+		// TODO Auto-generated method stub
+		
 	}
-
-	@Override
-	public boolean isTagged() {
-		return tagged;
-	}
-
-	@Override
-	public void setTagged(boolean tagged) {
-		this.tagged = tagged;
-	}
-	
 }

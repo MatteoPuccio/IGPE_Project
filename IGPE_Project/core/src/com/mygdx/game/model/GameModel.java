@@ -7,17 +7,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.entities.EnemiesHandler;
-import com.mygdx.game.model.entities.FlyingCreature;
-import com.mygdx.game.model.entities.Goblin;
-import com.mygdx.game.model.entities.Slime;
-import com.mygdx.game.model.level.RandomRoomGenerator;
 import com.mygdx.game.model.level.Room1;
+import com.mygdx.game.model.level.Room2;
 import com.mygdx.game.model.level.RoomHandler;
 
 public class GameModel {
 	
 	private Character character;
-	
 	
 	private static GameModel gameModel = null;
 	private World world;
@@ -38,34 +34,14 @@ public class GameModel {
 	}
 	
 	public void init() {
+		character = new Character(new Vector2(8.5f,7.5f), 0.4f);
 		createRooms();
-		initEntities();
-	}
-	
-	private void initEntities() {
-		character = new Character(new Vector2(7.5f,7.5f), 0.4f);
-		
-//		Goblin goblin1 = new Goblin(new Vector2(6.5f,6.5f));
-//		Goblin goblin2 = new Goblin(new Vector2(12.5f,7.5f));
-//		Goblin goblin3 = new Goblin(new Vector2(15.5f,6.5f));
-//		
-//		FlyingCreature flyingCreature1 = new FlyingCreature(new Vector2(8,8));
-//		FlyingCreature flyingCreature2 = new FlyingCreature(new Vector2(10,12));
-//
-//		EnemiesHandler.getInstance().addEnemy(goblin1);
-//		EnemiesHandler.getInstance().addEnemy(goblin2);
-//		EnemiesHandler.getInstance().addEnemy(goblin3);
-//		
-//		EnemiesHandler.getInstance().addEnemy(flyingCreature1);
-//		EnemiesHandler.getInstance().addEnemy(flyingCreature2);
-		
-		Slime slime1 = new Slime(new Vector2(6,6));
-		EnemiesHandler.getInstance().addEnemy(slime1);
 	}
 	
 	private void createRooms() {
 		//RandomRoomGenerator.getInstance().createRooms();
 		RoomHandler.getInstance().setCurrentRoom(new Room1());
+		RoomHandler.getInstance().getCurrentRoom().init();
 	}
 	
 	public Character getCharacter() {

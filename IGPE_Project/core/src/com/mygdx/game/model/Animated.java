@@ -13,4 +13,6 @@ public interface Animated {
 	public float getAnimationWidth();
 	
 	public float getAnimationHeigth();
+	
+	public float getRotation();
 }

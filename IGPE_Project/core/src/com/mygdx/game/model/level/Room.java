@@ -107,4 +107,8 @@ public class Room {
 	public Connection[] getConnections() {
 		return connections;
 	}
+	
+	public void init() { 
+		
+	}
 }

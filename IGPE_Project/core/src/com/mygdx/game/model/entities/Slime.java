@@ -9,7 +9,8 @@ public class Slime extends Enemy {
 	private SlimeMagic slimeMagic;
 	
 	public Slime(Vector2 position) {
-		super(position, 0.4f, false);
+		super(position, 0.4f, false, 100);
+		body.setUserData("slime");
 		
 		slimeMagic = new SlimeMagic(this);
 		slimeMagic.setAttacking(true);
@@ -21,7 +22,6 @@ public class Slime extends Enemy {
 		
 		slimeMagic.setAttackPoint(GameModel.getInstance().getCharacter().getPosition());
 		slimeMagic.attack(deltaTime);
-		slimeMagic.rechargeMana(deltaTime);
 	}
 
 	@Override
@@ -47,6 +47,11 @@ public class Slime extends Enemy {
 	@Override
 	public float getAnimationHeigth() {
 		return radius;
+	}
+
+	@Override
+	public float getRotation() {
+		return 0;
 	}
 
 }

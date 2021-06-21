@@ -8,15 +8,19 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.pathfinding.SteeringUtils;
 
 public class Bullet implements Animated {
 	
-	Magic parent;
+	private Magic parent;
 	
 	private Body body;
 	
+	private Vector2 direction;
+	
 	Bullet(Magic parent, Vector2 position, Vector2 direction, String userData) {
 		this.parent = parent;
+		this.direction = direction;
 		
 		BodyDef bDef = new BodyDef();
 		bDef.type = BodyType.DynamicBody;
@@ -49,6 +53,10 @@ public class Bullet implements Animated {
 		return parent.getBulletSize();
 	}
 	
+	public Magic getParent() {
+		return parent;
+	}
+	
 	@Override
 	public String getCurrentAnimationString() {
 		return parent.getCurrentAnimationString();
@@ -72,6 +80,11 @@ public class Bullet implements Animated {
 	@Override
 	public float getAnimationHeigth() {
 		return getSize();
+	}
+
+	@Override
+	public float getRotation() {
+		return (float) Math.toDegrees(SteeringUtils.vectorToAngle(direction));
 	}
 	
 	

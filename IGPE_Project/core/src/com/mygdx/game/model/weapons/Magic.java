@@ -8,29 +8,29 @@ import com.mygdx.game.model.entities.Entity;
 
 public abstract class Magic extends Weapon implements Animated {
 
-	protected float speed;
-	protected float bulletSize;
+	private float speed;
+	private float bulletSize;
 	private float timeSinceLastAttack;
-	private static int manaCapacity = 10;
-	protected float currentMana;
+	 
+	private int bulletCost;
 	
-	public Magic(int damage, float range, float cooldown, float speed, float bulletSize, Entity owner) {
-		super(damage, range, cooldown, owner);
+	public Magic(int damage, float cooldown, float speed, float bulletSize, int bulletCost, Entity owner) {
+		super(damage, cooldown, owner);
 		this.speed = speed;
 		this.bulletSize = bulletSize;
+		this.bulletCost = bulletCost;
 		
-		currentMana = (float)manaCapacity;
 		timeSinceLastAttack = cooldown;
 	}
 
 	@Override
 	public void attack(float deltaTime) {
 		timeSinceLastAttack += deltaTime;
-		if(attacking && currentMana > 1.0f)
+		if(attacking && owner.getCurrentMana() > bulletCost)
 		{
 			if(timeSinceLastAttack >= cooldown)
 			{
-				currentMana--;
+				owner.useMana(bulletCost);
 				BulletHandler.getInstance().addBullet(createBullet());
 				timeSinceLastAttack = 0;
 			}
@@ -53,17 +53,6 @@ public abstract class Magic extends Weapon implements Animated {
 	
 	public float getBulletSize() {
 		return bulletSize;
-	}
-	
-	public void rechargeMana(float deltaTime) {
-		if(currentMana + deltaTime <= (float)(manaCapacity))
-			currentMana += deltaTime;
-		else
-			currentMana = manaCapacity;
-	}
-	
-	public float getPercentage() {
-		return (float)(currentMana/manaCapacity);
 	}
 
 }
