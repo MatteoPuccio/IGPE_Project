@@ -6,24 +6,40 @@ import com.mygdx.game.model.BulletHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.entities.Entity;
 
-public abstract class Magic extends Weapon implements Animated {
+public abstract class Magic implements Animated {
 
 	private float speed;
 	private float bulletSize;
 	private float timeSinceLastAttack;
+	
+	protected Entity owner;
+	
+	protected Vector2 attackPoint;
+	
+	protected boolean attacking;
+	
+	protected int damage;
+	protected float cooldown;
+	protected float timePassed;
 	 
 	private int bulletCost;
 	
 	public Magic(int damage, float cooldown, float speed, float bulletSize, int bulletCost, Entity owner) {
-		super(damage, cooldown, owner);
 		this.speed = speed;
 		this.bulletSize = bulletSize;
 		this.bulletCost = bulletCost;
 		
+		this.damage = damage;
+		this.cooldown = cooldown;
+		this.owner = owner;
+		
+		this.timePassed = cooldown;
+		
+		attacking = false;
+		
 		timeSinceLastAttack = cooldown;
 	}
 
-	@Override
 	public void attack(float deltaTime) {
 		timeSinceLastAttack += deltaTime;
 		if(attacking && owner.getCurrentMana() > bulletCost)
@@ -55,6 +71,30 @@ public abstract class Magic extends Weapon implements Animated {
 	
 	public float getBulletSize() {
 		return bulletSize;
+	}
+	
+	public int getDamage() {
+		return damage;
+	}
+	
+	public float getCooldown() {
+		return cooldown;
+	}
+	
+	public void setAttackPoint(Vector2 attackPoint) {
+		this.attackPoint = attackPoint;
+	}
+	
+	public Vector2 getAttackPoint() {
+		return attackPoint;
+	}
+	
+	public void setAttacking(boolean attacking) {
+		this.attacking = attacking;
+	}
+	
+	public boolean isAttacking() {
+		return attacking;
 	}
 
 }

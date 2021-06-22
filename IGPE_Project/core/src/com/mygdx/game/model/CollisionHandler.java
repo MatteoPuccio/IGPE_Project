@@ -28,7 +28,7 @@ public class CollisionHandler implements ContactListener {
 					if(userDataA.equals("slime") || userDataA.equals("goblin") || userDataA.equals("flying creature")) {
 						for(Bullet b : BulletHandler.getInstance().getBullets()) {
 							if(b.getBody() == fb.getBody()) {
-								EnemiesHandler.getInstance().hitEnemy(fa.getBody(), b.getParent().getDamage());
+								EnemiesHandler.hitEnemy(fa.getBody(), b.getParent().getDamage());
 							}
 						}
 					}

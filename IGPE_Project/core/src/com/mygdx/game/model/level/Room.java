@@ -6,6 +6,7 @@ import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.model.entities.Enemy;
 
 public class Room {
 	protected TiledMap tileMap;
@@ -17,12 +18,16 @@ public class Room {
 	private Random r;
 	private boolean deadend;
 	
+	private Array<Enemy> enemies;
+	
 	public Room() {
 		roomIndex = rooms;
 		rooms++;
 		connections = new Connection[4];
 		Connection c = new Connection(this);
 		connections[c.getStartingPoint()] = c;
+		
+		enemies = new Array<Enemy>();
 	}
 	
 	public Room(Connection connection,boolean deadend) {
@@ -106,6 +111,14 @@ public class Room {
 	
 	public Connection[] getConnections() {
 		return connections;
+	}
+	
+	public Array<Enemy> getEnemies() {
+		return enemies;
+	}
+	
+	public void addEnemy(Enemy enemy) {
+		enemies.add(enemy);
 	}
 	
 	public void init() { 

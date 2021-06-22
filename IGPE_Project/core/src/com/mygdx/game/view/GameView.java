@@ -148,7 +148,7 @@ public class GameView {
 		particleEffects = new ObjectMap<String, ParticleEffect>();
 		
 		particleEffects.put("enemy death explosion", new ParticleEffect(new TextureRegion(new Texture("animations/particles/enemy_afterdead_explosion_anim_spritesheet.png")), 4, 0.25f));
-		particleEffects.put("hit", new ParticleEffect(new TextureRegion(new Texture("animations/particles/hit_effect_anim_spritesheet.png")), 3, 0.25f));
+		particleEffects.put("hit", new ParticleEffect(new TextureRegion(new Texture("animations/particles/hit_effect_anim_spritesheet.png")), 3, 0.15f));
 		
 		activeParticleEffects = new Array<ParticleEffect>();
 	}
@@ -160,7 +160,7 @@ public class GameView {
 			animate(b, deltaTime);
 		}
 		
-		for(Enemy e : EnemiesHandler.getInstance().getEnemies())
+		for(Enemy e : EnemiesHandler.getEnemies())
 		{
 			animate(e, deltaTime);
 		}

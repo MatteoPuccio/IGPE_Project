@@ -84,7 +84,7 @@ public class GameModel {
 	public void update(float deltaTime) {
 		world.step(deltaTime, 6, 2);
 		character.update(deltaTime);
-		EnemiesHandler.getInstance().update(deltaTime);
+		EnemiesHandler.update(deltaTime);
 		
 		disposeBodies();
 	}

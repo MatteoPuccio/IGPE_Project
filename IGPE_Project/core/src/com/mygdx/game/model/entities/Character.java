@@ -8,8 +8,6 @@ import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.weapons.FireMagic;
 import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
-import com.mygdx.game.model.weapons.MeleeWeapon;
-import com.mygdx.game.model.weapons.Weapon;
 
 public class Character extends Entity{
 	

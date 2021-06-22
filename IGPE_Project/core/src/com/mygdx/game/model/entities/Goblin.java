@@ -2,16 +2,18 @@ package com.mygdx.game.model.entities;
 
 import java.util.LinkedList;
 
+
 import java.util.List;
 
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.finders.GridFinderOptions;
 
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ai.AStarUtils;
 import com.mygdx.game.model.level.RoomHandler;
-import com.mygdx.game.model.weapons.MeleeWeapon;
 
 public class Goblin extends Enemy {
 
@@ -25,7 +27,8 @@ public class Goblin extends Enemy {
 	
 	private boolean isRunning;
 	
-	private MeleeWeapon goblinDagger;
+	private float attackCooldown;
+	private float attackTimePassed;
 	
 	public Goblin(Vector2 position) {
 		super(position, 0.3f, 0);
@@ -41,11 +44,14 @@ public class Goblin extends Enemy {
 		
 		isRunning = false;
 		
-		goblinDagger = new MeleeWeapon(1, 1f, 1, this);
+		attackCooldown = 1;
+		attackTimePassed = 0;
 	}
 	
 	public void update(float deltaTime) {
 		super.update(deltaTime);
+		
+		attackTimePassed += deltaTime;
 		
 		if(timePassed == 0) {
 			
@@ -54,17 +60,16 @@ public class Goblin extends Enemy {
 			if(tempPath == null || tempPath.size() == 0) {
 				isRunning = false;
 				
-				goblinDagger.setAttacking(true);
-				goblinDagger.setAttackPoint(GameModel.getInstance().getCharacter().getPosition());
-				goblinDagger.attack(deltaTime);
+				if(attackTimePassed >= attackCooldown) {
+					GameModel.getInstance().getCharacter().takeDamage(1);
+				}
 				
 				return;
 			}
 			
-			goblinDagger.setAttacking(false);
 			path = new LinkedList<GridCell>(tempPath);
 			Vector2 tempPos = new Vector2(path.get(0).x + 0.5f, path.get(0).y + 0.5f);
-			if(EnemiesHandler.getInstance().isPositionOccupied(tempPos)) {
+			if(EnemiesHandler.isPositionOccupied(tempPos)) {
 				isRunning = false;
 			}
 			else {

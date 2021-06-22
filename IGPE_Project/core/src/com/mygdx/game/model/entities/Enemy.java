@@ -20,7 +20,7 @@ public abstract class Enemy extends Entity {
 		if(health <= 0) {
 			ParticleHandler.getInstance().addParticle(getPosition(), "enemy death explosion", radius, radius);
 			GameModel.getInstance().addBodyToDispose(body);
-			EnemiesHandler.getInstance().removeEnemy(this);
+			EnemiesHandler.removeEnemy(this);
 		}
 		else {
 			ParticleHandler.getInstance().addParticle(getPosition(), "hit", radius, radius);
