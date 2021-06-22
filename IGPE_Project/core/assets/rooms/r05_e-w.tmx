@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="21">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="22">
  <tileset firstgid="1" source="0x72_16x16DungeonTileset.v4.tsx"/>
  <tileset firstgid="257" source="0x72_16x16DungeonTileset_walls.v1.tsx"/>
  <tileset firstgid="513" source="NavigationTileSet.tsx"/>
@@ -189,8 +189,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,2147483779,2147483779,2147483779,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2147484004,3758096740,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,103,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,119,0,0,0,0,0,0,0,0,0,0,0,0,0,2147484004,3758096740,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,2147484004,2147484003,2147484002,0,0,0,0,0,0,0,0,0,2147484020,2147484018,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,2147484020,0,2147484018,0,0,0,0,0,0,0,0,0,536871268,1073742180,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,536871268,1073742179,3758096738,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -279,6 +279,12 @@
   <object id="19" x="416" y="148" rotation="180">
    <polygon points="0,-194.933 16,-194.933 16,44 32,44 36,40 44,40 48,44 304,44 308,40 316,40 320,44 336,44 336,29.067 352,29.067 352,-6.933 336,-6.933 336,-246.933 16,-246.933 16,-230.933 0,-230.933"/>
   </object>
+  <object id="20" x="96" y="376">
+   <polygon points="0,0 16,0 16,-8 0,-8 0,0"/>
+  </object>
+  <object id="21" x="128" y="248">
+   <polygon points="0,0 0,-24 16,-24 16,0"/>
+  </object>
  </objectgroup>
  <objectgroup id="9" name="Void">
   <object id="14" x="80" y="184" rotation="180">
@@ -295,9 +301,6 @@
   </object>
   <object id="18" x="304" y="287.546" rotation="180">
    <polygon points="0,-108 0,0 48,0 48,-108"/>
-  </object>
-  <object id="20" x="96" y="376">
-   <polygon points="0,0 16,0 16,-8 0,-8 0,0"/>
   </object>
  </objectgroup>
  <objectgroup id="10" name="Gates">
