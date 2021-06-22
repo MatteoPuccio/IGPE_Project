@@ -21,6 +21,13 @@ public class Animation {
 		frame = 0;
 	}
 	
+	public Animation(Array<TextureRegion> frames, int frameCount, float cycleTime) {
+		this.frames = frames;
+		this.frameCount = frameCount;
+		maxFrameTime = cycleTime / frameCount;
+		frame = 0;
+	}
+	
 	public void update(float deltaTime) {
 		currentFrameTime += deltaTime;
 		

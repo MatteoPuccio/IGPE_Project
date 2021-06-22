@@ -3,6 +3,7 @@ package com.mygdx.game.view;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Settings;
@@ -30,7 +32,7 @@ import com.mygdx.game.view.audio.Sounds;
 import com.mygdx.game.view.ui.InterfaceBar;
 import com.mygdx.game.view.ui.UserInterface;
 
-public class GameView {
+public class GameView implements Screen{
 
 	private OrthographicCamera camera;
 	private Box2DDebugRenderer debugRenderer;
@@ -40,11 +42,13 @@ public class GameView {
 	
 	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
+	private Stage stage;
 	
 	private HashMap<String, Animation> animations;
-	float angle = 0;
+
 	private Sounds sounds;
 	private WeaponSlashAnimation weaponAnimation;
+	
 	public GameView() {	
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -62,8 +66,11 @@ public class GameView {
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
 		weaponAnimation = new WeaponSlashAnimation();
 		sounds = new Sounds();
+		
+		stage = new Stage(gamePort,batchUI);
 	}
 	
+	@Override
 	public void render(float deltaTime) {
 		updateCamera();
 		
@@ -75,8 +82,6 @@ public class GameView {
         
         UserInterface.getInstance().update();
         
-        
-        
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
 		updateAnimations(deltaTime);
@@ -86,9 +91,10 @@ public class GameView {
 		
 		batchUI.begin();
         drawInterfaceBar(UserInterface.getInstance().manaBar);
+        //
         batchUI.end();
         
-		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+		//debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {
@@ -109,6 +115,7 @@ public class GameView {
 		camera.update();
 	}
 	
+	@Override
 	public void resize(int width, int height) {
 		gamePort.update(width, height);
 	}
@@ -187,6 +194,28 @@ public class GameView {
 		tiledMap = map;
 		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
+	}
+
+	@Override
+	public void show() {
+		
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hide() {
+		
 	}
 }
 
