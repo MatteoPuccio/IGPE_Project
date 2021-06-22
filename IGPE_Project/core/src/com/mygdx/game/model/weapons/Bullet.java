@@ -20,11 +20,11 @@ public class Bullet implements Animated {
 	
 	Bullet(Magic parent, Vector2 position, Vector2 direction, String userData) {
 		this.parent = parent;
-		this.direction = direction;
+		this.direction = new Vector2(direction);
 		
 		BodyDef bDef = new BodyDef();
 		bDef.type = BodyType.DynamicBody;
-		bDef.bullet = true;
+//		bDef.bullet = true;
 		bDef.position.set(position);
 		body = GameModel.getInstance().getWorld().createBody(bDef);
 		
@@ -38,7 +38,7 @@ public class Bullet implements Animated {
 		
 		body.setUserData(userData);
 		circle.dispose();
-		body.setLinearVelocity(direction.scl(parent.getSpeed()));
+		body.setLinearVelocity(this.direction.scl(parent.getSpeed()));
 	}
 	
 	public Body getBody() {

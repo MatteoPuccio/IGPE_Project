@@ -3,6 +3,8 @@ package com.mygdx.game.model.entities;
 import com.badlogic.gdx.math.Vector2;
 
 import com.mygdx.game.Settings;
+import com.mygdx.game.model.BulletHandler;
+import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.weapons.FireMagic;
 import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
@@ -11,9 +13,9 @@ import com.mygdx.game.model.weapons.Weapon;
 
 public class Character extends Entity{
 	
-	private MeleeWeapon meleeWeapon;
-	private Magic magic;
-	private Weapon weapon;
+	private Magic firstMagic;
+	private Magic secondMagic;
+	private Magic currentMagic;
 	
 	private float speed = 4;
 	
@@ -28,10 +30,11 @@ public class Character extends Entity{
 		super(position, 0.4f, false, 20);
 		body.setUserData("character");
 		health = 10;
+		manaRechargeMultiplier = 2;
 		
-		magic = new FireMagic(this);
-		meleeWeapon = new MeleeWeapon(1, 1f,0.4f, this);		
-		weapon = magic;
+		firstMagic = new FireMagic(this);
+		secondMagic = new LightningMagic(this);		
+		currentMagic = firstMagic;
 				
 		leftMove = false;
 		rightMove = false;
@@ -86,15 +89,15 @@ public class Character extends Entity{
 		}
 	}
 	
-	public Weapon getWeapon() {
-		return weapon;
+	public Magic getCurrentMagic() {
+		return currentMagic;
 	}
 
 	public void update(float deltaTime) 
 	{
 		super.update(deltaTime);
 		move(deltaTime);
-		weapon.attack(deltaTime);
+		currentMagic.attack(deltaTime);
 		if(invincible) {
 			invincibilityElapsed += deltaTime;
 			if(invincibilityElapsed >= invincibilityTimer) {
@@ -109,6 +112,7 @@ public class Character extends Entity{
 		if(!invincible) {
 			health -= damage;
 			invincible = true;
+			ParticleHandler.getInstance().addParticle(getPosition(), "hit", radius, radius);
 			if(health <= 0)
 				System.exit(0);
 		}
@@ -118,17 +122,22 @@ public class Character extends Entity{
 		switch(i)
 		{
 		case 1:
-			weapon = magic;
+			currentMagic = firstMagic;
 			break;
 		case 2:
-			weapon = meleeWeapon;
+			if(secondMagic != null)
+				currentMagic = secondMagic;
 			break;
 		}
 		
 	}
 
-	public Magic getMagic() {
-		return magic;
+	public Magic getFirstMagic() {
+		return firstMagic;
+	}
+	
+	public Magic getSecondMagic() {
+		return secondMagic;
 	}
 	
 	public String getCurrentAnimationString() {

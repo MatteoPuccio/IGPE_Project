@@ -28,7 +28,7 @@ public class Goblin extends Enemy {
 	private MeleeWeapon goblinDagger;
 	
 	public Goblin(Vector2 position) {
-		super(position, 0.3f, true, 0);
+		super(position, 0.3f, 0);
 		body.setUserData("goblin");
 		
 		home = RoomHandler.getInstance().getCurrentRoom();

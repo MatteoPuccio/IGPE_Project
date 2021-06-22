@@ -19,7 +19,7 @@ public class Room1 extends Room {
 	public void init() {
 //		Goblin goblin1 = new Goblin(new Vector2(6.5f,6.5f));
 //		Goblin goblin2 = new Goblin(new Vector2(8.5f,6.5f));
-		
+//		
 		Slime slime = new Slime(new Vector2(6.5f, 6.5f));
 		
 		EnemiesHandler.getInstance().addEnemy(slime);

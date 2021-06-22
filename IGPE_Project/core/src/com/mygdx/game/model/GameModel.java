@@ -40,7 +40,7 @@ public class GameModel {
 	
 	private void createRooms() {
 		//RandomRoomGenerator.getInstance().createRooms();
-		RoomHandler.getInstance().setCurrentRoom(new Room2());
+		RoomHandler.getInstance().setCurrentRoom(new Room1());
 		RoomHandler.getInstance().getCurrentRoom().init();
 	}
 	

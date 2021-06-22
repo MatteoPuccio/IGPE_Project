@@ -7,7 +7,7 @@ import com.mygdx.game.model.GameModel;
 public class FlyingCreature extends Enemy {
 	
 	public FlyingCreature(Vector2 position) {
-		super(position, 0.6f, true, 0);
+		super(position, 0.6f, 0);
 		body.setUserData("flying creature");
 		
 		behavior = new Arrive<Vector2>(this, GameModel.getInstance().getCharacter())

@@ -11,18 +11,22 @@ import com.mygdx.game.model.entities.Entity;
 public class MeleeWeapon extends Weapon {
 	
 	protected float range;
+	protected boolean canAttack;
 	
 	public MeleeWeapon(int damage, float range, float cooldown, Entity owner) {
 		super(damage, cooldown, owner);
 		this.range = range;
+		canAttack = true;
 	}
 
 	@Override
 	public void attack(float deltaTime) {
 		timePassed += deltaTime;
+		canAttack = false;
 		
 		if(timePassed >= cooldown && attacking) {
 			timePassed = 0;
+			canAttack = true;
 			Vector2 weaponPosition = new Vector2(attackPoint);
 			weaponPosition.sub(GameModel.getInstance().getCharacter().getPosition()).nor();
 			
@@ -42,5 +46,9 @@ public class MeleeWeapon extends Weapon {
 				}
 			}
 		}
+	}
+	
+	public boolean canAttack() {
+		return canAttack;
 	}
 }

@@ -24,6 +24,7 @@ public abstract class Entity implements Animated, Steerable<Vector2> {
 	protected float radius;
 	protected int manaPool;
 	protected float currentMana;
+	protected float manaRechargeMultiplier;
 	
 	protected boolean flippedX;
 	
@@ -38,6 +39,7 @@ public abstract class Entity implements Animated, Steerable<Vector2> {
 		this.radius = radius;
 		this.manaPool = manaPool;
 		currentMana = manaPool;
+		manaRechargeMultiplier = 1;
 		
 		body = createBody(position, isSensor);
 		direction = new Vector2(0,0);
@@ -119,8 +121,8 @@ public abstract class Entity implements Animated, Steerable<Vector2> {
 	}
 	
 	private void rechargeMana(float deltaTime) {
-		if(currentMana + deltaTime <= manaPool)
-			currentMana += deltaTime;
+		if(currentMana + deltaTime * manaRechargeMultiplier <= manaPool)
+			currentMana += deltaTime * manaRechargeMultiplier;
 		else
 			currentMana = manaPool;
 	}

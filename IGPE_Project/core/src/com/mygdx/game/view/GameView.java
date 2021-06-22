@@ -1,8 +1,5 @@
 package com.mygdx.game.view;
 
-import java.util.HashMap;
-
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,18 +12,22 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.BulletHandler;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.ParticleHandler;
+import com.mygdx.game.model.ParticleHandler.Particle;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.model.weapons.Bullet;
 import com.mygdx.game.view.animations.Animation;
-import com.mygdx.game.view.animations.WeaponSlashAnimation;
+import com.mygdx.game.view.animations.ParticleEffect;
 import com.mygdx.game.view.audio.Sounds;
 import com.mygdx.game.view.ui.InterfaceBar;
 import com.mygdx.game.view.ui.UserInterface;
@@ -41,10 +42,11 @@ public class GameView {
 	
 	private TiledMapRenderer tiledMapRenderer;
 	
-	private HashMap<String, Animation> animations;
-	float angle = 0;
+	private ObjectMap<String, Animation> animations;
+	private ObjectMap<String, ParticleEffect> particleEffects;
+	private Array<ParticleEffect> activeParticleEffects;
+	
 	private Sounds sounds;
-	private WeaponSlashAnimation weaponAnimation;
 	
 	public GameView() {	
 		camera = new OrthographicCamera();
@@ -59,7 +61,7 @@ public class GameView {
 		batch = new SpriteBatch();
 		batchUI = new SpriteBatch();
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
-		weaponAnimation = new WeaponSlashAnimation();
+//		weaponAnimation = new WeaponSlashAnimation();
 		sounds = new Sounds();
 		
 		Pixmap pm = new Pixmap(Gdx.files.internal("cursor.png"));
@@ -81,8 +83,8 @@ public class GameView {
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
 		updateAnimations(deltaTime);
-		if(weaponAnimation.isPlaying())
-			swingAnimation(deltaTime);
+//		if(weaponAnimation.isPlaying())
+//			swingAnimation(deltaTime);
 		batch.end();
 		
 		batchUI.begin();
@@ -123,7 +125,7 @@ public class GameView {
 	}
 	
 	private void initAnimations() {
-		animations = new HashMap<String, Animation>();
+		animations = new ObjectMap<String, Animation>();
 		
 		animations.put("knight idle animation",  new Animation(new TextureRegion(new Texture("animations/knight_idle_spritesheet.png")), 6, 0.5f));
 		animations.put("knight run animation", new Animation(new TextureRegion(new Texture("animations/knight_run_spritesheet.png")), 6, 0.5f));
@@ -138,6 +140,17 @@ public class GameView {
 		animations.put("goblin run animation", new Animation(new TextureRegion(new Texture("animations/goblin_run_spritesheet.png")), 6, 0.5f));
 		animations.put("flying creature flying animation", new Animation(new TextureRegion(new Texture("animations/fly_anim_spritesheet.png")), 4, 0.5f));
 		animations.put("slime idle animation", new Animation(new TextureRegion(new Texture("animations/slime_idle_spritesheet.png")),6, 0.5f));
+		
+		initParticles();
+	}
+	
+	private void initParticles() {
+		particleEffects = new ObjectMap<String, ParticleEffect>();
+		
+		particleEffects.put("enemy death explosion", new ParticleEffect(new TextureRegion(new Texture("animations/particles/enemy_afterdead_explosion_anim_spritesheet.png")), 4, 0.25f));
+		particleEffects.put("hit", new ParticleEffect(new TextureRegion(new Texture("animations/particles/hit_effect_anim_spritesheet.png")), 3, 0.25f));
+		
+		activeParticleEffects = new Array<ParticleEffect>();
 	}
 	
 	private void updateAnimations(float deltaTime) {
@@ -152,12 +165,36 @@ public class GameView {
 			animate(e, deltaTime);
 		}
 		
-		for(String s : animations.keySet())
+		animate(GameModel.getInstance().getCharacter(), deltaTime);
+		
+		updateParticleEffects(deltaTime);
+		
+		for(String s : animations.keys())
 		{
 			animations.get(s).update(deltaTime);
 		}
+	}
+	
+	private void updateParticleEffects(float deltaTime) {
 		
-		animate(GameModel.getInstance().getCharacter(), deltaTime);
+		while(!ParticleHandler.getInstance().getParticles().isEmpty()) {
+			Particle temp = ParticleHandler.getInstance().getParticles().get(ParticleHandler.getInstance().getParticles().size - 1);
+			activeParticleEffects.add(new ParticleEffect(particleEffects.get(temp.getParticleName()), temp.getPosition(), temp.getWidth(), temp.getHeigth()));
+			ParticleHandler.getInstance().getParticles().pop();
+		}
+		
+		for(int i = 0; i < activeParticleEffects.size; ++i) {
+			if(activeParticleEffects.get(i).isDonePlaying()) {
+				ParticleEffect temp = activeParticleEffects.get(i);
+				activeParticleEffects.set(i, activeParticleEffects.get(activeParticleEffects.size - 1));
+				activeParticleEffects.set(activeParticleEffects.size - 1, temp);
+				activeParticleEffects.pop();
+				--i;
+			}
+			else {
+				animate(activeParticleEffects.get(i), deltaTime);
+			}
+		}
 	}
 	
 	private void animate(Animated a, float deltaTime) {
@@ -171,7 +208,18 @@ public class GameView {
 		if(a.isFlipped())
 			flip = -1;
 		
-		batch.draw(currentFrame, x - (w / 2 ), y - h / 2, w / 2 , h / 2, w, h, flip, 1, a.getRotation());
+		batch.draw(currentFrame, x - w / 2, y - h / 2, w / 2 , h / 2, w, h, flip, 1, a.getRotation());
+	}
+	
+	private void animate(ParticleEffect p, float deltaTime) {
+		float x = p.getEffectPosition().x;
+		float y = p.getEffectPosition().y;
+		TextureRegion currentFrame = p.getFrame();
+		float w = currentFrame.getRegionWidth() / Settings.PPM * p.getWidth() * 2;
+		float h = currentFrame.getRegionHeight() / Settings.PPM * p.getHeigth() * 2;
+		
+		batch.draw(currentFrame, x - w / 2, y - h / 2, w, h);
+		p.update(deltaTime);
 	}
 	
 	public OrthographicCamera getCamera() {
@@ -186,19 +234,19 @@ public class GameView {
 		return gamePort;
 	}
 	
-	public void swingAnimation(float deltaTime) {
-		weaponAnimation.playSwingAnimation(deltaTime);
-		float x = weaponAnimation.getPosition().x;
-		float y = weaponAnimation.getPosition().y;
-		float w =  weaponAnimation.getTexture().getRegionWidth() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
-		float h = weaponAnimation.getTexture().getRegionHeight() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
-
-		batch.draw(weaponAnimation.getTexture(), x, y,0,0, w, h, 1, 1, weaponAnimation.getAngle() - 90f);
-	}
-	
-	public WeaponSlashAnimation getWeaponAnimation() {
-		return weaponAnimation;
-	}
+//	public void swingAnimation(float deltaTime) {
+//		weaponAnimation.playSwingAnimation(deltaTime);
+//		float x = weaponAnimation.getPosition().x;
+//		float y = weaponAnimation.getPosition().y;
+//		float w =  weaponAnimation.getTexture().getRegionWidth() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
+//		float h = weaponAnimation.getTexture().getRegionHeight() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
+//
+//		batch.draw(weaponAnimation.getTexture(), x, y,0,0, w, h, 1, 1, weaponAnimation.getAngle() - 90f);
+//	}
+//	
+//	public WeaponSlashAnimation getWeaponAnimation() {
+//		return weaponAnimation;
+//	}
 	
 	public void changeMap(TiledMap map) {
 	}

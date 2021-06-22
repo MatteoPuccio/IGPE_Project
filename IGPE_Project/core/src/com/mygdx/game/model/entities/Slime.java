@@ -9,7 +9,7 @@ public class Slime extends Enemy {
 	private SlimeMagic slimeMagic;
 	
 	public Slime(Vector2 position) {
-		super(position, 0.4f, false, 100);
+		super(position, 0.4f, 100);
 		body.setUserData("slime");
 		
 		slimeMagic = new SlimeMagic(this);

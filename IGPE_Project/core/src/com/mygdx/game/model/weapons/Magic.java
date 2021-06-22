@@ -31,13 +31,13 @@ public abstract class Magic extends Weapon implements Animated {
 			if(timeSinceLastAttack >= cooldown)
 			{
 				owner.useMana(bulletCost);
-				BulletHandler.getInstance().addBullet(createBullet());
+				createBullet();
 				timeSinceLastAttack = 0;
 			}
 		}
 	}
 	
-	private Bullet createBullet() {
+	protected void createBullet() {
 		Vector2 position = new Vector2(owner.getPosition());
 		Vector2 direction = new Vector2(attackPoint);
 		direction.sub(position);
@@ -46,7 +46,7 @@ public abstract class Magic extends Weapon implements Animated {
 		if(owner instanceof Enemy)
 			bulletUserData = "enemy bullet";
 		
-		return new Bullet(this, position, direction, bulletUserData);
+		BulletHandler.getInstance().addBullet(new Bullet(this, position, direction, bulletUserData));
 	}
 	
 	public float getSpeed() {
