@@ -6,7 +6,7 @@ import com.mygdx.game.model.entities.Entity;
 public class WaterMagic extends Magic {
 
 	public WaterMagic(Entity owner) {
-		super(0.3f, 0.05f, 12, 0.15f, 0.4f, owner);
+		super(0.2f, 0.05f, 12, 0.15f, 0.4f, owner);
 	}
 
 	@Override

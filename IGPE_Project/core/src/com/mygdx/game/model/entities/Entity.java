@@ -83,7 +83,7 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 		return body.getPosition();
 	}
 	
-	public int getHealth() {
+	public float getHealth() {
 		return health;
 	}
 	

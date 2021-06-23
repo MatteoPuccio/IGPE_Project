@@ -6,6 +6,7 @@ import com.mygdx.game.Settings;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.weapons.RockMagic;
+import com.mygdx.game.model.weapons.WaterMagic;
 import com.mygdx.game.model.weapons.BulletHandler;
 import com.mygdx.game.model.weapons.ExplosionMagic;
 import com.mygdx.game.model.weapons.FireMagic;
@@ -30,7 +31,7 @@ public class Character extends Entity{
 	public Character(Vector2 position) {
 		super(position, 0.4f, false, 100, 10, 3);
 		
-		firstMagic = new RockMagic(this);
+		firstMagic = new WaterMagic(this);
 		secondMagic = new ExplosionMagic(this);		
 		currentMagic = firstMagic;
 				
