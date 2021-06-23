@@ -62,8 +62,8 @@ public class Bullet implements Animated, Collidable {
 	}
 	
 	@Override
-	public String getCurrentAnimationString() {
-		return parent.getCurrentAnimationString();
+	public int getCurrentAnimationId() {
+		return parent.getCurrentAnimationId();
 	}
 	
 	@Override

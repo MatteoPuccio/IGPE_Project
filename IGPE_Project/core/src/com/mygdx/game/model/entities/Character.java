@@ -1,6 +1,8 @@
 package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.constants.AnimationConstants;
+import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.constants.Settings;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.collisions.Collidable;
@@ -27,9 +29,9 @@ public class Character extends Entity{
 	private float invincibilityElapsed;
 		
 	public Character(Vector2 position) {
-		super(position, 0.4f, false, 100, 10, 3);
+		super(position, 0.4f, false, 50, 10, 3);
 		
-		firstMagic = new RockMagic(this);
+		firstMagic = new WaterMagic(this);
 		secondMagic = new ExplosionMagic(this);		
 				
 		leftMove = false;
@@ -107,7 +109,7 @@ public class Character extends Entity{
 		if(!invincible) {
 			health -= 0;
 			invincible = true;
-			ParticleHandler.getInstance().addParticle(getPosition(), "hit", radius, radius);
+			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
 			if(health <= 0)
 				System.exit(0);
 		}
@@ -134,16 +136,16 @@ public class Character extends Entity{
 		return secondMagic;
 	}
 	
-	public String getCurrentAnimationString() {
+	public int getCurrentAnimationId() {
 		if(direction.x == 0 && direction.y == 0) {
 			if(invincible)
-				return "knight invincible idle animation";
-			return "knight idle animation";
+				return AnimationConstants.KNIGHT_INVINCIBLE_IDLE_ANIMATION;
+			return AnimationConstants.KNIGHT_IDLE_ANIMATION;
 		}
 		else {
 			if(invincible)
-				return "knight invincible run animation";
-			return "knight run animation";
+				return AnimationConstants.KNIGHT_INVINCIBLE_RUN_ANIMATION;
+			return AnimationConstants.KNIGHT_RUN_ANIMATION;
 		}
 	}
 	

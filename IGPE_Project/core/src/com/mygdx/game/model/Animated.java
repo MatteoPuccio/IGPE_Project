@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public interface Animated {
 	
-	public String getCurrentAnimationString();
+	public int getCurrentAnimationId();
 	
 	public boolean isFlipped();
 	

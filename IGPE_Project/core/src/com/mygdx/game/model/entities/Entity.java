@@ -136,7 +136,6 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 	
 	public abstract void takeDamage(float damage);
 
-
 	@Override
 	public float vectorToAngle(Vector2 vector) {
 		return SteeringUtils.vectorToAngle(vector);

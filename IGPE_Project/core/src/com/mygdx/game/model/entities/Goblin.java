@@ -8,6 +8,7 @@ import org.xguzm.pathfinding.grid.finders.GridFinderOptions;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ai.AStarUtils;
 import com.mygdx.game.model.collisions.Collidable;
@@ -147,10 +148,10 @@ public class Goblin extends Enemy {
 	}
 
 	@Override
-	public String getCurrentAnimationString() {
+	public int getCurrentAnimationId() {
 		if(isRunning)
-			return "goblin run animation";
-		return "goblin idle animation";
+			return AnimationConstants.GOBLIN_RUN_ANIMATION;
+		return AnimationConstants.GOBLIN_IDLE_ANIMATION;
 	}
 
 	@Override

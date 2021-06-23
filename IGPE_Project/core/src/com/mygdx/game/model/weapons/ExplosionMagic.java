@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.constants.AnimationConstants;
+import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.collisions.Collidable;
@@ -25,13 +27,13 @@ public class ExplosionMagic extends Magic {
 	}
 
 	@Override
-	public String getCurrentAnimationString() {
-		return "bomb animation";
+	public int getCurrentAnimationId() {
+		return AnimationConstants.BOMB_ANIMATION;
 	}
 	
 	@Override
 	protected void bulletDestroyedEffect(Collidable coll, Bullet bullet) {
-		ParticleHandler.getInstance().addParticle(bullet.getPosition(), "explosion", explosionRadius, explosionRadius);
+		ParticleHandler.getInstance().addParticle(bullet.getPosition(), ParticleEffectConstants.EXPLOSION, explosionRadius, explosionRadius);
 		explode(bullet.getPosition());
 	}
 
