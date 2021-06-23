@@ -11,7 +11,6 @@ public abstract class Enemy extends Entity {
 	
 	public Enemy(Vector2 position, float radius, int manaPool, int health, float manaRechargeMultiplier) {
 		super(position, radius, true, manaPool, health, manaRechargeMultiplier);
-		body.setUserData("enemy");
 	}
 	
 	@Override

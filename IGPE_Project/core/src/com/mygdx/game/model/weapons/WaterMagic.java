@@ -3,19 +3,20 @@ package com.mygdx.game.model.weapons;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.entities.Entity;
 
-public class SlimeMagic extends Magic {
+public class WaterMagic extends Magic {
 
-	public SlimeMagic(Entity owner) {
-		super(2, 2f, 10, 0.2f, 1, owner);
+	public WaterMagic(Entity owner) {
+		super(0.3f, 0.05f, 12, 0.15f, 0.4f, owner);
 	}
 
 	@Override
 	public String getCurrentAnimationString() {
-		return "slimeball animation";
+		return "droplet animation";
 	}
 
 	@Override
 	public boolean isFlipped() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -39,6 +40,7 @@ public class SlimeMagic extends Magic {
 
 	@Override
 	public float getRotation() {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 

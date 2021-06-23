@@ -21,7 +21,12 @@ public class Animation {
 		this.frameCount = frameCount;
 		
 		currentFrameTime = 0;
-		maxFrameTime = cycleTime / frameCount;
+		try {
+			maxFrameTime = cycleTime / frameCount;
+		} catch (ArithmeticException e) {
+			maxFrameTime = 0;
+		}
+		
 		frame = 0;
 	}
 	

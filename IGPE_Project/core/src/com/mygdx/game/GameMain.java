@@ -2,6 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.view.DeathScreen;
@@ -15,6 +17,7 @@ public class GameMain extends Game{
 	private TitleScreen titleScreen;
 	private	OptionsScreen optionsScreen;
 	private DeathScreen deathScreen;
+	private Cursor cursor;
 	private int state, previousState;
 	
 	public static GameMain getInstance() {
@@ -31,6 +34,10 @@ public class GameMain extends Game{
 		titleScreen = new TitleScreen();
 		optionsScreen = new OptionsScreen();
 		deathScreen = new DeathScreen();
+		Pixmap pm = new Pixmap(Gdx.files.internal("menu_cursor.png"));
+		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
+		Gdx.graphics.setCursor(cursor);
+		pm.dispose();
 		setScreen(titleScreen);
 	}
 
@@ -58,6 +65,7 @@ public class GameMain extends Game{
 		titleScreen.dispose();
 		optionsScreen.dispose();
 		deathScreen.dispose();
+		cursor.dispose();
 	}
 	
 	@Override
@@ -82,6 +90,7 @@ public class GameMain extends Game{
 	}
 
 	public void options() {
+		Gdx.graphics.setCursor(cursor);
 		previousState = state;
 		controller.getView().getSounds().menu_confirm.play(Settings.getVolume());
 		state = Settings.OPTIONS;
@@ -101,6 +110,7 @@ public class GameMain extends Game{
 
 	public void death() {
 		state = Settings.DEAD;
+		Gdx.graphics.setCursor(cursor);
 		setScreen(deathScreen);
 	}
 	

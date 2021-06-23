@@ -34,7 +34,7 @@ public class GameModel {
 	}
 	
 	public void init() {
-		character = new Character(new Vector2(8.5f,7.5f));
+		character = new Character(new Vector2(9.5f,7.5f));
 		createRooms();
 	}
 	

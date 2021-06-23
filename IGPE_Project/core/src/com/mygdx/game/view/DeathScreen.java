@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -34,7 +33,7 @@ public class DeathScreen implements Screen{
 	private Table mainTable;
 	
 	private Label deathLabel;
-	private TextButton backButton;
+	private TextButton backButton, quitButton;
 	
 	public DeathScreen() {
 		atlas = new TextureAtlas("skin/skin.atlas");
@@ -54,7 +53,8 @@ public class DeathScreen implements Screen{
 
         deathLabel = new Label("You Died", titleStyle);
                 
-        backButton = new TextButton("BACK", skin);
+        backButton = new TextButton("TITLE SCREEN", skin);
+        quitButton = new TextButton("QUIT", skin);
         
         stage = new Stage(viewport, batch);
 	}
@@ -72,10 +72,18 @@ public class DeathScreen implements Screen{
         	}
         });
         
-        mainTable.add(deathLabel);
-        mainTable.row();
-        mainTable.add(backButton);
+        quitButton.addListener(new ClickListener() {
+        	@Override
+        	public void clicked(InputEvent event, float x, float y) {
+        		Gdx.app.exit();
+        	}
+        });
         
+        mainTable.add(deathLabel).colspan(2);
+        mainTable.row();
+        mainTable.add(backButton).growX().pad(20, 300, 20, 300);
+        mainTable.row();
+        mainTable.add(quitButton).growX().pad(20, 300, 20, 300);
         stage.addActor(mainTable); 
 	}
 

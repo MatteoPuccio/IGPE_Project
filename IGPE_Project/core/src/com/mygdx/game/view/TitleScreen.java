@@ -62,12 +62,13 @@ public class TitleScreen implements Screen {
         camera.position.set(0, 0, 0);
         camera.update();
 
-        stage = new Stage(viewport, batch);  
+        stage = new Stage(viewport, batch);
+        
 	}
 
 	@Override
 	public void show() {
-        mainTable = new Table();
+		mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();
 

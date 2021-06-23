@@ -1,9 +1,9 @@
 package com.mygdx.game.view;
 
-import java.util.HashMap;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -23,15 +22,14 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.Animated;
-import com.mygdx.game.model.BulletHandler;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.ParticleHandler.Particle;
-import com.mygdx.game.model.TiledMapObjectsUtil;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.model.weapons.Bullet;
+import com.mygdx.game.model.weapons.BulletHandler;
 import com.mygdx.game.view.animations.Animation;
 import com.mygdx.game.view.animations.ParticleEffect;
 import com.mygdx.game.view.animations.WeaponSlashAnimation;
@@ -56,6 +54,7 @@ public class GameView implements Screen{
 	
 	private Sounds sounds;
 	private WeaponSlashAnimation weaponAnimation;
+	private Cursor cursor;
 	
 	public GameView() {	
 		camera = new OrthographicCamera();
@@ -73,8 +72,9 @@ public class GameView implements Screen{
 //		weaponAnimation = new WeaponSlashAnimation();
 		sounds = new Sounds();
 		
-		Pixmap pm = new Pixmap(Gdx.files.internal("cursor.png"));
-		Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2));
+		Pixmap pm = new Pixmap(Gdx.files.internal("game_cursor.png"));
+		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
+		Gdx.graphics.setCursor(cursor);
 		pm.dispose();
 
 	}
@@ -133,6 +133,8 @@ public class GameView implements Screen{
 	
 	public void dispose() {
 		debugRenderer.dispose();
+		cursor.dispose();
+//		tiledMap.dispose();
 		batch.dispose();
 //		sounds.dispose();
 		UserInterface.getInstance().dispose();
@@ -271,7 +273,7 @@ public class GameView implements Screen{
 
 	@Override
 	public void show() {
-		
+		Gdx.graphics.setCursor(cursor);
 	}
 
 	@Override

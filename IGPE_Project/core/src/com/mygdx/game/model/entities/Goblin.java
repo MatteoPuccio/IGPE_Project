@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ai.AStarUtils;
+import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.level.RoomHandler;
 
 public class Goblin extends Enemy {
@@ -29,7 +30,6 @@ public class Goblin extends Enemy {
 	
 	public Goblin(Vector2 position) {
 		super(position, 0.4f, 0, 6, 1);
-		body.setUserData("enemy : goblin");
 		
 		home = RoomHandler.getInstance().getCurrentRoom();
 		
@@ -172,6 +172,12 @@ public class Goblin extends Enemy {
 	@Override
 	public float getRotation() {
 		return 0;
+	}
+
+	@Override
+	public void collidesWith(Collidable coll) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

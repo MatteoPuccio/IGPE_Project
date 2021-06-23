@@ -17,9 +17,9 @@ public class EnemiesHandler {
 		RoomHandler.getInstance().getCurrentRoom().addEnemy(enemy);
 	}
 	
-	public static void hitEnemy(Body enemyBody, float damage) {
+	public static void hitEnemy(Enemy hitEnemy, float damage) {
 		for(int i = 0; i < getEnemies().size; ++i)
-			if(getEnemies().get(i).getBody().equals(enemyBody))
+			if(getEnemies().get(i) == hitEnemy)
 			{
 				getEnemies().get(i).takeDamage(damage);
 				return;

@@ -9,8 +9,9 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ai.SteeringUtils;
+import com.mygdx.game.model.collisions.Collidable;
 
-public class Bullet implements Animated {
+public class Bullet implements Animated, Collidable {
 	
 	private Magic parent;
 	
@@ -18,14 +19,14 @@ public class Bullet implements Animated {
 	
 	private Vector2 direction;
 	
-	Bullet(Magic parent, Vector2 position, Vector2 direction, String userData) {
+	Bullet(Magic parent, Vector2 position, Vector2 direction) {
 		this.parent = parent;
 		this.direction = new Vector2(direction);
 		
 		BodyDef bDef = new BodyDef();
 		bDef.type = BodyType.DynamicBody;
-//		bDef.bullet = true;
 		bDef.position.set(position);
+		
 		body = GameModel.getInstance().getWorld().createBody(bDef);
 		
 		FixtureDef fDef = new FixtureDef();
@@ -34,11 +35,14 @@ public class Bullet implements Animated {
 		fDef.density = 0;
 		fDef.shape = circle;
 		fDef.isSensor = true;
+		
 		body.createFixture(fDef);
 		
-		body.setUserData(userData);
-		circle.dispose();
+		body.setUserData(this);
+		
 		body.setLinearVelocity(this.direction.scl(parent.getSpeed()));
+		
+		circle.dispose();
 	}
 	
 	public Body getBody() {
@@ -85,6 +89,11 @@ public class Bullet implements Animated {
 	@Override
 	public float getRotation() {
 		return (float) Math.toDegrees(SteeringUtils.vectorToAngle(direction));
+	}
+	
+	@Override
+	public void collidesWith(Collidable coll) {
+		parent.bulletCollidedWith(coll, this);
 	}
 	
 	
