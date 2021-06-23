@@ -4,23 +4,33 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.view.DeathScreen;
 import com.mygdx.game.view.OptionsScreen;
 import com.mygdx.game.view.TitleScreen;
 
 public class GameMain extends Game{
 	
+	private static GameMain instance = null;
 	private GameController controller;
 	private TitleScreen titleScreen;
 	private	OptionsScreen optionsScreen;
+	private DeathScreen deathScreen;
 	private int state, previousState;
+	
+	public static GameMain getInstance() {
+		if(instance == null)
+			instance = new GameMain();
+		return instance;
+	}
 	
 	@Override
 	public void create() {
 		state = Settings.TITLE_SCREEN;
 		GameModel.getInstance().init();
-		controller = new GameController(this);
-		titleScreen = new TitleScreen(this);
-		optionsScreen = new OptionsScreen(this);
+		controller = new GameController();
+		titleScreen = new TitleScreen();
+		optionsScreen = new OptionsScreen();
+		deathScreen = new DeathScreen();
 		setScreen(titleScreen);
 	}
 
@@ -36,6 +46,9 @@ public class GameMain extends Game{
 		case Settings.OPTIONS:
 			optionsScreen.render(Gdx.graphics.getDeltaTime());
 			break;
+		case Settings.DEAD:
+			deathScreen.render(Gdx.graphics.getDeltaTime());
+			break;
 		}
 	}
 
@@ -44,6 +57,7 @@ public class GameMain extends Game{
 		controller.dispose();
 		titleScreen.dispose();
 		optionsScreen.dispose();
+		deathScreen.dispose();
 	}
 	
 	@Override
@@ -83,5 +97,18 @@ public class GameMain extends Game{
 		else
 			setScreen(titleScreen);
 		controller.getView().getSounds().menu_back.play(Settings.getVolume());
+	}
+
+	public void death() {
+		state = Settings.DEAD;
+		setScreen(deathScreen);
+	}
+	
+	public void restart() {
+		state = Settings.TITLE_SCREEN;
+		controller.getView().getSounds().menu_back.play(Settings.getVolume());
+		GameModel.getInstance().init();
+		setScreen(titleScreen);
+		
 	}
 }

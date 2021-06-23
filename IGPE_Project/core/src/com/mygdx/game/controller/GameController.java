@@ -14,12 +14,10 @@ import com.mygdx.game.view.GameView;
 
 public class GameController implements InputProcessor 
 {
-	private GameMain gameMain;
 	private GameView view;
 	private boolean settingAttackPoint;
 	
-	public GameController(GameMain gameMain) {
-		this.gameMain = gameMain;
+	public GameController() {
 		Gdx.input.setInputProcessor(this);
 		view = new GameView();
 		settingAttackPoint = false;
@@ -80,7 +78,7 @@ public class GameController implements InputProcessor
 			view.changeMap(new TmxMapLoader().load("rooms/r02_w-e.tmx"));
 			break;
 		case Keys.ESCAPE:
-			gameMain.options();
+			GameMain.getInstance().options();
 			break;
 	    }
 		GameModel.getInstance().getCharacter().setMove(direction, true);

@@ -1,7 +1,7 @@
 package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
-
+import com.mygdx.game.GameMain;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.BulletHandler;
 import com.mygdx.game.model.ParticleHandler;
@@ -108,11 +108,11 @@ public class Character extends Entity{
 	@Override
 	public void takeDamage(float damage) {
 		if(!invincible) {
-			health -= 0;
+			currentHealth -= damage;
 			invincible = true;
 			ParticleHandler.getInstance().addParticle(getPosition(), "hit", radius, radius);
-			if(health <= 0)
-				System.exit(0);
+			if(currentHealth <= 0)
+				GameMain.getInstance().death();
 		}
 	}
 
@@ -173,6 +173,10 @@ public class Character extends Entity{
 	@Override
 	public float getRotation() {
 		return 0;
+	}
+
+	public float getCurrentHealth() {
+		return currentHealth;
 	}
 	
 	

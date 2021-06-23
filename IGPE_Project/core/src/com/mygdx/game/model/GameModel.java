@@ -5,9 +5,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.model.collisions.CollisionHandler;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.entities.EnemiesHandler;
-import com.mygdx.game.model.level.Room1;
 import com.mygdx.game.model.level.Room2;
 import com.mygdx.game.model.level.RoomHandler;
 

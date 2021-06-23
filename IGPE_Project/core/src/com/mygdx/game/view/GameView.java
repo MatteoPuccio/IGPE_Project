@@ -47,7 +47,6 @@ public class GameView implements Screen{
 	
 	private SpriteBatch batch,batchUI;
 	
-	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
 	private Stage stage;
 
@@ -101,21 +100,24 @@ public class GameView implements Screen{
 		
 		batchUI.begin();
         drawInterfaceBar(UserInterface.getInstance().manaBar);
+        drawInterfaceBar(UserInterface.getInstance().healthBar);
         batchUI.end();
         
         //debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {
-		Texture background = bar.background;
+		Texture background = bar.getBackground();
+		Texture icon = bar.getIcon();
 		
-		TextureRegion barFilled = bar.barFilled;
+		TextureRegion barFilled = bar.getBarFilled();
 		
-		Vector2 position = bar.position;
-		Vector2 barPosition = bar.barPosition;
+		Vector2 position = bar.getPosition();
+		Vector2 barPosition = bar.getBarPosition();
 		
 		batchUI.draw(background, position.x,position.y,background.getWidth(),background.getHeight());
-		batchUI.draw(barFilled,barPosition.x,barPosition.y,barFilled.getRegionWidth(),barFilled.getRegionHeight());	
+		batchUI.draw(barFilled,barPosition.x,barPosition.y,barFilled.getRegionWidth(),barFilled.getRegionHeight());
+		batchUI.draw(icon, position.x, position.y, icon.getWidth(),icon.getHeight());
 	}
 
 	private void updateCamera() {
@@ -131,7 +133,6 @@ public class GameView implements Screen{
 	
 	public void dispose() {
 		debugRenderer.dispose();
-		tiledMap.dispose();
 		batch.dispose();
 //		sounds.dispose();
 		UserInterface.getInstance().dispose();

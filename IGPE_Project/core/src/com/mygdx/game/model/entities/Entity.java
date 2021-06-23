@@ -20,6 +20,7 @@ public abstract class Entity implements Animated, Steerable<Vector2> {
 	
 	protected Vector2 direction;
 	protected int health;
+	protected float currentHealth;
 	protected Body body;
 	protected float radius;
 	protected int manaPool;
@@ -40,6 +41,7 @@ public abstract class Entity implements Animated, Steerable<Vector2> {
 		this.manaPool = manaPool;
 		currentMana = manaPool;
 		this.health = health;
+		currentHealth = health;
 		this.manaRechargeMultiplier = manaRechargeMultiplier;
 		
 		body = createBody(position, isSensor);
