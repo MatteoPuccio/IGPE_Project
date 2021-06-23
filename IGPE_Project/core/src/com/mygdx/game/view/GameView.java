@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.Settings;
+import com.mygdx.game.constants.Settings;
 import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ParticleHandler;
@@ -77,7 +77,6 @@ public class GameView implements Screen{
 		Pixmap pm = new Pixmap(Gdx.files.internal("cursor.png"));
 		Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2));
 		pm.dispose();
-
 	}
 	
 	@Override

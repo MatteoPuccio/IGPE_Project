@@ -1,39 +1,55 @@
 package com.mygdx.game.controller;
 
+import java.awt.Button;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GameMain;
-import com.mygdx.game.Settings;
+import com.mygdx.game.constants.Settings;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.ai.SteeringUtils;
 import com.mygdx.game.view.GameView;
 
 public class GameController implements InputProcessor 
 {
 	private GameMain gameMain;
 	private GameView view;
-	private boolean settingAttackPoint;
+	private boolean leftClickPressed;
+	private boolean rightClickPressed;
 	
 	public GameController(GameMain gameMain) {
 		this.gameMain = gameMain;
 		Gdx.input.setInputProcessor(this);
 		view = new GameView();
-		settingAttackPoint = false;
+		leftClickPressed = false;
+		rightClickPressed = false;
 	}
 	
 	public void update(float deltaTime) {
 		view.render(deltaTime);
-		
-		if(settingAttackPoint) {
-			setWeaponAttackPoint();
-		}
-		
 
 		GameModel.getInstance().update(deltaTime);
+		
+		if(leftClickPressed) {
+			Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+			GameModel.getInstance().getCharacter().setFirstMagicAttacking(true);
+			GameModel.getInstance().getCharacter().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
+		}
+		
+		else	
+			GameModel.getInstance().getCharacter().setFirstMagicAttacking(false);
+		
+		if(rightClickPressed && ! leftClickPressed) {
+			Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+			GameModel.getInstance().getCharacter().setSecondMagicAttacking(true);
+			GameModel.getInstance().getCharacter().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
+		}
+		else
+			GameModel.getInstance().getCharacter().setSecondMagicAttacking(false);
+		
 	}
 	
 	public void dispose() {
@@ -41,11 +57,11 @@ public class GameController implements InputProcessor
 		view.dispose();
 	}
 	
-	private void setWeaponAttackPoint() {
-		Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-		GameModel.getInstance().getCharacter().getCurrentMagic().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
-		GameModel.getInstance().getCharacter().getCurrentMagic().setAttacking(true);
-	}
+//	private void setAttack() {
+//		Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+//		GameModel.getInstance().getCharacter().getCurrentMagic().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
+//		GameModel.getInstance().getCharacter().getCurrentMagic().setAttacking(true);
+//	}
 	
 	@Override
 	public boolean keyDown(int keycode) {
@@ -65,19 +81,6 @@ public class GameController implements InputProcessor
 			break;
 		case Keys.S:
 			direction = Settings.DOWN;
-			break;
-		case Keys.NUM_1:
-			GameModel.getInstance().getCharacter().getCurrentMagic().setAttacking(false);
-			GameModel.getInstance().getCharacter().setWeapon(1);
-			break;
-		case Keys.NUM_2:
-			GameModel.getInstance().getCharacter().getCurrentMagic().setAttacking(false);
-			GameModel.getInstance().getCharacter().setWeapon(2);
-			break;
-//		TODO: delete after automatic implementation complete
-		case Keys.C:
-			GameModel.getInstance().disposeMapBodies();
-			view.changeMap(new TmxMapLoader().load("rooms/r02_w-e.tmx"));
 			break;
 		case Keys.ESCAPE:
 			gameMain.options();
@@ -123,16 +126,23 @@ public class GameController implements InputProcessor
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		settingAttackPoint = true;
-//		GameModel.getInstance().getCharacter().getCurrentMagic().setAttacking(true);
-//		view.getSounds().fire.play(0.1f);
+		if(button == Buttons.LEFT)
+			leftClickPressed = true;
+		
+		if(button  == Buttons.RIGHT) 
+			rightClickPressed = true;
+		
 		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		GameModel.getInstance().getCharacter().getCurrentMagic().setAttacking(false);
-		settingAttackPoint = false;
+		if(button == Buttons.LEFT) 
+			leftClickPressed = false;
+			
+		if(button == Buttons.RIGHT)
+			rightClickPressed = false;
+		
 		return false;
 	}
 

@@ -18,7 +18,7 @@ public class Room {
 	private Random r;
 	private boolean deadend;
 	
-	private Array<Enemy> enemies;
+	protected Array<Enemy> enemies;
 	
 	public Room() {
 		roomIndex = rooms;

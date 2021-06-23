@@ -22,7 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.GameMain;
-import com.mygdx.game.Settings;
+import com.mygdx.game.constants.Settings;
 
 public class OptionsScreen implements Screen{
 	

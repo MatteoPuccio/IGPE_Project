@@ -4,13 +4,14 @@ import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.collisions.Collidable;
+import com.mygdx.game.model.level.Room;
 
 public class FlyingCreature extends Enemy {
 	
 	private int damage;
 	
-	public FlyingCreature(Vector2 position) {
-		super(position, 0.3f, 0, 3, 1);
+	public FlyingCreature(Vector2 position, Room home) {
+		super(position, 0.3f, 0, 3, 1, home);
 		
 		behavior = new Arrive<Vector2>(this, GameModel.getInstance().getCharacter())
 				.setTimeToTarget(0.01f)

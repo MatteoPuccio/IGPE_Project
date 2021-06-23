@@ -1,8 +1,7 @@
 package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
-
-import com.mygdx.game.Settings;
+import com.mygdx.game.constants.Settings;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.weapons.RockMagic;
@@ -17,7 +16,6 @@ public class Character extends Entity{
 	
 	private Magic firstMagic;
 	private Magic secondMagic;
-	private Magic currentMagic;
 	
 	private float speed = 4;
 	
@@ -31,9 +29,8 @@ public class Character extends Entity{
 	public Character(Vector2 position) {
 		super(position, 0.4f, false, 100, 10, 3);
 		
-		firstMagic = new WaterMagic(this);
+		firstMagic = new RockMagic(this);
 		secondMagic = new ExplosionMagic(this);		
-		currentMagic = firstMagic;
 				
 		leftMove = false;
 		rightMove = false;
@@ -88,15 +85,14 @@ public class Character extends Entity{
 		}
 	}
 	
-	public Magic getCurrentMagic() {
-		return currentMagic;
-	}
-
 	public void update(float deltaTime) 
 	{
 		super.update(deltaTime);
 		move(deltaTime);
-		currentMagic.attack(deltaTime);
+		
+		firstMagic.update(deltaTime);
+		secondMagic.update(deltaTime);
+		
 		if(invincible) {
 			invincibilityElapsed += deltaTime;
 			if(invincibilityElapsed >= invincibilityTimer) {
@@ -117,18 +113,17 @@ public class Character extends Entity{
 		}
 	}
 
-	public void setWeapon(int i) {
-		switch(i)
-		{
-		case 1:
-			currentMagic = firstMagic;
-			break;
-		case 2:
-			if(secondMagic != null)
-				currentMagic = secondMagic;
-			break;
-		}
-		
+	public void setFirstMagicAttacking(boolean attacking) {
+		firstMagic.setAttacking(attacking);
+	}
+	
+	public void setSecondMagicAttacking(boolean attacking) {
+		secondMagic.setAttacking(attacking);
+	}
+	
+	public void setAttackPoint(Vector2 attackPoint) {
+		firstMagic.setAttackPoint(attackPoint);
+		secondMagic.setAttackPoint(attackPoint);
 	}
 
 	public Magic getFirstMagic() {

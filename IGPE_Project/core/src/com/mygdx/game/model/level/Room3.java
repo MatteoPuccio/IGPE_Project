@@ -7,7 +7,7 @@ public class Room3 extends Room {
 
 	public Room3() {
 		
-		tileMap = new NavTmxMapLoader().load("rooms/r03_n-s.tmx");
+		tileMap = new NavTmxMapLoader().load("rooms/r3.tmx");
 		TiledMapObjectsUtil.parse(tileMap);
 		navigationLayer = TiledMapObjectsUtil.getNavigationTiledMapLayer(tileMap);
 		

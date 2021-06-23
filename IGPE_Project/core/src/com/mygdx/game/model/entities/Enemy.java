@@ -9,8 +9,10 @@ public abstract class Enemy extends Entity {
 	
 	protected Room home;
 	
-	public Enemy(Vector2 position, float radius, int manaPool, int health, float manaRechargeMultiplier) {
+	public Enemy(Vector2 position, float radius, int manaPool, int health, float manaRechargeMultiplier, Room home) {
 		super(position, radius, true, manaPool, health, manaRechargeMultiplier);
+		
+		this.home = home;
 	}
 	
 	@Override

@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ai.AStarUtils;
 import com.mygdx.game.model.collisions.Collidable;
-import com.mygdx.game.model.level.RoomHandler;
+import com.mygdx.game.model.level.Room;
 
 public class Goblin extends Enemy {
 
@@ -28,10 +28,8 @@ public class Goblin extends Enemy {
 	private float attackCooldown;
 	private float attackTimePassed;
 	
-	public Goblin(Vector2 position) {
-		super(position, 0.4f, 0, 6, 1);
-		
-		home = RoomHandler.getInstance().getCurrentRoom();
+	public Goblin(Vector2 position, Room home) {
+		super(position, 0.4f, 0, 6, 1, home);
 		
 		currentPosition = new Vector2(getPosition());
 		nextPosition = new Vector2(currentPosition);
@@ -46,7 +44,13 @@ public class Goblin extends Enemy {
 	}
 	
 	public void update(float deltaTime) {
+		
 		super.update(deltaTime);
+		
+		if(health <= 0) {
+			home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(true);
+			return;
+		}
 		
 		if(timePassed == 0) {
 		

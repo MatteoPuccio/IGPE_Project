@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.mygdx.game.constants.Settings;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.view.OptionsScreen;
@@ -26,15 +27,18 @@ public class GameMain extends Game{
 
 	@Override
 	public void render() {
+		
+		float deltaTime = Math.min(1 / 30f, Gdx.graphics.getDeltaTime());
+		
 		switch(state) {
 		case Settings.TITLE_SCREEN:
-			titleScreen.render(Gdx.graphics.getDeltaTime());
+			titleScreen.render(deltaTime);
 			break;
 		case Settings.RUNNING:
-			controller.update(Gdx.graphics.getDeltaTime());
+			controller.update(deltaTime);
 			break;
 		case Settings.OPTIONS:
-			optionsScreen.render(Gdx.graphics.getDeltaTime());
+			optionsScreen.render(deltaTime);
 			break;
 		}
 	}
