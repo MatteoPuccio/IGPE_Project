@@ -32,16 +32,6 @@ public class GameController implements InputProcessor
 		}
 		
 		GameModel.getInstance().update(deltaTime);
-//		
-//		if(GameModel.getInstance().getCharacter().getWeapon() instanceof MeleeWeapon && GameModel.getInstance().getCharacter().getWeapon().isAttacking()) {
-//			Vector2 tempAttackPoint = new Vector2(GameModel.getInstance().getCharacter().getWeapon().getAttackPoint());
-//			float startingAngle = tempAttackPoint.sub(GameModel.getInstance().getCharacter().getPosition()).angleDeg();
-//
-//			MeleeWeapon tmpWeapon = (MeleeWeapon) GameModel.getInstance().getCharacter().getWeapon();
-//			if(tmpWeapon.canAttack())
-//				view.getWeaponAnimation().play(startingAngle);
-//			
-//		}
 	}
 	
 	public void dispose() {

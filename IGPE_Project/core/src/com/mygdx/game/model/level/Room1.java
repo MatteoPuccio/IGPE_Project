@@ -3,6 +3,7 @@ package com.mygdx.game.model.level;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.TiledMapObjectsUtil;
 import com.mygdx.game.model.ai.NavTmxMapLoader;
+import com.mygdx.game.model.entities.FlyingCreature;
 import com.mygdx.game.model.entities.Goblin;
 
 public class Room1 extends Room {
@@ -15,12 +16,13 @@ public class Room1 extends Room {
 	
 	@Override
 	public void init() {
-		Goblin goblin1 = new Goblin(new Vector2(6.5f,6.5f));
-//		Goblin goblin2 = new Goblin(new Vector2(8.5f,6.5f));
-//		
-//		Slime slime = new Slime(new Vector2(6.5f, 6.5f));
-//		
-//		addEnemy(slime);
-		addEnemy(goblin1);
+		
+		addEnemy(new Goblin(new Vector2(7.5f,6.5f)));
+		addEnemy(new Goblin(new Vector2(7.5f,9.5f)));
+		addEnemy(new Goblin(new Vector2(24.5f, 6.5f)));
+		addEnemy(new Goblin(new Vector2(24.5f, 9.5f)));
+		
+		addEnemy(new FlyingCreature(new Vector2(16.5f ,5f)));
+		addEnemy(new FlyingCreature(new Vector2(16.5f, 10f)));
 	}
 }

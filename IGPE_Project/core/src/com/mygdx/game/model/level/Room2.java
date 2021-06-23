@@ -19,7 +19,7 @@ public class Room2 extends Room {
 	
 	@Override
 	public void init() {
-		Slime slime1 = new Slime(new Vector2(6.5f,13.5f));
+		Slime slime1 = new Slime(new Vector2(7f,13.5f));
 		Slime slime2 = new Slime(new Vector2(18.5f, 12.5f));
 		
 		FlyingCreature flyingCreature1 = new FlyingCreature(new Vector2(20, 30));

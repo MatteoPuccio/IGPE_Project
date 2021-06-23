@@ -9,8 +9,8 @@ public class Slime extends Enemy {
 	private SlimeMagic slimeMagic;
 	
 	public Slime(Vector2 position) {
-		super(position, 0.4f, 100);
-		body.setUserData("slime");
+		super(position, 0.4f, 100, 5, 5);
+		body.setUserData("enemy : slime");
 		
 		slimeMagic = new SlimeMagic(this);
 		slimeMagic.setAttacking(true);
@@ -31,7 +31,7 @@ public class Slime extends Enemy {
 
 	@Override
 	public boolean isFlipped() {
-		return false;
+		return GameModel.getInstance().getCharacter().getPosition().x < getPosition().x;
 	}
 
 	@Override

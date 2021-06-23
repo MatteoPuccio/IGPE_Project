@@ -19,7 +19,7 @@ import com.badlogic.gdx.physics.box2d.MassData;
 public abstract class Entity implements Animated, Steerable<Vector2> {
 	
 	protected Vector2 direction;
-	protected int health = 5;
+	protected int health;
 	protected Body body;
 	protected float radius;
 	protected int manaPool;
@@ -35,17 +35,18 @@ public abstract class Entity implements Animated, Steerable<Vector2> {
 	
 	protected boolean tagged;
 	
-	public Entity(Vector2 position, float radius, boolean isSensor, int manaPool) {
+	public Entity(Vector2 position, float radius, boolean isSensor, int manaPool, int health, float manaRechargeMultiplier) {
 		this.radius = radius;
 		this.manaPool = manaPool;
 		currentMana = manaPool;
-		manaRechargeMultiplier = 1;
+		this.health = health;
+		this.manaRechargeMultiplier = manaRechargeMultiplier;
 		
 		body = createBody(position, isSensor);
 		direction = new Vector2(0,0);
 		flippedX = false;
 		
-		maxLinearSpeed = 10;
+		maxLinearSpeed = 7;
 		maxLinearAcceleration = 200;
 		
 		tagged = false;

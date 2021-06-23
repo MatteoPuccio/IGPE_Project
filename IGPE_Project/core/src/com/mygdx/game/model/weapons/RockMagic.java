@@ -3,15 +3,15 @@ package com.mygdx.game.model.weapons;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.entities.Entity;
 
-public class LightningMagic extends Magic {
+public class RockMagic extends Magic {
 
-	public LightningMagic(Entity owner) {
-		super(5, 3, 20, 0.15f, 5, owner, "character bullet : lightningbolt");
+	public RockMagic(Entity owner) {
+		super(2, 0.4f, 8, 0.2f, 2, owner, "character bullet : rock");
 	}
 
 	@Override
 	public String getCurrentAnimationString() {
-		return "lightningbolt animation";
+		return "rock animation";
 	}
 
 	@Override
@@ -40,6 +40,7 @@ public class LightningMagic extends Magic {
 
 	@Override
 	public float getRotation() {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 
