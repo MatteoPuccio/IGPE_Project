@@ -4,19 +4,23 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
 public class Animation {
-	private Array<TextureRegion> frames;
-	private float maxFrameTime;
-	private float currentFrameTime;
-	private int frameCount;
-	private int frame;
+	protected Array<TextureRegion> frames;
+	protected float maxFrameTime;
+	protected float currentFrameTime;
+	protected int frameCount;
+	protected int frame;
 	
 	public Animation(TextureRegion region, int frameCount, float cycleTime) {
 		frames = new Array<TextureRegion>();
 		int frameWidth = region.getRegionWidth() / frameCount;
+		
 		for(int i = 0; i < frameCount; ++i) {
 			frames.add(new TextureRegion(region, i * frameWidth, 0, frameWidth, region.getRegionHeight()));
 		}
+		
 		this.frameCount = frameCount;
+		
+		currentFrameTime = 0;
 		maxFrameTime = cycleTime / frameCount;
 		frame = 0;
 	}
@@ -25,6 +29,16 @@ public class Animation {
 		this.frames = frames;
 		this.frameCount = frameCount;
 		maxFrameTime = cycleTime / frameCount;
+	}
+	
+	public Animation(Animation old) {
+		this.frames = new Array<TextureRegion>(old.frames);
+		
+		this.frameCount = frames.size;
+		
+		currentFrameTime = 0;
+		maxFrameTime = old.maxFrameTime;
+
 		frame = 0;
 	}
 	

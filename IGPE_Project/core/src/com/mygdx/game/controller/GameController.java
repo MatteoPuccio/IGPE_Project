@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.weapons.MeleeWeapon;
+import com.mygdx.game.model.ai.SteeringUtils;
 import com.mygdx.game.view.GameView;
 
 public class GameController implements InputProcessor 
@@ -26,14 +26,12 @@ public class GameController implements InputProcessor
 	}
 	
 	public void update(float deltaTime) {
-		GameModel.getInstance().update(deltaTime);
-		if(settingAttackPoint)
-			setWeaponAttackPoint();
 		view.render(deltaTime);
-		if (GameModel.getInstance().changeMap()) {
-//			TODO: automatizzare il processo per ogni livello
-			view.changeMap(new TmxMapLoader().load("rooms/r02_w-e.tmx"));
-		}
+		
+		if(settingAttackPoint) 
+			setWeaponAttackPoint();		
+		GameModel.getInstance().update(deltaTime);
+		
 	}
 	
 	public void dispose() {
@@ -42,8 +40,9 @@ public class GameController implements InputProcessor
 	}
 	
 	private void setWeaponAttackPoint() {
-		Vector3 pointClicked = view.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-		GameModel.getInstance().getCharacter().getWeapon().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
+		Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+		GameModel.getInstance().getCharacter().getCurrentMagic().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
+		GameModel.getInstance().getCharacter().getCurrentMagic().setAttacking(true);
 	}
 	
 	@Override
@@ -66,12 +65,12 @@ public class GameController implements InputProcessor
 			direction = Settings.DOWN;
 			break;
 		case Keys.NUM_1:
+			GameModel.getInstance().getCharacter().getCurrentMagic().setAttacking(false);
 			GameModel.getInstance().getCharacter().setWeapon(1);
-			GameModel.getInstance().getCharacter().getWeapon().setAttacking(false);
 			break;
 		case Keys.NUM_2:
+			GameModel.getInstance().getCharacter().getCurrentMagic().setAttacking(false);
 			GameModel.getInstance().getCharacter().setWeapon(2);
-			GameModel.getInstance().getCharacter().getWeapon().setAttacking(false);
 			break;
 //		TODO: delete after automatic implementation complete
 		case Keys.C:
@@ -122,23 +121,15 @@ public class GameController implements InputProcessor
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		setWeaponAttackPoint();
 		settingAttackPoint = true;
-		if(GameModel.getInstance().getCharacter().getWeapon() instanceof MeleeWeapon) {
-			float startingAngle = GameModel.getInstance().getCharacter().getWeapon().getAttackPoint().sub(GameModel.getInstance().getCharacter().getPosition()).angleDeg();
-			if(!view.getWeaponAnimation().isPlaying()) {
-				GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
-				view.getWeaponAnimation().play(startingAngle);
-			}
-		}
-		GameModel.getInstance().getCharacter().getWeapon().setAttacking(true);
+//		GameModel.getInstance().getCharacter().getCurrentMagic().setAttacking(true);
 //		view.getSounds().fire.play(0.1f);
 		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		GameModel.getInstance().getCharacter().getWeapon().setAttacking(false);
+		GameModel.getInstance().getCharacter().getCurrentMagic().setAttacking(false);
 		settingAttackPoint = false;
 		return false;
 	}

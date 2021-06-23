@@ -1,4 +1,4 @@
-	package com.mygdx.game.model;
+package com.mygdx.game.model;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -7,12 +7,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.entities.EnemiesHandler;
-import com.mygdx.game.model.entities.Slime;
+import com.mygdx.game.model.level.Room1;
+import com.mygdx.game.model.level.Room2;
+import com.mygdx.game.model.level.RoomHandler;
 
 public class GameModel {
 	
 	private Character character;
-	
 	
 	private static GameModel gameModel = null;
 	private World world;
@@ -32,11 +33,15 @@ public class GameModel {
 		return gameModel;
 	}
 	
-	public void initEntities() {
-		character = new Character(new Vector2(7,7), 0.4f);
-		
-		Slime slime = new Slime(new Vector2(6,6), 0.4f);
-		EnemiesHandler.getInstance().addEnemy(slime);
+	public void init() {
+		character = new Character(new Vector2(8.5f,7.5f));
+		createRooms();
+	}
+	
+	private void createRooms() {
+		//RandomRoomGenerator.getInstance().createRooms();
+		RoomHandler.getInstance().setCurrentRoom(new Room1());
+		RoomHandler.getInstance().getCurrentRoom().init();
 	}
 	
 	public Character getCharacter() {
@@ -79,6 +84,7 @@ public class GameModel {
 	public void update(float deltaTime) {
 		world.step(deltaTime, 6, 2);
 		character.update(deltaTime);
+		EnemiesHandler.update(deltaTime);
 		
 		disposeBodies();
 	}

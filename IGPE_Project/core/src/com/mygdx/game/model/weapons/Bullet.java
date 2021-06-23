@@ -8,33 +8,37 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.ai.SteeringUtils;
 
 public class Bullet implements Animated {
 	
 	private Magic parent;
-	private Body body;
-	private float size = 0.1f;
 	
-	Bullet(Magic parent, Vector2 position, Vector2 direction) {
+	private Body body;
+	
+	private Vector2 direction;
+	
+	Bullet(Magic parent, Vector2 position, Vector2 direction, String userData) {
 		this.parent = parent;
+		this.direction = new Vector2(direction);
 		
 		BodyDef bDef = new BodyDef();
 		bDef.type = BodyType.DynamicBody;
-		bDef.bullet = true;
+//		bDef.bullet = true;
 		bDef.position.set(position);
 		body = GameModel.getInstance().getWorld().createBody(bDef);
 		
 		FixtureDef fDef = new FixtureDef();
 		CircleShape circle = new CircleShape();
-		circle.setRadius(size);
+		circle.setRadius(parent.getBulletSize());
 		fDef.density = 0;
 		fDef.shape = circle;
 		fDef.isSensor = true;
 		body.createFixture(fDef);
 		
-		body.setUserData("bullet");
+		body.setUserData(userData);
 		circle.dispose();
-		body.setLinearVelocity(parent.getSpeed() * direction.x, parent.getSpeed() * direction.y);
+		body.setLinearVelocity(this.direction.scl(parent.getSpeed()));
 	}
 	
 	public Body getBody() {
@@ -46,12 +50,16 @@ public class Bullet implements Animated {
 	}
 	
 	public float getSize() {
-		return size;
+		return parent.getBulletSize();
+	}
+	
+	public Magic getParent() {
+		return parent;
 	}
 	
 	@Override
 	public String getCurrentAnimationString() {
-		return "fireball animation";
+		return parent.getCurrentAnimationString();
 	}
 	
 	@Override
@@ -66,12 +74,17 @@ public class Bullet implements Animated {
 
 	@Override
 	public float getAnimationWidth() {
-		return size;
+		return getSize();
 	}
 
 	@Override
 	public float getAnimationHeigth() {
-		return size;
+		return getSize();
+	}
+
+	@Override
+	public float getRotation() {
+		return (float) Math.toDegrees(SteeringUtils.vectorToAngle(direction));
 	}
 	
 	

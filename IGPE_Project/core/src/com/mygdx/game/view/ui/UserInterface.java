@@ -25,7 +25,7 @@ public class UserInterface
 	
 	public void update()
 	{
-		manaBar.update(GameModel.getInstance().getCharacter().getMagic().getPercentage());
+		manaBar.update(GameModel.getInstance().getCharacter().getManaPercentage());
 	}
 	
 	public void dispose()

@@ -1,35 +1,48 @@
 package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
+
 import com.mygdx.game.Settings;
+import com.mygdx.game.model.BulletHandler;
+import com.mygdx.game.model.ParticleHandler;
+import com.mygdx.game.model.weapons.FireMagic;
+import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
-import com.mygdx.game.model.weapons.MeleeWeapon;
-import com.mygdx.game.model.weapons.Weapon;
 
 public class Character extends Entity{
 	
-	private MeleeWeapon meleeWeapon;
-	private Magic magic;
-	private Weapon weapon;
+	private Magic firstMagic;
+	private Magic secondMagic;
+	private Magic currentMagic;
+	
+	private float speed = 4;
 	
 	private boolean leftMove,rightMove,downMove,upMove;
 	
-	boolean flippedX;
+	private boolean invincible;
 	
-	public Character(Vector2 position, float radius) {
-		super(position, radius);
+	private float invincibilityTimer;
+	private float invincibilityElapsed;
+		
+	public Character(Vector2 position) {
+		super(position, 0.4f, false, 20);
 		body.setUserData("character");
+		health = 10;
+		manaRechargeMultiplier = 2;
 		
-		magic = new Magic(1, 10, 0.2f, 10);
-		meleeWeapon = new MeleeWeapon(1,0.5f,0.5f);		
-		weapon = magic;
-		
+		firstMagic = new FireMagic(this);
+		secondMagic = new LightningMagic(this);		
+		currentMagic = firstMagic;
+				
 		leftMove = false;
 		rightMove = false;
 		downMove = false;
-		upMove = false;
+		upMove = false;		
 		
-		flippedX = false;
+		invincible = false;
+		
+		invincibilityTimer = 1.5f;
+		invincibilityElapsed = 0;
 	}
 	
 	private void move(float deltaTime) {
@@ -74,43 +87,68 @@ public class Character extends Entity{
 		}
 	}
 	
-	public Weapon getWeapon() {
-		return weapon;
+	public Magic getCurrentMagic() {
+		return currentMagic;
 	}
 
 	public void update(float deltaTime) 
 	{
+		super.update(deltaTime);
 		move(deltaTime);
-		if(weapon.isAttacking())
-			weapon.attack(deltaTime);
-		magic.rechargeMana(deltaTime);
+		currentMagic.attack(deltaTime);
+		if(invincible) {
+			invincibilityElapsed += deltaTime;
+			if(invincibilityElapsed >= invincibilityTimer) {
+				invincibilityElapsed = 0;
+				invincible = false;
+			}
+		}
 	}
 
 	@Override
-	public void takeDamage(float damage) {}
+	public void takeDamage(float damage) {
+		if(!invincible) {
+			health -= damage;
+			invincible = true;
+			ParticleHandler.getInstance().addParticle(getPosition(), "hit", radius, radius);
+			if(health <= 0)
+				System.exit(0);
+		}
+	}
 
 	public void setWeapon(int i) {
 		switch(i)
 		{
 		case 1:
-			weapon = magic;
+			currentMagic = firstMagic;
 			break;
 		case 2:
-			weapon = meleeWeapon;
+			if(secondMagic != null)
+				currentMagic = secondMagic;
 			break;
 		}
 		
 	}
 
-	public Magic getMagic() {
-		return magic;
+	public Magic getFirstMagic() {
+		return firstMagic;
+	}
+	
+	public Magic getSecondMagic() {
+		return secondMagic;
 	}
 	
 	public String getCurrentAnimationString() {
-		if(direction.x == 0 && direction.y == 0)
+		if(direction.x == 0 && direction.y == 0) {
+			if(invincible)
+				return "knight invincible idle animation";
 			return "knight idle animation";
-		else
+		}
+		else {
+			if(invincible)
+				return "knight invincible run animation";
 			return "knight run animation";
+		}
 	}
 	
 	public boolean isFlipped() {
@@ -130,6 +168,11 @@ public class Character extends Entity{
 	@Override
 	public float getAnimationHeigth() {
 		return radius;
+	}
+
+	@Override
+	public float getRotation() {
+		return 0;
 	}
 	
 	

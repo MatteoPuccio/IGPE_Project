@@ -1,11 +1,27 @@
 package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.weapons.SlimeMagic;
 
 public class Slime extends Enemy {
 
-	public Slime(Vector2 position, float radius) {
-		super(position, radius);
+	private SlimeMagic slimeMagic;
+	
+	public Slime(Vector2 position) {
+		super(position, 0.4f, 100);
+		body.setUserData("slime");
+		
+		slimeMagic = new SlimeMagic(this);
+		slimeMagic.setAttacking(true);
+	}
+	
+	@Override
+	public void update(float deltaTime) {
+		super.update(deltaTime);
+		
+		slimeMagic.setAttackPoint(GameModel.getInstance().getCharacter().getPosition());
+		slimeMagic.attack(deltaTime);
 	}
 
 	@Override
@@ -32,5 +48,10 @@ public class Slime extends Enemy {
 	public float getAnimationHeigth() {
 		return radius;
 	}
-	
+
+	@Override
+	public float getRotation() {
+		return 0;
+	}
+
 }

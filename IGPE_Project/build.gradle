@@ -34,6 +34,7 @@ allprojects {
         google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        
     }
 }
 
@@ -62,6 +63,6 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
         api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-        
+        api "com.github.xaguzman:pathfinding-gdx-bridge:0.2.6"
     }
 }

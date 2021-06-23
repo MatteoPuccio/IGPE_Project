@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,17 +17,23 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.BulletHandler;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.ParticleHandler;
+import com.mygdx.game.model.ParticleHandler.Particle;
 import com.mygdx.game.model.TiledMapObjectsUtil;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
+import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.model.weapons.Bullet;
 import com.mygdx.game.view.animations.Animation;
+import com.mygdx.game.view.animations.ParticleEffect;
 import com.mygdx.game.view.animations.WeaponSlashAnimation;
 import com.mygdx.game.view.audio.Sounds;
 import com.mygdx.game.view.ui.InterfaceBar;
@@ -43,9 +50,11 @@ public class GameView implements Screen{
 	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
 	private Stage stage;
-	
-	private HashMap<String, Animation> animations;
 
+	private ObjectMap<String, Animation> animations;
+	private ObjectMap<String, ParticleEffect> particleEffects;
+	private Array<ParticleEffect> activeParticleEffects;
+	
 	private Sounds sounds;
 	private WeaponSlashAnimation weaponAnimation;
 	
@@ -54,20 +63,21 @@ public class GameView implements Screen{
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.set(0,0,0);
 		camera.update();
-		gamePort = new FitViewport(16, 9, camera);
+		gamePort = new FitViewport(16, 10, camera);
 		
 		debugRenderer = new Box2DDebugRenderer();
 		
 		initAnimations();
 		batch = new SpriteBatch();
 		batchUI = new SpriteBatch();
-		tiledMap = new TmxMapLoader().load("rooms/r01_w-e.tmx");
-		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
-		weaponAnimation = new WeaponSlashAnimation();
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
+//		weaponAnimation = new WeaponSlashAnimation();
 		sounds = new Sounds();
 		
-		stage = new Stage(gamePort,batchUI);
+		Pixmap pm = new Pixmap(Gdx.files.internal("cursor.png"));
+		Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
+		pm.dispose();
+
 	}
 	
 	@Override
@@ -81,20 +91,19 @@ public class GameView implements Screen{
         tiledMapRenderer.render();
         
         UserInterface.getInstance().update();
-        
+
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
 		updateAnimations(deltaTime);
-		if(weaponAnimation.isPlaying())
-			swingAnimation(deltaTime);
+//		if(weaponAnimation.isPlaying())
+//			swingAnimation(deltaTime);
 		batch.end();
 		
 		batchUI.begin();
         drawInterfaceBar(UserInterface.getInstance().manaBar);
-        //
         batchUI.end();
         
-		//debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+        //debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {
@@ -130,25 +139,75 @@ public class GameView implements Screen{
 	}
 	
 	private void initAnimations() {
-		animations = new HashMap<String, Animation>();
+		animations = new ObjectMap<String, Animation>();
 		
-		animations.put("knight idle animation",  new Animation(new TextureRegion(new Texture("knight_idle_spritesheet.png")), 6, 0.5f));
-		animations.put("knight run animation", new Animation(new TextureRegion(new Texture("knight_run_spritesheet.png")), 6, 0.5f));
-		animations.put("fireball animation", new Animation(new TextureRegion(new Texture("fireball_anim_spritesheet.png")), 4, 0.1f));
-		animations.put("slime idle animation", new Animation(new TextureRegion(new Texture("slime_idle_spritesheet.png")),6, 0.5f));
+		animations.put("knight idle animation",  new Animation(new TextureRegion(new Texture("animations/knight_idle_spritesheet.png")), 6, 0.5f));
+		animations.put("knight run animation", new Animation(new TextureRegion(new Texture("animations/knight_run_spritesheet.png")), 6, 0.5f));
+		animations.put("knight invincible idle animation", new Animation(new TextureRegion(new Texture("animations/knight_invincible_idle_spritesheet.png")), 12, 0.25f));
+		animations.put("knight invincible run animation", new Animation(new TextureRegion(new Texture("animations/knight_invincible_run_spritesheet.png")), 12, 0.25f));
+		
+		animations.put("fireball animation", new Animation(new TextureRegion(new Texture("animations/fireball_anim_spritesheet.png")), 4, 0.2f));
+		animations.put("slimeball animation", new Animation(new TextureRegion(new Texture("animations/slimeball_anim_spritesheet.png")), 4, 0.2f));
+		animations.put("lightningbolt animation", new Animation(new TextureRegion(new Texture("animations/lightningbolt_anim_spritesheet.png")), 4, 0.1f));
+
+		animations.put("goblin idle animation", new Animation(new TextureRegion(new Texture("animations/goblin_idle_spritesheet.png")), 6, 0.5f));
+		animations.put("goblin run animation", new Animation(new TextureRegion(new Texture("animations/goblin_run_spritesheet.png")), 6, 0.5f));
+		animations.put("flying creature flying animation", new Animation(new TextureRegion(new Texture("animations/fly_anim_spritesheet.png")), 4, 0.5f));
+		animations.put("slime idle animation", new Animation(new TextureRegion(new Texture("animations/slime_idle_spritesheet.png")),6, 0.5f));
+		
+		initParticles();
+	}
+	
+	private void initParticles() {
+		particleEffects = new ObjectMap<String, ParticleEffect>();
+		
+		particleEffects.put("enemy death explosion", new ParticleEffect(new TextureRegion(new Texture("animations/particles/enemy_afterdead_explosion_anim_spritesheet.png")), 4, 0.25f));
+		particleEffects.put("hit", new ParticleEffect(new TextureRegion(new Texture("animations/particles/hit_effect_anim_spritesheet.png")), 3, 0.15f));
+		
+		activeParticleEffects = new Array<ParticleEffect>();
 	}
 	
 	private void updateAnimations(float deltaTime) {
-		animate(GameModel.getInstance().getCharacter(), deltaTime);
 		
 		for(Bullet b : BulletHandler.getInstance().getBullets())
 		{
 			animate(b, deltaTime);
 		}
 		
-		for(Enemy e : EnemiesHandler.getInstance().getEnemies())
+		for(Enemy e : EnemiesHandler.getEnemies())
 		{
 			animate(e, deltaTime);
+		}
+		
+		animate(GameModel.getInstance().getCharacter(), deltaTime);
+		
+		updateParticleEffects(deltaTime);
+		
+		for(String s : animations.keys())
+		{
+			animations.get(s).update(deltaTime);
+		}
+	}
+	
+	private void updateParticleEffects(float deltaTime) {
+		
+		while(!ParticleHandler.getInstance().getParticles().isEmpty()) {
+			Particle temp = ParticleHandler.getInstance().getParticles().get(ParticleHandler.getInstance().getParticles().size - 1);
+			activeParticleEffects.add(new ParticleEffect(particleEffects.get(temp.getParticleName()), temp.getPosition(), temp.getWidth(), temp.getHeigth()));
+			ParticleHandler.getInstance().getParticles().pop();
+		}
+		
+		for(int i = 0; i < activeParticleEffects.size; ++i) {
+			if(activeParticleEffects.get(i).isDonePlaying()) {
+				ParticleEffect temp = activeParticleEffects.get(i);
+				activeParticleEffects.set(i, activeParticleEffects.get(activeParticleEffects.size - 1));
+				activeParticleEffects.set(activeParticleEffects.size - 1, temp);
+				activeParticleEffects.pop();
+				--i;
+			}
+			else {
+				animate(activeParticleEffects.get(i), deltaTime);
+			}
 		}
 	}
 	
@@ -163,8 +222,18 @@ public class GameView implements Screen{
 		if(a.isFlipped())
 			flip = -1;
 		
-		batch.draw(currentFrame, x - (w / 2 * flip), y - h / 2, 0, 0, w, h, flip, 1, 0);
-		animations.get(a.getCurrentAnimationString()).update(deltaTime);
+		batch.draw(currentFrame, x - w / 2, y - h / 2, w / 2 , h / 2, w, h, flip, 1, a.getRotation());
+	}
+	
+	private void animate(ParticleEffect p, float deltaTime) {
+		float x = p.getEffectPosition().x;
+		float y = p.getEffectPosition().y;
+		TextureRegion currentFrame = p.getFrame();
+		float w = currentFrame.getRegionWidth() / Settings.PPM * p.getWidth() * 2;
+		float h = currentFrame.getRegionHeight() / Settings.PPM * p.getHeigth() * 2;
+		
+		batch.draw(currentFrame, x - w / 2, y - h / 2, w, h);
+		p.update(deltaTime);
 	}
 	
 	public OrthographicCamera getCamera() {
@@ -174,26 +243,26 @@ public class GameView implements Screen{
 	public Sounds getSounds() {
 		return sounds;
 	}
-	
-	public void swingAnimation(float deltaTime) {
-		weaponAnimation.playSwingAnimation(deltaTime);
-		float x = weaponAnimation.getPosition().x;
-		float y = weaponAnimation.getPosition().y;
-		float w =  weaponAnimation.getTexture().getRegionWidth() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
-		float h = weaponAnimation.getTexture().getRegionHeight() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
 
-		batch.draw(weaponAnimation.getTexture(), x, y,0,0, w, h,1,1,weaponAnimation.getAngle() - 90f);
+	public Viewport getGamePort() {
+		return gamePort;
 	}
 	
-	public WeaponSlashAnimation getWeaponAnimation() {
-		return weaponAnimation;
-	}
+//	public void swingAnimation(float deltaTime) {
+//		weaponAnimation.playSwingAnimation(deltaTime);
+//		float x = weaponAnimation.getPosition().x;
+//		float y = weaponAnimation.getPosition().y;
+//		float w =  weaponAnimation.getTexture().getRegionWidth() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
+//		float h = weaponAnimation.getTexture().getRegionHeight() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
+//
+//		batch.draw(weaponAnimation.getTexture(), x, y,0,0, w, h, 1, 1, weaponAnimation.getAngle() - 90f);
+//	}
+//	
+//	public WeaponSlashAnimation getWeaponAnimation() {
+//		return weaponAnimation;
+//	}
 	
 	public void changeMap(TiledMap map) {
-		tiledMap.dispose();
-		tiledMap = map;
-		TiledMapObjectsUtil.parseTiledObjectsLayer(tiledMap);
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / Settings.PPM);
 	}
 
 	@Override

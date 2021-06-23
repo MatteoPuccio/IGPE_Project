@@ -17,7 +17,7 @@ public class GameMain extends Game{
 	@Override
 	public void create() {
 		state = Settings.TITLE_SCREEN;
-		GameModel.getInstance().initEntities();
+		GameModel.getInstance().init();
 		controller = new GameController(this);
 		titleScreen = new TitleScreen(this);
 		optionsScreen = new OptionsScreen(this);
@@ -63,6 +63,10 @@ public class GameMain extends Game{
 		Gdx.input.setInputProcessor(controller);
 	}
 
+	public int getPreviousState() {
+		return previousState;
+	}
+
 	public void options() {
 		previousState = state;
 		controller.getView().getSounds().menu_confirm.play(Settings.getVolume());
@@ -79,9 +83,5 @@ public class GameMain extends Game{
 		else
 			setScreen(titleScreen);
 		controller.getView().getSounds().menu_back.play(Settings.getVolume());
-	}
-	
-	public int getPreviousState() {
-		return previousState;
 	}
 }
