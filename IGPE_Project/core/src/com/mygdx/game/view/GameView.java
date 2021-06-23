@@ -151,7 +151,7 @@ public class GameView implements Screen{
 		animations.put("lightningbolt animation", new Animation(new TextureRegion(new Texture("animations/lightningbolt_anim_spritesheet.png")), 4, 0.1f));
 		animations.put("rock animation", new Animation(new TextureRegion(new Texture("animations/rock_anim_spritesheet.png")), 4, 0.2f));
 		animations.put("bomb animation", new Animation(new TextureRegion(new Texture("animations/bomb_anim_spritesheet.png")),4, 0.2f));
-		animations.put("droplet animation", new Animation(new TextureRegion(new Texture("animations/droplet_anim_spritesheet")), 4, 0.2f));
+		animations.put("droplet animation", new Animation(new TextureRegion(new Texture("animations/droplet_anim_spritesheet.png")), 4, 0.2f));
 
 		animations.put("goblin idle animation", new Animation(new TextureRegion(new Texture("animations/goblin_idle_spritesheet.png")), 6, 0.5f));
 		animations.put("goblin run animation", new Animation(new TextureRegion(new Texture("animations/goblin_run_spritesheet.png")), 6, 0.5f));

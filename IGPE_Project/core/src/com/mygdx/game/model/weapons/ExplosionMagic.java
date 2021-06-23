@@ -31,7 +31,7 @@ public class ExplosionMagic extends Magic {
 	
 	@Override
 	protected void bulletDestroyedEffect(Collidable coll, Bullet bullet) {
-		ParticleHandler.getInstance().addParticle(bullet.getPosition(), "explosion", 0.6f, 0.6f);
+		ParticleHandler.getInstance().addParticle(bullet.getPosition(), "explosion", explosionRadius, explosionRadius);
 		explode(bullet.getPosition());
 	}
 

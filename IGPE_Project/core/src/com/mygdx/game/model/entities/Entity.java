@@ -20,7 +20,7 @@ import com.badlogic.gdx.physics.box2d.MassData;
 public abstract class Entity implements Animated, Steerable<Vector2>, Collidable {
 	
 	protected Vector2 direction;
-	protected int health;
+	protected float health;
 	protected Body body;
 	protected float radius;
 	protected int manaPool;
@@ -81,7 +81,7 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 		return body.getPosition();
 	}
 	
-	public int getHealth() {
+	public float getHealth() {
 		return health;
 	}
 	
