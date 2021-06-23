@@ -100,7 +100,7 @@ public class TitleScreen implements Screen {
             }
         });
         
-        mainTable.add(title).center();
+        mainTable.add(title).top();
         mainTable.row();
         mainTable.add(playButton).growX().pad(20, 300, 20, 300);
         mainTable.row();

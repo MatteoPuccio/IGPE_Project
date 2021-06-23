@@ -20,64 +20,102 @@ public class CollisionHandler implements ContactListener {
 			
 			String userDataA = (String) fa.getBody().getUserData();
 			String userDataB = (String) fb.getBody().getUserData();
-			
-			switch (userDataB) {
-			case "character bullet":
-				if(!userDataA.equals("character") && !userDataA.equals("void"))
+			 
+			if(userDataB.startsWith("character bullet :")) {
+				if(!userDataA.equals("character") && !userDataA.equals("void") && !userDataA.startsWith("character bullet :"))
 				{
-					if(userDataA.equals("slime") || userDataA.equals("goblin") || userDataA.equals("flying creature")) {
-						for(Bullet b : BulletHandler.getInstance().getBullets()) {
-							if(b.getBody() == fb.getBody()) {
-								EnemiesHandler.hitEnemy(fa.getBody(), b.getParent().getDamage());
-							}
-						}
+					if(userDataA.startsWith("enemy :")) {
+						EnemiesHandler.hitEnemy(fa.getBody(), BulletHandler.getInstance().getDamageAndRemoveBullet(fb.getBody()));
+						
 					}
 					
-//					System.out.println("this one");
-					if(!userDataA.equals("character bullet")) {
-						GameModel.getInstance().addBodyToDispose(fb.getBody());
-						BulletHandler.getInstance().removeBullet(fb.getBody());
+					else if(userDataA.startsWith("enemy bullet :")) {
+						BulletHandler.getInstance().getDamageAndRemoveBullet(fb.getBody());
+						BulletHandler.getInstance().getDamageAndRemoveBullet(fa.getBody());
 					}
 					
-					if(userDataA.equals("enemy bullet")) {
-						BulletHandler.getInstance().removeBullet(fa.getBody());
-						GameModel.getInstance().addBodyToDispose(fa.getBody());
+					else {
+						BulletHandler.getInstance().getDamageAndRemoveBullet(fb.getBody());
 					}
 				}
-				break;
-			case "enemy bullet":
-				if(!userDataA.equals("slime") && !userDataA.equals("goblin") && !userDataA.equals("flying creature") && !userDataA.equals("void"))
+			}
+				
+			else if(userDataB.startsWith("enemy bullet :")) {
+				if(!userDataA.startsWith("enemy :") && !userDataA.equals("void") && !userDataA.startsWith("enemy bullet :"))
 				{
 					if(userDataA.equals("character")) {
-						for(Bullet b : BulletHandler.getInstance().getBullets()) {
-							if(b.getBody() == fb.getBody()) {
-								GameModel.getInstance().getCharacter().takeDamage(b.getParent().getDamage());
-								break;
-							}
-						}
+						GameModel.getInstance().getCharacter().takeDamage(BulletHandler.getInstance().getDamageAndRemoveBullet(fb.getBody()));
 					}
-					GameModel.getInstance().addBodyToDispose(fb.getBody());
-					BulletHandler.getInstance().removeBullet(fb.getBody());
 					
-					if(userDataA.equals("character bullet")) {
-						BulletHandler.getInstance().removeBullet(fa.getBody());
-						GameModel.getInstance().addBodyToDispose(fa.getBody());
+					else if(userDataA.startsWith("character bullet :")) {
+						BulletHandler.getInstance().getDamageAndRemoveBullet(fb.getBody());
+						BulletHandler.getInstance().getDamageAndRemoveBullet(fa.getBody());
+					}
+					
+					else {
+						BulletHandler.getInstance().getDamageAndRemoveBullet(fb.getBody());
 					}
 				}
-				break;
-			case "flying creature":
+			}
+				
+			else if(userDataB.contains("flying creature")) {
 				if(userDataA.equals("character"))
 					GameModel.getInstance().getCharacter().takeDamage(1);
-				break;
-			default:
-				break;
+				
+				else if (userDataA.startsWith("character bullet :")) {
+					EnemiesHandler.hitEnemy(fb.getBody(), BulletHandler.getInstance().getDamageAndRemoveBullet(fa.getBody()));
+				}
 			}
-			
-		}		
-
-//		if (fb.getBody().getUserData().equals("character") && fa.getBody().getUserData().equals("gate")) {
-//			GameModel.getInstance().toChangeMap = true;
-//		}
+				
+			else {
+				if(userDataA.startsWith("character bullet :")) { 
+					if(!userDataB.equals("character") && !userDataB.equals("void") && !userDataB.startsWith("character bullet :"))
+					{
+						if(userDataB.startsWith("enemy :")) {
+							EnemiesHandler.hitEnemy(fb.getBody(), BulletHandler.getInstance().getDamageAndRemoveBullet(fa.getBody()));
+						}
+						
+						else if(userDataB.startsWith("enemy bullet :")) {
+							BulletHandler.getInstance().getDamageAndRemoveBullet(fa.getBody());
+							BulletHandler.getInstance().getDamageAndRemoveBullet(fb.getBody());
+						}
+						
+						else {
+							BulletHandler.getInstance().getDamageAndRemoveBullet(fa.getBody());
+						}
+					}
+				}
+					
+				else if(userDataA.startsWith("enemy bullet :")) {
+					if(!userDataB.startsWith("enemy :") && !userDataB.equals("void") && !userDataB.startsWith("enemy bullet :"))
+					{
+						if(userDataB.equals("character")) {
+							GameModel.getInstance().getCharacter().takeDamage(BulletHandler.getInstance().getDamageAndRemoveBullet(fa.getBody()));
+						}
+						
+						else if(userDataB.startsWith("character bullet :")) {
+							BulletHandler.getInstance().getDamageAndRemoveBullet(fa.getBody());
+							BulletHandler.getInstance().getDamageAndRemoveBullet(fb.getBody());
+						}
+						
+						else {
+							BulletHandler.getInstance().getDamageAndRemoveBullet(fa.getBody());
+						}
+					}
+				}
+					
+				else if(userDataA.contains("flying creature")) {
+					if(userDataB.equals("character"))
+						GameModel.getInstance().getCharacter().takeDamage(1);
+					
+					else if (userDataB.startsWith("character bullet :")) {
+						EnemiesHandler.hitEnemy(fa.getBody(), BulletHandler.getInstance().getDamageAndRemoveBullet(fb.getBody()));
+					}
+				}
+			}
+		}	
+		
+		
 	}
 	
 	@Override

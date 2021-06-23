@@ -7,8 +7,8 @@ import com.mygdx.game.model.GameModel;
 public class FlyingCreature extends Enemy {
 	
 	public FlyingCreature(Vector2 position) {
-		super(position, 0.6f, 0);
-		body.setUserData("flying creature");
+		super(position, 0.3f, 0, 3, 1);
+		body.setUserData("enemy : flying creature");
 		
 		behavior = new Arrive<Vector2>(this, GameModel.getInstance().getCharacter())
 				.setTimeToTarget(0.01f)

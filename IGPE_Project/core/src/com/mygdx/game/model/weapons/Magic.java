@@ -23,8 +23,9 @@ public abstract class Magic implements Animated {
 	protected float timePassed;
 	 
 	private int bulletCost;
+	protected String bulletUserData;
 	
-	public Magic(int damage, float cooldown, float speed, float bulletSize, int bulletCost, Entity owner) {
+	public Magic(int damage, float cooldown, float speed, float bulletSize, int bulletCost, Entity owner, String bulletUserData) {
 		this.speed = speed;
 		this.bulletSize = bulletSize;
 		this.bulletCost = bulletCost;
@@ -38,6 +39,8 @@ public abstract class Magic implements Animated {
 		attacking = false;
 		
 		timeSinceLastAttack = cooldown;
+		
+		this.bulletUserData = bulletUserData;
 	}
 
 	public void attack(float deltaTime) {
@@ -58,9 +61,6 @@ public abstract class Magic implements Animated {
 		Vector2 direction = new Vector2(attackPoint);
 		direction.sub(position);
 		direction.nor();
-		String bulletUserData = "character bullet";
-		if(owner instanceof Enemy)
-			bulletUserData = "enemy bullet";
 		
 		BulletHandler.getInstance().addBullet(new Bullet(this, position, direction, bulletUserData));
 	}

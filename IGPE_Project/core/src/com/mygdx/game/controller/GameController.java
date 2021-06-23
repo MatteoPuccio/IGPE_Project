@@ -28,10 +28,12 @@ public class GameController implements InputProcessor
 	public void update(float deltaTime) {
 		view.render(deltaTime);
 		
-		if(settingAttackPoint) 
-			setWeaponAttackPoint();		
-		GameModel.getInstance().update(deltaTime);
+		if(settingAttackPoint) {
+			setWeaponAttackPoint();
+		}
 		
+
+		GameModel.getInstance().update(deltaTime);
 	}
 	
 	public void dispose() {

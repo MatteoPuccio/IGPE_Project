@@ -8,7 +8,7 @@ import com.mygdx.game.model.entities.Entity;
 public class FireMagic extends Magic {
 
 	public FireMagic(Entity owner) {
-		super(1, 0.5f, 10, 0.1f, 2, owner);
+		super(1, 0.5f, 10, 0.1f, 4, owner, "character bullet : fireball");
 	}
 	
 	@Override
@@ -17,9 +17,6 @@ public class FireMagic extends Magic {
 		Vector2 direction = new Vector2(attackPoint);
 		direction.sub(position);
 		direction.nor();
-		String bulletUserData = "character bullet";
-		if(owner instanceof Enemy)
-			bulletUserData = "enemy bullet";
 		
 		BulletHandler.getInstance().addBullet(new Bullet(this, position, direction, bulletUserData));
 		

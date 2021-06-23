@@ -9,25 +9,24 @@ public abstract class Enemy extends Entity {
 	
 	protected Room home;
 	
-	public Enemy(Vector2 position, float radius, int manaPool) {
-		super(position, radius, true, manaPool);
+	public Enemy(Vector2 position, float radius, int manaPool, int health, float manaRechargeMultiplier) {
+		super(position, radius, true, manaPool, health, manaRechargeMultiplier);
 		body.setUserData("enemy");
 	}
 	
 	@Override
 	public void takeDamage(float damage) {
 		health-=damage;
+		if(health > 0)
+			ParticleHandler.getInstance().addParticle(getPosition(), "hit", radius, radius);
+	}
+	
+	public void update(float deltaTime) {
+		super.update(deltaTime);
 		if(health <= 0) {
 			ParticleHandler.getInstance().addParticle(getPosition(), "enemy death explosion", radius, radius);
 			GameModel.getInstance().addBodyToDispose(body);
 			EnemiesHandler.removeEnemy(this);
 		}
-		else {
-			ParticleHandler.getInstance().addParticle(getPosition(), "hit", radius, radius);
-		}
-	}
-	
-	public void update(float deltaTime) {
-		super.update(deltaTime);
 	}
 }

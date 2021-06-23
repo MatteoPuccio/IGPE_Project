@@ -1,5 +1,7 @@
 package com.mygdx.game.model.entities;
 
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
@@ -15,7 +17,7 @@ public class EnemiesHandler {
 		RoomHandler.getInstance().getCurrentRoom().addEnemy(enemy);
 	}
 	
-	public static void hitEnemy(Body enemyBody, int damage) {
+	public static void hitEnemy(Body enemyBody, float damage) {
 		for(int i = 0; i < getEnemies().size; ++i)
 			if(getEnemies().get(i).getBody().equals(enemyBody))
 			{
@@ -43,6 +45,17 @@ public class EnemiesHandler {
 
 	public static void removeEnemy(Enemy enemy) {
 		getEnemies().removeValue(enemy, true);
+	}
+
+	public static Array<Enemy> getEnemiesInArea(Circle circle) {
+		Array<Enemy> enemiesInArea = new Array<Enemy>();
+		for(Enemy e : getEnemies()) {
+			Circle c = new Circle(e.getPosition(), e.getRadius());
+			if(Intersector.overlaps(circle, c))
+				enemiesInArea.add(e);
+		}
+		
+		return enemiesInArea;
 	}
 	
 }

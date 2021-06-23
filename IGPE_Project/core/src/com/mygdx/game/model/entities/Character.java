@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.BulletHandler;
 import com.mygdx.game.model.ParticleHandler;
+import com.mygdx.game.model.weapons.RockMagic;
+import com.mygdx.game.model.weapons.ExplosionMagic;
 import com.mygdx.game.model.weapons.FireMagic;
 import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
@@ -25,13 +27,11 @@ public class Character extends Entity{
 	private float invincibilityElapsed;
 		
 	public Character(Vector2 position) {
-		super(position, 0.4f, false, 20);
+		super(position, 0.4f, false, 100, 10, 3);
 		body.setUserData("character");
-		health = 10;
-		manaRechargeMultiplier = 2;
 		
-		firstMagic = new FireMagic(this);
-		secondMagic = new LightningMagic(this);		
+		firstMagic = new RockMagic(this);
+		secondMagic = new ExplosionMagic(this);		
 		currentMagic = firstMagic;
 				
 		leftMove = false;
@@ -108,7 +108,7 @@ public class Character extends Entity{
 	@Override
 	public void takeDamage(float damage) {
 		if(!invincible) {
-			health -= damage;
+			health -= 0;
 			invincible = true;
 			ParticleHandler.getInstance().addParticle(getPosition(), "hit", radius, radius);
 			if(health <= 0)

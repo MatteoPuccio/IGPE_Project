@@ -3,15 +3,16 @@ package com.mygdx.game.model.weapons;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.entities.Entity;
 
-public class LightningMagic extends Magic {
+//Konosuba reference
+public class ExplosionMagic extends Magic {
 
-	public LightningMagic(Entity owner) {
-		super(5, 3, 20, 0.15f, 5, owner, "character bullet : lightningbolt");
+	public ExplosionMagic(Entity owner) {
+		super(0, 2.5f, 5, 0.3f, 10, owner, "character bullet : bomb");
 	}
 
 	@Override
 	public String getCurrentAnimationString() {
-		return "lightningbolt animation";
+		return "bomb animation";
 	}
 
 	@Override
@@ -40,6 +41,7 @@ public class LightningMagic extends Magic {
 
 	@Override
 	public float getRotation() {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 

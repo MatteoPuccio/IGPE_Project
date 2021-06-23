@@ -1,16 +1,13 @@
 package com.mygdx.game.model.entities;
 
 import java.util.LinkedList;
-
-
 import java.util.List;
 
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.finders.GridFinderOptions;
 
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ai.AStarUtils;
 import com.mygdx.game.model.level.RoomHandler;
@@ -20,7 +17,7 @@ public class Goblin extends Enemy {
 	private List<GridCell> path;
 	private List<GridCell> tempPath;
 	
-	private float timeForStep =0.5f;
+	private float timeForStep = 0.3f;
 	private float timePassed = 0;
 	private Vector2 currentPosition;
 	private Vector2 nextPosition;
@@ -31,8 +28,8 @@ public class Goblin extends Enemy {
 	private float attackTimePassed;
 	
 	public Goblin(Vector2 position) {
-		super(position, 0.3f, 0);
-		body.setUserData("goblin");
+		super(position, 0.4f, 0, 6, 1);
+		body.setUserData("enemy : goblin");
 		
 		home = RoomHandler.getInstance().getCurrentRoom();
 		
@@ -51,31 +48,55 @@ public class Goblin extends Enemy {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		
-		attackTimePassed += deltaTime;
-		
 		if(timePassed == 0) {
-			
+		
+			Vector2 tempPos;
 			tempPath = AStarUtils.findPathNextToPlayer((int) Math.floor(getPosition().x),(int) Math.floor(getPosition().y));
 			
-			if(tempPath == null || tempPath.size() == 0) {
+			if(tempPath == null || tempPath.size() == 0 || nextToPlayer()) {
 				isRunning = false;
 				
-				if(attackTimePassed >= attackCooldown) {
-					GameModel.getInstance().getCharacter().takeDamage(1);
+				if(nextToPlayer()) {
+					attackTimePassed += deltaTime;
+					if(attackTimePassed >= attackCooldown) {
+						attackTimePassed = 0;
+						GameModel.getInstance().getCharacter().takeDamage(1);
+					}
+					home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(false);
 				}
-				
+				else {
+					attackTimePassed = 0;
+				}
 				return;
 			}
+			home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(true);
+			path = new LinkedList<GridCell>(tempPath);	
 			
-			path = new LinkedList<GridCell>(tempPath);
-			Vector2 tempPos = new Vector2(path.get(0).x + 0.5f, path.get(0).y + 0.5f);
-			if(EnemiesHandler.isPositionOccupied(tempPos)) {
-				isRunning = false;
+			tempPos = new Vector2(path.get(0).getX() + 0.5f, path.get(0).getY() + 0.5f);
+			
+			Array<Vector2> cellsToMakeWalkable = new Array<Vector2>();
+			while(EnemiesHandler.isPositionOccupied(tempPos)) {
+				
+				home.getNavigationLayer().getCell((int) tempPos.x, (int) tempPos.y).setWalkable(false);
+				cellsToMakeWalkable.add(new Vector2(tempPos.x, tempPos.y));
+				tempPath = AStarUtils.findPathNextToPlayer((int) Math.floor(getPosition().x),(int) Math.floor(getPosition().y));
+				
+				if(tempPath == null || tempPath.size() == 0) {
+					isRunning = false;				
+					return;
+				}
+				
+				path = new LinkedList<GridCell>(tempPath);
+				
+				tempPos = new Vector2(path.get(0).getX() + 0.5f, path.get(0).getY() + 0.5f);
 			}
-			else {
-				isRunning = true;
-				nextPosition = tempPos;
+			
+			for(Vector2 cell : cellsToMakeWalkable) {
+				home.getNavigationLayer().getCell((int) cell.x, (int) cell.y).setWalkable(true);
 			}
+			
+			isRunning = true;
+			nextPosition = tempPos;
 		}
 			
 		if(isRunning) {
@@ -107,8 +128,18 @@ public class Goblin extends Enemy {
 		return timePassed / timeForStep;
 	}
 	
+	private boolean nextToPlayer() {
+		Array<Vector2> possiblePositions = AStarUtils.getPossibleCellsNextToPlayer(GameModel.getInstance().getCharacter().getPosition().x, GameModel.getInstance().getCharacter().getPosition().y, false);
+		
+		return possiblePositions.contains(new Vector2((int) currentPosition.x, (int) currentPosition.y), false);			
+	}
+	
 	public Vector2 getNextPosition() {
 		return nextPosition;
+	}
+	
+	public Vector2 getCurrentPosition() {
+		return currentPosition;
 	}
 
 	@Override
