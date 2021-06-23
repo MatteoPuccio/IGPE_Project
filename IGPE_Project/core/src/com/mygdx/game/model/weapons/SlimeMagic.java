@@ -6,7 +6,7 @@ import com.mygdx.game.model.entities.Entity;
 public class SlimeMagic extends Magic {
 
 	public SlimeMagic(Entity owner) {
-		super(2, 2f, 10, 0.2f, 1, owner, "enemy bullet : slimeball");
+		super(2, 2f, 10, 0.2f, 1, owner);
 	}
 
 	@Override

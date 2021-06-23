@@ -3,9 +3,9 @@ package com.mygdx.game.model.entities;
 import com.badlogic.gdx.math.Vector2;
 
 import com.mygdx.game.Settings;
-import com.mygdx.game.model.BulletHandler;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.weapons.RockMagic;
+import com.mygdx.game.model.weapons.BulletHandler;
 import com.mygdx.game.model.weapons.ExplosionMagic;
 import com.mygdx.game.model.weapons.FireMagic;
 import com.mygdx.game.model.weapons.LightningMagic;
@@ -28,7 +28,6 @@ public class Character extends Entity{
 		
 	public Character(Vector2 position) {
 		super(position, 0.4f, false, 100, 10, 3);
-		body.setUserData("character");
 		
 		firstMagic = new RockMagic(this);
 		secondMagic = new ExplosionMagic(this);		

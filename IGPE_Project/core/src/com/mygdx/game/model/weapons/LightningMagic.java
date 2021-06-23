@@ -6,7 +6,7 @@ import com.mygdx.game.model.entities.Entity;
 public class LightningMagic extends Magic {
 
 	public LightningMagic(Entity owner) {
-		super(5, 3, 20, 0.15f, 5, owner, "character bullet : lightningbolt");
+		super(5, 3, 20, 0.15f, 5, owner);
 	}
 
 	@Override

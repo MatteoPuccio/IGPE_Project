@@ -2,7 +2,10 @@ package com.mygdx.game.model.weapons;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.Animated;
-import com.mygdx.game.model.BulletHandler;
+import com.mygdx.game.model.collisions.Collidable;
+import com.mygdx.game.model.collisions.Hole;
+import com.mygdx.game.model.entities.Character;
+import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.entities.Entity;
 
@@ -23,9 +26,8 @@ public abstract class Magic implements Animated {
 	protected float timePassed;
 	 
 	private int bulletCost;
-	protected String bulletUserData;
 	
-	public Magic(int damage, float cooldown, float speed, float bulletSize, int bulletCost, Entity owner, String bulletUserData) {
+	public Magic(int damage, float cooldown, float speed, float bulletSize, int bulletCost, Entity owner) {
 		this.speed = speed;
 		this.bulletSize = bulletSize;
 		this.bulletCost = bulletCost;
@@ -39,8 +41,6 @@ public abstract class Magic implements Animated {
 		attacking = false;
 		
 		timeSinceLastAttack = cooldown;
-		
-		this.bulletUserData = bulletUserData;
 	}
 
 	public void attack(float deltaTime) {
@@ -62,7 +62,7 @@ public abstract class Magic implements Animated {
 		direction.sub(position);
 		direction.nor();
 		
-		BulletHandler.getInstance().addBullet(new Bullet(this, position, direction, bulletUserData));
+		BulletHandler.getInstance().addBullet(new Bullet(this, position, direction));
 	}
 	
 	public float getSpeed() {
@@ -95,6 +95,43 @@ public abstract class Magic implements Animated {
 	
 	public boolean isAttacking() {
 		return attacking;
+	}
+
+	public final void bulletCollidedWith(Collidable coll, Bullet bullet) {
+				
+		System.out.println("bullet collided");
+		
+		if(coll instanceof Enemy) {
+			
+			if(owner instanceof Character) {
+				Enemy temp = (Enemy) coll;
+				EnemiesHandler.hitEnemy(temp, damage);
+				BulletHandler.getInstance().removeBullet(bullet);
+				bulletDestroyedEffect(coll, bullet);
+			}
+			
+		}
+		
+		else if(coll instanceof Character) {
+			
+			if(owner instanceof Enemy) {
+				Character temp = (Character) coll;
+				temp.takeDamage(damage);
+				BulletHandler.getInstance().removeBullet(bullet);
+				bulletDestroyedEffect(coll, bullet);
+			}
+				
+		}
+			
+		else if(!(coll instanceof Hole)) {
+			BulletHandler.getInstance().removeBullet(bullet);
+			bulletDestroyedEffect(coll, bullet);
+		}
+			
+	}
+	
+	protected void bulletDestroyedEffect(Collidable coll, Bullet bullet) {
+		
 	}
 
 }

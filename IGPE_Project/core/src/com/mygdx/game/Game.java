@@ -16,7 +16,7 @@ public class Game extends ApplicationAdapter {
 
 	@Override
 	public void render() {
-		controller.update(Gdx.graphics.getDeltaTime());
+		controller.update(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
 	}
 
 	@Override

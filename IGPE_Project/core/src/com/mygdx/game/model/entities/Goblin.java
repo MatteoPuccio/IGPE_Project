@@ -29,7 +29,6 @@ public class Goblin extends Enemy {
 	
 	public Goblin(Vector2 position) {
 		super(position, 0.4f, 0, 6, 1);
-		body.setUserData("enemy : goblin");
 		
 		home = RoomHandler.getInstance().getCurrentRoom();
 		

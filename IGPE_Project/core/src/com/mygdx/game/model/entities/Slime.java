@@ -10,7 +10,6 @@ public class Slime extends Enemy {
 	
 	public Slime(Vector2 position) {
 		super(position, 0.4f, 100, 5, 5);
-		body.setUserData("enemy : slime");
 		
 		slimeMagic = new SlimeMagic(this);
 		slimeMagic.setAttacking(true);

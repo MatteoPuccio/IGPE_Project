@@ -1,14 +1,13 @@
 package com.mygdx.game.model.weapons;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.model.BulletHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.entities.Entity;
 
 public class FireMagic extends Magic {
 
 	public FireMagic(Entity owner) {
-		super(1, 0.5f, 10, 0.1f, 4, owner, "character bullet : fireball");
+		super(1, 0.5f, 10, 0.1f, 4, owner);
 	}
 	
 	@Override
@@ -18,7 +17,7 @@ public class FireMagic extends Magic {
 		direction.sub(position);
 		direction.nor();
 		
-		BulletHandler.getInstance().addBullet(new Bullet(this, position, direction, bulletUserData));
+		BulletHandler.getInstance().addBullet(new Bullet(this, position, direction));
 		
 		Vector2 leftDirection = new Vector2(direction);
 		Vector2 rightDirection = new Vector2(direction);
@@ -26,8 +25,8 @@ public class FireMagic extends Magic {
 		leftDirection.rotateDeg(20);
 		rightDirection.rotateDeg(-20);
 		
-		BulletHandler.getInstance().addBullet(new Bullet(this, position, leftDirection, bulletUserData));
-		BulletHandler.getInstance().addBullet(new Bullet(this, position, rightDirection, bulletUserData));
+		BulletHandler.getInstance().addBullet(new Bullet(this, position, leftDirection));
+		BulletHandler.getInstance().addBullet(new Bullet(this, position, rightDirection));
 
 	}
 
