@@ -1,12 +1,12 @@
 package com.mygdx.game.controller;
 
 import com.badlogic.gdx.Gdx;
-
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.GameMain;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ai.SteeringUtils;
@@ -14,23 +14,25 @@ import com.mygdx.game.view.GameView;
 
 public class GameController implements InputProcessor 
 {
+	private GameMain gameMain;
 	private GameView view;
 	private boolean settingAttackPoint;
 	
-	public GameController() {
+	public GameController(GameMain gameMain) {
+		this.gameMain = gameMain;
 		Gdx.input.setInputProcessor(this);
 		view = new GameView();
 		settingAttackPoint = false;
 	}
 	
 	public void update(float deltaTime) {
-		
 		view.render(deltaTime);
 		
 		if(settingAttackPoint) {
 			setWeaponAttackPoint();
 		}
 		
+
 		GameModel.getInstance().update(deltaTime);
 	}
 	
@@ -76,6 +78,9 @@ public class GameController implements InputProcessor
 		case Keys.C:
 			GameModel.getInstance().disposeMapBodies();
 			view.changeMap(new TmxMapLoader().load("rooms/r02_w-e.tmx"));
+			break;
+		case Keys.ESCAPE:
+			gameMain.options();
 			break;
 	    }
 		GameModel.getInstance().getCharacter().setMove(direction, true);

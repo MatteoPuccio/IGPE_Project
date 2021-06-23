@@ -10,5 +10,11 @@ public class Hole implements Collidable {
 		this.body = body;
 		body.setUserData(this);
 	}
+
+	@Override
+	public void collidesWith(Collidable coll) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

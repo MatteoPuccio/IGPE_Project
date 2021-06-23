@@ -12,5 +12,11 @@ public class Solid implements Collidable {
 		body.setUserData(this);
 		
 	}
+
+	@Override
+	public void collidesWith(Collidable coll) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

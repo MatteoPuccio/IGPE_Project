@@ -1,6 +1,9 @@
 package com.mygdx.game.view;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -9,9 +12,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -21,6 +26,7 @@ import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.ParticleHandler.Particle;
+import com.mygdx.game.model.TiledMapObjectsUtil;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.level.RoomHandler;
@@ -28,11 +34,12 @@ import com.mygdx.game.model.weapons.Bullet;
 import com.mygdx.game.model.weapons.BulletHandler;
 import com.mygdx.game.view.animations.Animation;
 import com.mygdx.game.view.animations.ParticleEffect;
+import com.mygdx.game.view.animations.WeaponSlashAnimation;
 import com.mygdx.game.view.audio.Sounds;
 import com.mygdx.game.view.ui.InterfaceBar;
 import com.mygdx.game.view.ui.UserInterface;
 
-public class GameView {
+public class GameView implements Screen{
 
 	private OrthographicCamera camera;
 	private Box2DDebugRenderer debugRenderer;
@@ -40,13 +47,16 @@ public class GameView {
 	
 	private SpriteBatch batch,batchUI;
 	
+	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
-	
+	private Stage stage;
+
 	private ObjectMap<String, Animation> animations;
 	private ObjectMap<String, ParticleEffect> particleEffects;
 	private Array<ParticleEffect> activeParticleEffects;
 	
 	private Sounds sounds;
+	private WeaponSlashAnimation weaponAnimation;
 	
 	public GameView() {	
 		camera = new OrthographicCamera();
@@ -67,8 +77,10 @@ public class GameView {
 		Pixmap pm = new Pixmap(Gdx.files.internal("cursor.png"));
 		Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2));
 		pm.dispose();
+
 	}
 	
+	@Override
 	public void render(float deltaTime) {
 		updateCamera();
 		
@@ -79,7 +91,7 @@ public class GameView {
         tiledMapRenderer.render();
         
         UserInterface.getInstance().update();
-           
+
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
 		updateAnimations(deltaTime);
@@ -91,7 +103,7 @@ public class GameView {
         drawInterfaceBar(UserInterface.getInstance().manaBar);
         batchUI.end();
         
-//		debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+        //debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {
@@ -112,12 +124,14 @@ public class GameView {
 		camera.update();
 	}
 	
+	@Override
 	public void resize(int width, int height) {
 		gamePort.update(width, height);
 	}
 	
 	public void dispose() {
 		debugRenderer.dispose();
+//		tiledMap.dispose();
 		batch.dispose();
 //		sounds.dispose();
 		UserInterface.getInstance().dispose();
@@ -137,6 +151,7 @@ public class GameView {
 		animations.put("lightningbolt animation", new Animation(new TextureRegion(new Texture("animations/lightningbolt_anim_spritesheet.png")), 4, 0.1f));
 		animations.put("rock animation", new Animation(new TextureRegion(new Texture("animations/rock_anim_spritesheet.png")), 4, 0.2f));
 		animations.put("bomb animation", new Animation(new TextureRegion(new Texture("animations/bomb_anim_spritesheet.png")),4, 0.2f));
+		animations.put("droplet animation", new Animation(new TextureRegion(new Texture("animations/droplet_anim_spritesheet")), 4, 0.2f));
 
 		animations.put("goblin idle animation", new Animation(new TextureRegion(new Texture("animations/goblin_idle_spritesheet.png")), 6, 0.5f));
 		animations.put("goblin run animation", new Animation(new TextureRegion(new Texture("animations/goblin_run_spritesheet.png")), 6, 0.5f));
@@ -252,6 +267,28 @@ public class GameView {
 //	}
 	
 	public void changeMap(TiledMap map) {
+	}
+
+	@Override
+	public void show() {
+		
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hide() {
+		
 	}
 }
 

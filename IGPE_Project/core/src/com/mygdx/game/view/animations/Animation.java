@@ -30,6 +30,12 @@ public class Animation {
 		frame = 0;
 	}
 	
+	public Animation(Array<TextureRegion> frames, int frameCount, float cycleTime) {
+		this.frames = frames;
+		this.frameCount = frameCount;
+		maxFrameTime = cycleTime / frameCount;
+	}
+	
 	public Animation(Animation old) {
 		this.frames = new Array<TextureRegion>(old.frames);
 		
@@ -37,6 +43,7 @@ public class Animation {
 		
 		currentFrameTime = 0;
 		maxFrameTime = old.maxFrameTime;
+
 		frame = 0;
 	}
 	

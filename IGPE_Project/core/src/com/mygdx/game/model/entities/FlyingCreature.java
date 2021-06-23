@@ -57,16 +57,12 @@ public class FlyingCreature extends Enemy {
 	
 	@Override
 	public void collidesWith(Collidable coll) {
-		super.collidesWith(coll);
-		
-		if(coll != null) {
 			
-			if(coll instanceof Character) {
+		if(coll instanceof Character) {
 				
-				Character temp = (Character) coll;
-				temp.takeDamage(damage);
-				
-			}
+			Character temp = (Character) coll;
+			temp.takeDamage(damage);
+			
 		}
 	}
 }

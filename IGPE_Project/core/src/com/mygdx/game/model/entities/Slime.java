@@ -2,6 +2,7 @@ package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.weapons.SlimeMagic;
 
 public class Slime extends Enemy {
@@ -51,6 +52,12 @@ public class Slime extends Enemy {
 	@Override
 	public float getRotation() {
 		return 0;
+	}
+
+	@Override
+	public void collidesWith(Collidable coll) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

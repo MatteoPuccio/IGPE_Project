@@ -14,7 +14,7 @@ import com.mygdx.game.model.entities.Entity;
 //Konosuba reference
 public class ExplosionMagic extends Magic {
 
-	private int explosionDamage;
+	private float explosionDamage;
 	private float explosionRadius;
 	
 	public ExplosionMagic(Entity owner) {

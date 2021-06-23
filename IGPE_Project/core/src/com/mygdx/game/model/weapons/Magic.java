@@ -21,13 +21,13 @@ public abstract class Magic implements Animated {
 	
 	protected boolean attacking;
 	
-	protected int damage;
+	protected float damage;
 	protected float cooldown;
 	protected float timePassed;
 	 
-	private int bulletCost;
+	private float bulletCost;
 	
-	public Magic(int damage, float cooldown, float speed, float bulletSize, int bulletCost, Entity owner) {
+	public Magic(float damage, float cooldown, float speed, float bulletSize, float bulletCost, Entity owner) {
 		this.speed = speed;
 		this.bulletSize = bulletSize;
 		this.bulletCost = bulletCost;
@@ -73,7 +73,7 @@ public abstract class Magic implements Animated {
 		return bulletSize;
 	}
 	
-	public int getDamage() {
+	public float getDamage() {
 		return damage;
 	}
 	
@@ -98,9 +98,7 @@ public abstract class Magic implements Animated {
 	}
 
 	public final void bulletCollidedWith(Collidable coll, Bullet bullet) {
-				
-		System.out.println("bullet collided");
-		
+						
 		if(coll instanceof Enemy) {
 			
 			if(owner instanceof Character) {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.ParticleHandler;
+import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.weapons.RockMagic;
 import com.mygdx.game.model.weapons.BulletHandler;
 import com.mygdx.game.model.weapons.ExplosionMagic;
@@ -172,6 +173,12 @@ public class Character extends Entity{
 	@Override
 	public float getRotation() {
 		return 0;
+	}
+
+	@Override
+	public void collidesWith(Collidable coll) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
