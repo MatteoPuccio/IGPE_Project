@@ -1,6 +1,7 @@
 package com.mygdx.game.model.level;
 
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.model.weapons.BulletHandler;
 
 public class RoomHandler {
 
@@ -8,9 +9,12 @@ public class RoomHandler {
 	
 	private Room currentRoom;
 	private Array<Room> rooms;
+
+	private float elapsedTeleportTime;
 	
 	private RoomHandler() {
 		rooms = new Array<Room>();
+		elapsedTeleportTime = 3f;
 	}
 	
 	public static RoomHandler getInstance() {
@@ -25,6 +29,7 @@ public class RoomHandler {
 		}
 		rooms.clear();
 		rooms = RandomRoomGenerator.getInstance().createRooms();
+		elapsedTeleportTime = 3f;
 		setCurrentRoom(rooms.first());
 	}
 	
@@ -42,8 +47,18 @@ public class RoomHandler {
 	}
 
 	public Room switchRoom(int direction) {
+		BulletHandler.getInstance().removeAllBullets();
+		elapsedTeleportTime = 0f;
 		Connection [] connections = currentRoom.getConnections();
 		return setCurrentRoom(connections[direction].getOtherRoom(currentRoom));
+	}
+
+	public float getElapsedTeleportTime() {
+		return elapsedTeleportTime;
+	}
+
+	public void updateTime(float deltaTime) {
+		elapsedTeleportTime += deltaTime;
 	}
 	
 }

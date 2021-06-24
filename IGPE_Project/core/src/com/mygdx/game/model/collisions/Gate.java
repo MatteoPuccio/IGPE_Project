@@ -33,7 +33,7 @@ public class Gate implements Collidable {
 			if(direction == END) {
 				GameModel.getInstance().setNewFloor();
 			}
-			else {
+			else if(RoomHandler.getInstance().getElapsedTeleportTime() >= 3.0f) {
 				Connection [] connections = RoomHandler.getInstance().getCurrentRoom().getConnections();
 				Room otherRoom = RoomHandler.getInstance().switchRoom(direction);
 				int otherDirection = connections[direction].getOtherPoint(direction);

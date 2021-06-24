@@ -73,7 +73,7 @@ public class TitleScreen implements Screen {
         mainTable.setFillParent(true);
         mainTable.center();
 
-        Label title = new Label("RogueLike",titleStyle);
+        Label title = new Label("Mage Grotto",titleStyle);
         title.setColor(new Color(Color.BLACK));
         TextButton playButton = new TextButton("PLAY", skin);
         TextButton exitButton = new TextButton("EXIT", skin);
@@ -115,7 +115,6 @@ public class TitleScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		//RGB => 66, 40, 53
 		Gdx.gl.glClearColor(0, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         

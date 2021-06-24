@@ -24,15 +24,22 @@ public class BulletHandler {
 	}
 	
 	public void removeBullet(Bullet bullet) {
-		
-		for(int i = 0; i < bullets.size; ++i)
+		boolean bulletFound = false;
+		for(int i = 0; i < bullets.size && !bulletFound; ++i)
 		{
 			if(bullets.get(i) == bullet)
 			{
 				bullets.removeIndex(i);
 				GameModel.getInstance().addBodyToDispose(bullet.getBody());
+				bulletFound = true;
 			}
 		}
+	}
+	
+	public void removeAllBullets() {
+		for(int i = 0; i < bullets.size; ++i)
+			GameModel.getInstance().addBodyToDispose(bullets.get(i).getBody());
+		bullets.clear();
 	}
 	
 	public Array<Bullet> getBullets() {
