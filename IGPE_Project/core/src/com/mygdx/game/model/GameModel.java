@@ -2,13 +2,11 @@ package com.mygdx.game.model;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.collisions.CollisionHandler;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.entities.EnemiesHandler;
-import com.mygdx.game.model.level.Room2;
 import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.model.weapons.Magic;
 
@@ -19,12 +17,32 @@ public class GameModel {
 	private static GameModel gameModel = null;
 	private World world;
 	private Array<Body> bodiesToDispose;
+	private Array<Body> bodiesToEnable;
+	private Array<Body> bodiesToDisable;
+	private boolean characterTransform;
+	
 	private int coins;
 	private boolean settingMagicChangeScreen;
 	private Magic pickedUpMagic;
 	
+	private Vector2 switchPosition;
+	private final Vector2 initialSpawnPosition;
+	
+	private float switchAngle;
+
+	private boolean newFloor;
+	
 	private GameModel() {
+		initialSpawnPosition = new Vector2(10f,10f);
 		bodiesToDispose = new Array<Body>();
+		bodiesToEnable = new Array<Body>();
+		bodiesToDisable = new Array<Body>();
+		
+		characterTransform = false;
+		switchPosition = new Vector2();
+		switchAngle = 0f;
+		
+		newFloor = false;
 		world = new World(new Vector2(0,0), false);
 		world.setContactListener(new CollisionHandler());
 		
@@ -39,15 +57,12 @@ public class GameModel {
 	}
 	
 	public void init() {
-		character = new Character(new Vector2(9.5f,7.5f));
-		createRooms();
+		if(GameModel.getInstance().getCharacter() != null)
+			GameModel.getInstance().addBodyToDispose(GameModel.getInstance().getCharacter().getBody()); 
+		character = new Character(new Vector2(initialSpawnPosition));
+		RoomHandler.getInstance().createRooms();
 	}
 	
-	private void createRooms() {
-		//RandomRoomGenerator.getInstance().createRooms();
-		RoomHandler.getInstance().setCurrentRoom(new Room2());
-		RoomHandler.getInstance().getCurrentRoom().init();
-	}
 	
 	public Character getCharacter() {
 		return character;
@@ -74,37 +89,64 @@ public class GameModel {
 		bodiesToDispose.add(b);
 	}
 	
+	public void addBodyToEnable(Array<Body> bodies,boolean enabled) {
+		if(enabled)
+			bodiesToEnable.addAll(bodies);
+		else
+			bodiesToDisable.addAll(bodies);
+	}
+	
 	private void disposeBodies() {
-		Array<Fixture> fixtures;
-		for(Body b:bodiesToDispose)
-		{
-			fixtures = b.getFixtureList();
-			for(Fixture f : fixtures)
-				b.destroyFixture(f);
-		}
+		for(int i = 0; i < bodiesToDispose.size;++i)
+			world.destroyBody(bodiesToDispose.get(i));
 		bodiesToDispose.clear();
 	}
 
-	public void disposeMapBodies() {
-		Array<Body> oldBodies = new Array<Body>();
-		world.getBodies(oldBodies);
-		for (Body b: oldBodies) {
-			if (b.getUserData() != "character") {
-				addBodyToDispose(b);
-			}
-		}
+	private void enableBodies() {
+		for(Body body:bodiesToEnable)
+			body.setActive(true);
+		bodiesToEnable.clear();
 	}
+	
+	private void disableBodies() {
+		for(Body body:bodiesToDisable)
+			body.setActive(false);
+		bodiesToDisable.clear();
+	}
+	
 	
 	public void update(float deltaTime) {
 		world.step(deltaTime, 6, 2);
 		character.update(deltaTime);
 		EnemiesHandler.update(deltaTime);
-		
+		if(characterTransform) {
+			characterTransform = false;
+			character.getBody().setTransform(switchPosition, switchAngle);
+		}
+		if(newFloor) {
+			character.getBody().setTransform(initialSpawnPosition, character.getBody().getAngle());
+			RoomHandler.getInstance().createRooms();
+			newFloor = false;
+		}
 		disposeBodies();
+		enableBodies();
+		disableBodies();
 	}
-	
 	public void addCoins(int coinsToAdd) {
 		coins += coinsToAdd;
 	}
+
+	public void setCharacterTransform(Vector2 position, float angle) {
+		characterTransform = true;
+		switchPosition = position;
+		switchAngle = angle;
+	}
 	
+	public Vector2 getInitialSpawnPosition() {
+		return initialSpawnPosition;
+	}
+
+	public void setNewFloor() {
+		newFloor = true;
+	}
 }

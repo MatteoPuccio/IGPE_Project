@@ -1,7 +1,5 @@
 package com.mygdx.game.controller;
 
-import java.awt.Button;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
@@ -11,17 +9,16 @@ import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.Settings;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.view.GameView;
 
 public class GameController implements InputProcessor 
 {
-	private GameMain gameMain;
 	private GameView view;
 	private boolean leftClickPressed;
 	private boolean rightClickPressed;
 	
-	public GameController(GameMain gameMain) {
-		this.gameMain = gameMain;
+	public GameController() {
 		Gdx.input.setInputProcessor(this);
 		view = new GameView();
 		leftClickPressed = false;
@@ -29,6 +26,7 @@ public class GameController implements InputProcessor
 	}
 	
 	public void update(float deltaTime) {
+		view.changeMap(RoomHandler.getInstance().getCurrentRoom().getTileMap());
 		view.render(deltaTime);
 
 		GameModel.getInstance().update(deltaTime);
@@ -42,7 +40,7 @@ public class GameController implements InputProcessor
 		else	
 			GameModel.getInstance().getCharacter().setFirstMagicAttacking(false);
 		
-		if(rightClickPressed && ! leftClickPressed) {
+		if(rightClickPressed && !leftClickPressed) {
 			Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 			GameModel.getInstance().getCharacter().setSecondMagicAttacking(true);
 			GameModel.getInstance().getCharacter().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
@@ -83,7 +81,7 @@ public class GameController implements InputProcessor
 			direction = Settings.DOWN;
 			break;
 		case Keys.ESCAPE:
-			gameMain.options();
+			GameMain.getInstance().options();
 			break;
 	    }
 		GameModel.getInstance().getCharacter().setMove(direction, true);
@@ -126,7 +124,6 @@ public class GameController implements InputProcessor
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		
 		if(button == Buttons.LEFT)
 			leftClickPressed = true;
 		

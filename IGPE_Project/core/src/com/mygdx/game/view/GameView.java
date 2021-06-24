@@ -2,6 +2,7 @@ package com.mygdx.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -51,6 +52,7 @@ public class GameView implements Screen{
 	private ObjectMap<Integer, Animation> animations;
 	private ObjectMap<Integer, ParticleEffect> particleEffects;
 	private Array<ParticleEffect> activeParticleEffects;
+	private Cursor cursor;
 	
 	public GameView() {	
 		camera = new OrthographicCamera();
@@ -69,9 +71,11 @@ public class GameView implements Screen{
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
 //		weaponAnimation = new WeaponSlashAnimation();
 		
-		Pixmap pm = new Pixmap(Gdx.files.internal("cursor.png"));
-		Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2));
+		Pixmap pm = new Pixmap(Gdx.files.internal("game_cursor.png"));
+		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
+		Gdx.graphics.setCursor(cursor);
 		pm.dispose();
+
 	}
 	
 	@Override
@@ -96,21 +100,24 @@ public class GameView implements Screen{
 		
 		batchUI.begin();
         drawInterfaceBar(UserInterface.getInstance().manaBar);
+        drawInterfaceBar(UserInterface.getInstance().healthBar);
         batchUI.end();
         
         debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {
-		Texture background = bar.background;
+		Texture background = bar.getBackground();
+		Texture icon = bar.getIcon();
 		
-		TextureRegion barFilled = bar.barFilled;
+		TextureRegion barFilled = bar.getBarFilled();
 		
-		Vector2 position = bar.position;
-		Vector2 barPosition = bar.barPosition;
+		Vector2 position = bar.getPosition();
+		Vector2 barPosition = bar.getBarPosition();
 		
 		batchUI.draw(background, position.x,position.y,background.getWidth(),background.getHeight());
-		batchUI.draw(barFilled,barPosition.x,barPosition.y,barFilled.getRegionWidth(),barFilled.getRegionHeight());	
+		batchUI.draw(barFilled,barPosition.x,barPosition.y,barFilled.getRegionWidth(),barFilled.getRegionHeight());
+		batchUI.draw(icon, position.x, position.y, icon.getWidth(),icon.getHeight());
 	}
 
 	private void updateCamera() {
@@ -126,6 +133,7 @@ public class GameView implements Screen{
 	
 	public void dispose() {
 		debugRenderer.dispose();
+		cursor.dispose();
 //		tiledMap.dispose();
 		batch.dispose();
 		UserInterface.getInstance().dispose();
@@ -265,11 +273,12 @@ public class GameView implements Screen{
 //	}
 	
 	public void changeMap(TiledMap map) {
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Settings.PPM);
 	}
 
 	@Override
 	public void show() {
-		
+		Gdx.graphics.setCursor(cursor);
 	}
 
 	@Override

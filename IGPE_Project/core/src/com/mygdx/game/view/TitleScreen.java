@@ -38,10 +38,9 @@ public class TitleScreen implements Screen {
     private Skin skin;
     private BitmapFont titleFont;
     private LabelStyle titleStyle;
-	private GameMain game;
 	private Table mainTable;
 	
-	public TitleScreen(GameMain game) {
+	public TitleScreen() {
 		atlas = new TextureAtlas("skin/skin.atlas");
 	    skin = new Skin(Gdx.files.internal("skin/skin.json"), atlas);
 	    skin.getFont("boldFont").getData().setScale(2f,2f);
@@ -56,7 +55,6 @@ public class TitleScreen implements Screen {
 	    	titleScreenFrames.add(new TextureRegion(new Texture("title_screen/title-screen" + i + ".png")));
 	    titleScreenAnimation = new Animation(titleScreenFrames, 6, 0.5f);
 	    
-	    this.game = game;
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
         viewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), camera);
@@ -65,12 +63,13 @@ public class TitleScreen implements Screen {
         camera.position.set(0, 0, 0);
         camera.update();
 
-        stage = new Stage(viewport, batch);  
+        stage = new Stage(viewport, batch);
+        
 	}
 
 	@Override
 	public void show() {
-        mainTable = new Table();
+		mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();
 
@@ -83,14 +82,14 @@ public class TitleScreen implements Screen {
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	game.start();
+            	GameMain.getInstance().start();
             }
         });
         
         optionButton.addListener(new ClickListener(){
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
-        		game.options();
+        		GameMain.getInstance().options();
         	}
         });
         
@@ -117,7 +116,7 @@ public class TitleScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		//RGB => 66, 40, 53
-		Gdx.gl.glClearColor(0.259f, 0.157f, 0.208f, 1f);
+		Gdx.gl.glClearColor(0, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         Sounds.getInstance().update();

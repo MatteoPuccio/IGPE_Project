@@ -21,7 +21,7 @@ public abstract class Enemy extends Entity {
 	@Override
 	public void takeDamage(float damage) {
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.HIT);
-		currentHealth-=damage;
+		currentHealth -= damage;
 		if(currentHealth > 0)
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
 	}

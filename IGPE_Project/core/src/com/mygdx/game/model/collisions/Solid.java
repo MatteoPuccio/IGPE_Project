@@ -19,4 +19,7 @@ public class Solid implements Collidable {
 		
 	}
 	
+	public Body getBody() {
+		return body;
+	}
 }

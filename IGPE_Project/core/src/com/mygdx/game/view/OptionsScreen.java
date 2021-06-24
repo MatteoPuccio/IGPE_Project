@@ -37,7 +37,6 @@ public class OptionsScreen implements Screen{
     protected Skin skin;
     private BitmapFont titleFont;
     private LabelStyle titleStyle;
-    private GameMain game;
 	private Table mainTable;
 	
 	private Label optionsLabel,volumeLabel;
@@ -45,8 +44,7 @@ public class OptionsScreen implements Screen{
 	private TextButton backButton;
 	
 	
-	public OptionsScreen(GameMain game) {
-		this.game = game;
+	public OptionsScreen() {
 		
 		atlas = new TextureAtlas("skin/skin.atlas");
 	    skin = new Skin(Gdx.files.internal("skin/skin.json"), atlas);
@@ -54,7 +52,7 @@ public class OptionsScreen implements Screen{
 		
 	    titleFont = new BitmapFont(Gdx.files.internal("skin/AncientModernTales.fnt"));
 	    titleFont.getData().scale(1.5f);
-	    titleStyle = new Label.LabelStyle(titleFont, Color.WHITE);
+	    titleStyle = new Label.LabelStyle(titleFont, Color.BLACK);
 	    
 	    
 		batch = new SpriteBatch();
@@ -82,14 +80,14 @@ public class OptionsScreen implements Screen{
         mainTable.setFillParent(true);
         mainTable.center();
 
-        if(game.getPreviousState() == Settings.RUNNING)
-        	optionsLabel.setText("PAUSE");
+        if(GameMain.getInstance().getPreviousState() == Settings.RUNNING)
+        	optionsLabel.setText("Pause");
         
         volumeSlider.setVisualPercent(Settings.getVolume());
         backButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
-        		game.backOptions();
+        		GameMain.getInstance().backOptions();
         	}
         });
         
@@ -98,6 +96,8 @@ public class OptionsScreen implements Screen{
 			public void changed(ChangeEvent event, Actor actor) {
 				Settings.setVolume(volumeSlider.getValue());
 //				SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
+				Settings.setVolume(volumeSlider.getValue());
+				SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
 			}
         });
         
@@ -113,11 +113,10 @@ public class OptionsScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
-	
+		Gdx.gl.glClearColor(0.259f, 0.157f, 0.208f, 1f);
+    	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		Sounds.getInstance().update();
-		
-		Gdx.gl.glClearColor(0.26f, 0.16f, 0.2f, 1f);
-    		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();		
 	}

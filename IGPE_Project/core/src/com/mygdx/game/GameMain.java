@@ -2,10 +2,13 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.mygdx.game.constants.Settings;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.view.DeathScreen;
 import com.mygdx.game.view.OptionsScreen;
 import com.mygdx.game.view.TitleScreen;
 import com.mygdx.game.view.audio.SoundHandler;
@@ -13,18 +16,32 @@ import com.mygdx.game.view.audio.Sounds;
 
 public class GameMain extends Game{
 	
+	private static GameMain instance = null;
 	private GameController controller;
 	private TitleScreen titleScreen;
 	private	OptionsScreen optionsScreen;
+	private DeathScreen deathScreen;
+	private Cursor cursor;
 	private int state, previousState;
+	
+	public static GameMain getInstance() {
+		if(instance == null)
+			instance = new GameMain();
+		return instance;
+	}
 	
 	@Override
 	public void create() {
 		state = Settings.TITLE_SCREEN;
 		GameModel.getInstance().init();
-		controller = new GameController(this);
-		titleScreen = new TitleScreen(this);
-		optionsScreen = new OptionsScreen(this);
+		controller = new GameController();
+		titleScreen = new TitleScreen();
+		optionsScreen = new OptionsScreen();
+		deathScreen = new DeathScreen();
+		Pixmap pm = new Pixmap(Gdx.files.internal("menu_cursor.png"));
+		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
+		Gdx.graphics.setCursor(cursor);
+		pm.dispose();
 		setScreen(titleScreen);
 	}
 
@@ -43,6 +60,9 @@ public class GameMain extends Game{
 		case Settings.OPTIONS:
 			optionsScreen.render(deltaTime);
 			break;
+		case Settings.DEAD:
+			deathScreen.render(Gdx.graphics.getDeltaTime());
+			break;
 		}
 	}
 
@@ -52,6 +72,8 @@ public class GameMain extends Game{
 		controller.dispose();
 		titleScreen.dispose();
 		optionsScreen.dispose();
+		deathScreen.dispose();
+		cursor.dispose();
 	}
 	
 	@Override
@@ -76,6 +98,7 @@ public class GameMain extends Game{
 	}
 
 	public void options() {
+		Gdx.graphics.setCursor(cursor);
 		previousState = state;
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
 		state = Settings.OPTIONS;
@@ -91,5 +114,19 @@ public class GameMain extends Game{
 		else
 			setScreen(titleScreen);
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
+	}
+
+	public void death() {
+		state = Settings.DEAD;
+		Gdx.graphics.setCursor(cursor);
+		setScreen(deathScreen);
+	}
+	
+	public void restart() {
+		state = Settings.TITLE_SCREEN;
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
+		GameModel.getInstance().init();
+		setScreen(titleScreen);
+		
 	}
 }

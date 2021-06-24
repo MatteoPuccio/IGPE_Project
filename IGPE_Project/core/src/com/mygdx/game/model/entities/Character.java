@@ -2,6 +2,7 @@ package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.constants.PowerUpsConstants;
@@ -10,6 +11,7 @@ import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.weapons.ExplosionMagic;
+import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
 import com.mygdx.game.model.weapons.WaterMagic;
 import com.mygdx.game.view.audio.SoundHandler;
@@ -38,7 +40,7 @@ public class Character extends Entity{
 	private ObjectMap<Integer, Float> elapsedPowerUpsTimes;
 	
 	public Character(Vector2 position) {
-		super(position, 0.4f, false, 50, 10, 3);
+		super(position, 0.4f, false, 100, 10, 3);
 		
 		firstMagic = new WaterMagic(this);
 		secondMagic = new ExplosionMagic(this);		
@@ -158,12 +160,12 @@ public class Character extends Entity{
 	@Override
 	public void takeDamage(float damage) {
 		if(!invincible) {
-			currentHealth -= 0;
+			currentHealth -= damage;
 			invincible = true;
 			SoundHandler.getInstance().addSoundToQueue(SoundConstants.HURT);
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
 			if(currentHealth <= 0)
-				System.exit(0);
+				GameMain.getInstance().death();
 		}
 	}
 	
@@ -276,6 +278,10 @@ public class Character extends Entity{
 	@Override
 	public float getRotation() {
 		return 0;
+	}
+
+	public float getCurrentHealth() {
+		return currentHealth;
 	}
 
 	@Override

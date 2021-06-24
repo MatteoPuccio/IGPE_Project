@@ -35,7 +35,7 @@ public class BulletHandler {
 		for(int i = 0; i < bullets.size; ++i)
 		{
 			if(bullets.get(i) == bullet)
-			{				
+			{
 				bullets.removeIndex(i);
 				GameModel.getInstance().addBodyToDispose(bullet.getBody());
 			}

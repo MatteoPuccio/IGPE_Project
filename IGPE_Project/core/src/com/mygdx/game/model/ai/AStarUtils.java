@@ -2,7 +2,6 @@ package com.mygdx.game.model.ai;
 
 import java.util.List;
 
-import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer;
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder;
 

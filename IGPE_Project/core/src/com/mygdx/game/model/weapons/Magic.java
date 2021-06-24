@@ -1,7 +1,6 @@
 package com.mygdx.game.model.weapons;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.collisions.Hole;
 import com.mygdx.game.model.entities.Character;
