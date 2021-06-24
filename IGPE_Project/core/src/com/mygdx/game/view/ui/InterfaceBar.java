@@ -34,6 +34,7 @@ public class InterfaceBar {
 	{
 		background.dispose();
 		foreground.dispose();
+		icon.dispose();
 	}
 
 	public void update(float percentage)
