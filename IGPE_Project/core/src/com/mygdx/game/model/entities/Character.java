@@ -1,13 +1,16 @@
 package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.ParticleEffectConstants;
+import com.mygdx.game.constants.PowerUpsConstants;
 import com.mygdx.game.constants.Settings;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.collisions.Collidable;
+import com.mygdx.game.model.weapons.ExplosionMagic;
 import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
 import com.mygdx.game.model.weapons.WaterMagic;
@@ -29,12 +32,18 @@ public class Character extends Entity{
 	
 	private float stepTimer;
 	private float stepElapsed;
+
+	private float speedMultiplier;
 		
+	private ObjectMap<Integer, Boolean> enabledPowerUps;
+	private ObjectMap<Integer, Float> maxPowerUpsTimes;
+	private ObjectMap<Integer, Float> elapsedPowerUpsTimes;
+	
 	public Character(Vector2 position) {
 		super(position, 0.4f, false, 100, 10, 3);
 		
 		firstMagic = new WaterMagic(this);
-		secondMagic = new LightningMagic(this);		
+		secondMagic = new ExplosionMagic(this);		
 		
 		leftMove = false;
 		rightMove = false;
@@ -48,6 +57,27 @@ public class Character extends Entity{
 		
 		stepTimer = 0.3f;
 		stepElapsed = 0;
+		
+		speedMultiplier = 1;
+		
+		enabledPowerUps = new ObjectMap<Integer, Boolean>();
+		maxPowerUpsTimes = new ObjectMap<Integer, Float>();
+		elapsedPowerUpsTimes = new ObjectMap<Integer, Float>();
+		
+		initPowerUps();
+	}
+	
+	private void initPowerUps() {
+		
+		enabledPowerUps.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, false);
+		enabledPowerUps.put(PowerUpsConstants.SPEED_POWERUP, false);
+		
+		maxPowerUpsTimes.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, 120f);
+		maxPowerUpsTimes.put(PowerUpsConstants.SPEED_POWERUP, 60f);
+		
+		elapsedPowerUpsTimes.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, 0f);
+		elapsedPowerUpsTimes.put(PowerUpsConstants.SPEED_POWERUP, 0f);
+		
 	}
 	
 	private void move(float deltaTime) {
@@ -114,8 +144,17 @@ public class Character extends Entity{
 				stepElapsed = 0;
 				SoundHandler.getInstance().addSoundToQueue(SoundConstants.STEP);
 			}
-		}
+		}	
 		
+		for(Integer i : enabledPowerUps.keys()) {
+			if(enabledPowerUps.get(i)) {
+				float elapsed = elapsedPowerUpsTimes.get(i);
+				elapsed += deltaTime;
+				if(elapsed >= maxPowerUpsTimes.get(i))
+					elapsed = 0;
+				elapsedPowerUpsTimes.put(i, elapsed);
+			}
+		}
 	}
 
 	@Override
@@ -171,8 +210,41 @@ public class Character extends Entity{
 		return secondMagic;
 	}
 	
+	public void enablePowerUp(int powerup) {
+		
+		enabledPowerUps.put(powerup, true);
+		
+		switch(powerup) {
+		
+		case PowerUpsConstants.MANA_RECHARGE_POWERUP:
+			manaRechargeMultiplier *= 2;
+			break;
+			
+		case PowerUpsConstants.SPEED_POWERUP:
+			speedMultiplier *= 1.5f;
+			break;
+		}
+	}
+	
+	private void disablePowerUp(int powerup) {
+		
+		enabledPowerUps.put(powerup, false);
+		
+		switch(powerup) {
+		
+		case PowerUpsConstants.MANA_RECHARGE_POWERUP:
+			manaRechargeMultiplier /= 2;
+			break;
+		
+		case PowerUpsConstants.SPEED_POWERUP:
+			speedMultiplier /= 1.5f;
+			break;
+		}
+		
+	}
+	
 	public int getCurrentAnimationId() {
-		if(direction.x == 0 && direction.y == 0) {
+		if(!body.getLinearVelocity().isZero()) {
 			if(invincible)
 				return AnimationConstants.KNIGHT_INVINCIBLE_IDLE_ANIMATION;
 			return AnimationConstants.KNIGHT_IDLE_ANIMATION;
