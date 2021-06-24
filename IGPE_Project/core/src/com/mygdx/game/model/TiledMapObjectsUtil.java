@@ -2,10 +2,13 @@ package com.mygdx.game.model;
 
 import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer;
 
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -13,61 +16,94 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Settings;
+import com.mygdx.game.model.collisions.Gate;
 import com.mygdx.game.model.collisions.Hole;
 import com.mygdx.game.model.collisions.Solid;
 
 public class TiledMapObjectsUtil {
-	public static void parse(TiledMap tilemap) {
-		MapObjects objects = tilemap.getLayers().get("Collisions").getObjects();
-		MapObjects voidObjects = tilemap.getLayers().get("Void").getObjects();
-		MapObjects gatesObjects = tilemap.getLayers().get("Gates").getObjects();
-		
-		parseSolid(tilemap, objects);
-		parseGates(tilemap, gatesObjects);
-		parseHoles(tilemap, voidObjects);
-		
-	}
 	
 	public static NavigationTiledMapLayer getNavigationTiledMapLayer(TiledMap tilemap) {
 		NavigationTiledMapLayer navigationLayer = (NavigationTiledMapLayer) tilemap.getLayers().get("navigation");
 		return navigationLayer;
 	}
 	
-	private static void parseGates(TiledMap tilemap, MapObjects objects) {
-		for(MapObject object : objects)
+	public static Array<Gate> parseGates(TiledMap tilemap) {
+		MapObjects gatesObjects = tilemap.getLayers().get("Gates").getObjects();
+		Array<Gate> gates = new Array<Gate>();
+		MapLayer spawnLayers = tilemap.getLayers().get("SpawnPoints");
+		spawnLayers.setVisible(false);
+		MapObjects spawnPoints = spawnLayers.getObjects();
+		for(MapObject object : gatesObjects)
 		{
 			Shape shape = null;
 			if(object instanceof PolygonMapObject)
 				shape = createPolygon((PolygonMapObject) object);
 			
-			createBody(shape, true);
+			String objectName = object.getName();
+			int direction = 0;
+			switch (objectName) {
+			case "e":
+				direction = Gate.RIGHT;
+				break;
+			case "w":
+				direction = Gate.LEFT;
+				break;
+			case "s":
+				direction = Gate.DOWN;
+				break;
+			case "n":
+				direction = Gate.UP;
+				break;
+			case "floor":
+				direction = Gate.END;
+				break;
+			}
+			Vector2 spawnPosition = new Vector2();
+			for(MapObject spawn:spawnPoints) {
+				if(spawn instanceof TiledMapTileMapObject) {
+					TiledMapTileMapObject spawnTile = (TiledMapTileMapObject) spawn;
+					TiledMapTile tile = spawnTile.getTile();
+					if(((String) tile.getProperties().get("spawnpoint")).equals(objectName)) {
+						spawnPosition.x = spawnTile.getX()/Settings.PPM + 0.5f;
+						spawnPosition.y = spawnTile.getY()/Settings.PPM + 0.5f;
+					}
+				}
+			}
+			gates.add(new Gate(createBody(shape, true), direction, spawnPosition));
 		}
+		return gates;
 	}
 	
-	private static void parseSolid(TiledMap tilemap, MapObjects objects) {
+	public static Array<Solid> parseSolid(TiledMap tilemap) {
+		MapObjects solidObjects = tilemap.getLayers().get("Collisions").getObjects();
+		Array<Solid> solids = new Array<Solid>();
 		
-		for(MapObject object : objects)
+		for(MapObject object : solidObjects)
 		{
 			Shape shape = null;
 			if(object instanceof PolygonMapObject)
 				shape = createPolygon((PolygonMapObject) object);
 			
-			new Solid(createBody(shape, false));
+			solids.add(new Solid(createBody(shape, false))); 
 		}
+		return solids;
 	}
 	
-	private static void parseHoles(TiledMap tilemap, MapObjects objects) {
+	public static Array<Hole> parseHoles(TiledMap tilemap) {
+		MapObjects holeObjects = tilemap.getLayers().get("Void").getObjects();
+		Array<Hole> holes = new Array<Hole>();
 		
-		for(MapObject object : objects)
+		for(MapObject object : holeObjects)
 		{
 			Shape shape = null;
 			if(object instanceof PolygonMapObject)
 				shape = createPolygon((PolygonMapObject) object);
 			
-			new Hole(createBody(shape, false));
+			holes.add(new Hole(createBody(shape, false)));
 		}
-		
+		return holes;
 	}
 	
 	private static ChainShape createPolygon(PolygonMapObject polygon) {
@@ -100,6 +136,7 @@ public class TiledMapObjectsUtil {
 		body.createFixture(f);
 		
 		shape.dispose();
+		body.setActive(false);
 		return body;
 	}
 }	

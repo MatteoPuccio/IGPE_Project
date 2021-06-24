@@ -10,6 +10,7 @@ import com.mygdx.game.GameMain;
 import com.mygdx.game.Settings;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ai.SteeringUtils;
+import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.view.GameView;
 
 public class GameController implements InputProcessor 
@@ -24,13 +25,10 @@ public class GameController implements InputProcessor
 	}
 	
 	public void update(float deltaTime) {
+		view.changeMap(RoomHandler.getInstance().getCurrentRoom().getTileMap());
 		view.render(deltaTime);
-		
-		if(settingAttackPoint) {
+		if(settingAttackPoint) 
 			setWeaponAttackPoint();
-		}
-		
-
 		GameModel.getInstance().update(deltaTime);
 	}
 	
@@ -73,10 +71,10 @@ public class GameController implements InputProcessor
 			GameModel.getInstance().getCharacter().setWeapon(2);
 			break;
 //		TODO: delete after automatic implementation complete
-		case Keys.C:
-			GameModel.getInstance().disposeMapBodies();
-			view.changeMap(new TmxMapLoader().load("rooms/r02_w-e.tmx"));
-			break;
+//		case Keys.C:
+//			GameModel.getInstance().disposeMapBodies();
+//			view.changeMap(new TmxMapLoader().load("rooms/r02_w-e.tmx"));
+//			break;
 		case Keys.ESCAPE:
 			GameMain.getInstance().options();
 			break;

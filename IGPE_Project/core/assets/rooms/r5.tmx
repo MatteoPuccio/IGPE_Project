@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="22">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="40">
  <tileset firstgid="1" source="0x72_16x16DungeonTileset.v4.tsx"/>
  <tileset firstgid="257" source="0x72_16x16DungeonTileset_walls.v1.tsx"/>
  <tileset firstgid="513" source="NavigationTileSet.tsx"/>
+ <tileset firstgid="515" source="Enemies.tsx"/>
+ <tileset firstgid="518" source="spawnTileset.tsx"/>
  <layer id="1" name="bg" width="30" height="30">
   <data encoding="csv">
 101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,
@@ -276,37 +278,41 @@
 </data>
  </layer>
  <objectgroup id="8" name="Collisions">
-  <object id="19" x="416" y="148" rotation="180">
-   <polygon points="0,-194.933 16,-194.933 16,44 32,44 36,40 44,40 48,44 304,44 308,40 316,40 320,44 336,44 336,29.067 352,29.067 352,-6.933 336,-6.933 336,-246.933 16,-246.933 16,-230.933 0,-230.933"/>
+  <object id="31" x="64" y="120">
+   <polygon points="0,0 16,0 15.9091,-15.6364 31.9091,-15.6364 36,-12 44,-12 47.9091,-15.6364 303.909,-15.6364 308,-12 316,-12 319.909,-15.6364 335.909,-15.6364 336,224 352,224 352,260 336,260 336,276 16,276 16,36 0,36"/>
   </object>
-  <object id="21" x="128" y="248">
-   <polygon points="0,0 0,-24 16,-24 16,0"/>
+  <object id="37" x="128" y="248">
+   <polygon points="0,0.1875 0,-24 16,-24 16,0.1875"/>
   </object>
  </objectgroup>
  <objectgroup id="9" name="Void">
-  <object id="14" x="80" y="184" rotation="180">
-   <polygon points="0,24.4545 -272,24.4545 -272.091,0 -0.0909091,0"/>
+  <object id="32" x="80" y="184">
+   <polygon points="-0.125,0.375 0,-24 272,-24 271.875,0.375"/>
   </object>
-  <object id="15" x="400" y="216.228" rotation="180">
-   <polygon points="0,-128 64,-128 63.9185,-32.4202 175.918,-32.4202 176,-127.839 256,-127.839 256,-7.31717 0,-7.31717"/>
+  <object id="33" x="304" y="396">
+   <polygon points="0,0 0,-108 -48,-108 -48,0"/>
   </object>
-  <object id="16" x="352" y="232.763" rotation="180">
-   <polygon points="0,-54.7826 -0.0434783,0 -32.0435,0 -32,-54.7826"/>
+  <object id="34" x="400" y="352">
+   <polygon points="0,0 -64,0 -64,-103.688 -176,-103.688 -176,-7.6875 -256,-7.6875 -256,-128 0,-128"/>
   </object>
-  <object id="17" x="208" y="296.85" rotation="180">
-   <polygon points="0.0434783,48 48.0435,48 48,-6.69565 0,-6.69565"/>
+  <object id="35" x="160" y="304">
+   <polygon points="0,0 0,-56 48,-56 48,0"/>
   </object>
-  <object id="18" x="304" y="287.546" rotation="180">
-   <polygon points="0,-108 0,0 48,0 48,-108"/>
+  <object id="36" x="352" y="288">
+   <polygon points="0,0 0,-56 32,-56 32,0"/>
   </object>
  </objectgroup>
  <objectgroup id="10" name="Gates">
-  <object id="12" name="e" x="416" y="380" rotation="180">
-   <polygon points="0,36 16,36 16,0 0,0"/>
+  <object id="29" name="w" x="64" y="128">
+   <polygon points="0,0 16,0 16,28 0,28"/>
   </object>
-  <object id="13" name="w" x="80" y="156" rotation="180">
-   <polygon points="0,36 16,36 16,0 0,0"/>
+  <object id="30" name="e" x="400" y="352">
+   <polygon points="0,0 16,0 16,28 0,28"/>
   </object>
+ </objectgroup>
+ <objectgroup id="16" name="SpawnPoints">
+  <object id="38" gid="520" x="80" y="144" width="16" height="16"/>
+  <object id="39" gid="519" x="384" y="368" width="16" height="16"/>
  </objectgroup>
  <layer id="11" name="navigation" width="30" height="30" opacity="0.2">
   <data encoding="csv">
@@ -342,4 +348,13 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="15" name="Enemies">
+  <object id="22" gid="515" x="368" y="272" width="16" height="16"/>
+  <object id="23" gid="515" x="176" y="288" width="16" height="16"/>
+  <object id="24" gid="516" x="176" y="144" width="16" height="16"/>
+  <object id="25" gid="517" x="32" y="368" width="16" height="16"/>
+  <object id="26" gid="517" x="112" y="448" width="16" height="16"/>
+  <object id="27" gid="516" x="112" y="224" width="16" height="16"/>
+  <object id="28" gid="516" x="96" y="352" width="16" height="16"/>
+ </objectgroup>
 </map>

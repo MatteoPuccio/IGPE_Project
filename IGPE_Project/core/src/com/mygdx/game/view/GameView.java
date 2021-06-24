@@ -2,7 +2,6 @@ package com.mygdx.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -103,7 +102,7 @@ public class GameView implements Screen{
         drawInterfaceBar(UserInterface.getInstance().healthBar);
         batchUI.end();
         
-        //debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+        debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {
@@ -270,6 +269,7 @@ public class GameView implements Screen{
 //	}
 	
 	public void changeMap(TiledMap map) {
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Settings.PPM);
 	}
 
 	@Override

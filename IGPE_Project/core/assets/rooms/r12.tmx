@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="30" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="11">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="30" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="24">
  <tileset firstgid="1" source="0x72_16x16DungeonTileset_walls.v1.tsx"/>
  <tileset firstgid="257" source="0x72_16x16DungeonTileset.v4.tsx"/>
  <tileset firstgid="513" source="NavigationTileSet.tsx"/>
+ <tileset firstgid="515" source="Enemies.tsx"/>
+ <tileset firstgid="518" source="spawnTileset.tsx"/>
  <layer id="1" name="bg" width="30" height="40">
   <data encoding="csv">
 130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,
@@ -346,6 +348,23 @@
   <object id="10" name="e" x="416" y="464">
    <polygon points="0,0 16,0 16,28 0,28"/>
   </object>
+ </objectgroup>
+ <objectgroup id="13" name="Enemies">
+  <object id="11" gid="515" x="336" y="160" width="16" height="16"/>
+  <object id="12" gid="515" x="224" y="160" width="16" height="16"/>
+  <object id="13" gid="515" x="112" y="160" width="16" height="16"/>
+  <object id="14" gid="515" x="224" y="336" width="16" height="16"/>
+  <object id="15" gid="515" x="224" y="432" width="16" height="16"/>
+  <object id="16" gid="516" x="336" y="432" width="16" height="16"/>
+  <object id="17" gid="516" x="352" y="336" width="16" height="16"/>
+  <object id="18" gid="516" x="336" y="240" width="16" height="16"/>
+  <object id="19" gid="516" x="224" y="256" width="16" height="16"/>
+  <object id="20" gid="516" x="144" y="240" width="16" height="16"/>
+  <object id="21" gid="516" x="96" y="288" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="14" name="SpawnPoints">
+  <object id="22" gid="519" x="400" y="480" width="16" height="16"/>
+  <object id="23" gid="521" x="96" y="528" width="16" height="16"/>
  </objectgroup>
  <layer id="12" name="navigation" width="30" height="40" opacity="0.37">
   <data encoding="csv">

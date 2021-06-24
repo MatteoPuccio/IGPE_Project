@@ -8,8 +8,10 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.collisions.CollisionHandler;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.entities.EnemiesHandler;
-import com.mygdx.game.model.level.Room2;
+import com.mygdx.game.model.level.RandomRoomGenerator;
 import com.mygdx.game.model.level.RoomHandler;
+import com.mygdx.game.model.level.prefab.Room1;
+import com.mygdx.game.model.level.prefab.Room2;
 
 public class GameModel {
 	
@@ -18,10 +20,28 @@ public class GameModel {
 	private static GameModel gameModel = null;
 	private World world;
 	private Array<Body> bodiesToDispose;
+	private Array<Body> bodiesToEnable;
+	private Array<Body> bodiesToDisable;
+	private boolean characterTransform;
 	public boolean toChangeMap;
 	
+	private Vector2 switchPosition;
+	private final Vector2 initialSpawnPosition;
+	
+	private float switchAngle;
+
+	private boolean newFloor;
+	
 	private GameModel() {
+		initialSpawnPosition = new Vector2(10f,10f);
 		bodiesToDispose = new Array<Body>();
+		bodiesToEnable = new Array<Body>();
+		bodiesToDisable = new Array<Body>();
+		
+		characterTransform = false;
+		switchPosition = new Vector2();
+		
+		newFloor = false;
 		world = new World(new Vector2(0,0), false);
 		world.setContactListener(new CollisionHandler());
 		toChangeMap = false;
@@ -39,9 +59,7 @@ public class GameModel {
 	}
 	
 	private void createRooms() {
-		//RandomRoomGenerator.getInstance().createRooms();
-		RoomHandler.getInstance().setCurrentRoom(new Room2());
-		RoomHandler.getInstance().getCurrentRoom().init();
+		RoomHandler.getInstance().createRooms();
 	}
 	
 	public Character getCharacter() {
@@ -60,18 +78,20 @@ public class GameModel {
 		bodiesToDispose.add(b);
 	}
 	
+	public void addBodyToEnable(Array<Body> bodies,boolean enabled) {
+		if(enabled)
+			bodiesToEnable.addAll(bodies);
+		else
+			bodiesToDisable.addAll(bodies);
+	}
+	
 	private void disposeBodies() {
-		Array<Fixture> fixtures;
-		for(Body b:bodiesToDispose)
-		{
-			fixtures = b.getFixtureList();
-			for(Fixture f : fixtures)
-				b.destroyFixture(f);
-		}
+		for(int i = 0; i < bodiesToDispose.size;++i)
+			world.destroyBody(bodiesToDispose.get(i));
 		bodiesToDispose.clear();
 	}
 
-	public void disposeMapBodies() {
+	private void disposeMapBodies() {
 		Array<Body> oldBodies = new Array<Body>();
 		world.getBodies(oldBodies);
 		for (Body b: oldBodies) {
@@ -81,14 +101,38 @@ public class GameModel {
 		}
 	}
 	
+	private void enableBodies() {
+		for(Body body:bodiesToEnable)
+			body.setActive(true);
+		bodiesToEnable.clear();
+	}
+	
+	private void disableBodies() {
+		for(Body body:bodiesToDisable)
+			body.setActive(false);
+		bodiesToDisable.clear();
+	}
+	
+	
 	public void update(float deltaTime) {
 		world.step(deltaTime, 6, 2);
 		character.update(deltaTime);
 		EnemiesHandler.update(deltaTime);
-		
+		if(characterTransform) {
+			characterTransform = false;
+			GameModel.getInstance().getCharacter().getBody().setTransform(switchPosition, switchAngle);
+		}
+		if(newFloor) {
+			RoomHandler.getInstance().createRooms();
+			newFloor = false;
+		}
 		disposeBodies();
+		enableBodies();
+		disableBodies();
 	}
 	
+	
+
 	public boolean changeMap() {
 		if (toChangeMap) {
 //			TODO: posizionamento nemici e personaggio nelle nuove stanze + animazione per cambio stanza
@@ -97,5 +141,19 @@ public class GameModel {
 			return true;
 		}
 		return false;
+	}
+
+	public void setCharacterTransform(Vector2 position, float angle) {
+		characterTransform = true;
+		switchPosition = position;
+		switchAngle = angle;
+	}
+	
+	public Vector2 getInitialSpawnPosition() {
+		return initialSpawnPosition;
+	}
+
+	public void setNewFloor() {
+		newFloor = true;
 	}
 }
