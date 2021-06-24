@@ -143,7 +143,9 @@ public class GameView implements Screen{
 	private void initAnimations() {
 		animations = new ObjectMap<Integer, Animation>();
 		
-		animations.put(AnimationConstants.KNIGHT_IDLE_ANIMATION,  new Animation(new TextureRegion(new Texture("animations/knight_idle_spritesheet.png")), 6, 0.5f));
+		Texture knightIdleTexture = new Texture("animations/knight_idle_spritesheet.png");
+		
+		animations.put(AnimationConstants.KNIGHT_IDLE_ANIMATION,  new Animation(new TextureRegion(knightIdleTexture), 6, 0.5f));
 		animations.put(AnimationConstants.KNIGHT_RUN_ANIMATION, new Animation(new TextureRegion(new Texture("animations/knight_run_spritesheet.png")), 6, 0.5f));
 		animations.put(AnimationConstants.KNIGHT_INVINCIBLE_IDLE_ANIMATION, new Animation(new TextureRegion(new Texture("animations/knight_invincible_idle_spritesheet.png")), 12, 0.25f));
 		animations.put(AnimationConstants.KNIGHT_INVINCIBLE_RUN_ANIMATION, new Animation(new TextureRegion(new Texture("animations/knight_invincible_run_spritesheet.png")), 12, 0.25f));
@@ -197,33 +199,33 @@ public class GameView implements Screen{
 		
 		animate(GameModel.getInstance().getCharacter(), deltaTime);
 		
-		updateParticleEffects(deltaTime);
+//		updateParticleEffects(deltaTime);
 		
 		for(Integer i : animations.keys()) {
 			animations.get(i).update(deltaTime);
 		}
 	}
-	
-	private void updateParticleEffects(float deltaTime) {
-		
-		while(!ParticleHandler.getInstance().getParticles().isEmpty()) {
-			Particle temp = ParticleHandler.getInstance().getParticles().pop();
-			activeParticleEffects.add(new ParticleEffect(particleEffects.get(temp.getParticleId()), temp.getPosition(), temp.getWidth(), temp.getHeigth()));
-		}
-		
-		for(int i = 0; i < activeParticleEffects.size; ++i) {
-			if(activeParticleEffects.get(i).isDonePlaying()) {
-				ParticleEffect temp = activeParticleEffects.get(i);
-				activeParticleEffects.set(i, activeParticleEffects.get(activeParticleEffects.size - 1));
-				activeParticleEffects.set(activeParticleEffects.size - 1, temp);
-				activeParticleEffects.pop();
-				--i;
-			}
-			else {
-				animate(activeParticleEffects.get(i), deltaTime);
-			}
-		}
-	}
+//	
+//	private void updateParticleEffects(float deltaTime) {
+//		
+//		while(!ParticleHandler.getInstance().getParticles().isEmpty()) {
+//			Particle temp = ParticleHandler.getInstance().getParticles().pop();
+//			activeParticleEffects.add(new ParticleEffect(particleEffects.get(temp.getParticleId()), temp.getPosition(), temp.getWidth(), temp.getHeigth()));
+//		}
+//		
+//		for(int i = 0; i < activeParticleEffects.size; ++i) {
+//			if(activeParticleEffects.get(i).isDonePlaying()) {
+//				ParticleEffect temp = activeParticleEffects.get(i);
+//				activeParticleEffects.set(i, activeParticleEffects.get(activeParticleEffects.size - 1));
+//				activeParticleEffects.set(activeParticleEffects.size - 1, temp);
+//				activeParticleEffects.pop();
+//				--i;
+//			}
+//			else {
+//				animate(activeParticleEffects.get(i), deltaTime);
+//			}
+//		}
+//	}
 	
 	private void animate(Animated a, float deltaTime) {
 		float x = a.getAnimationPosition().x;

@@ -11,7 +11,6 @@ import com.mygdx.game.constants.Settings;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.view.GameView;
-import com.mygdx.game.view.audio.Sounds;
 
 public class GameController implements InputProcessor 
 {
@@ -53,7 +52,6 @@ public class GameController implements InputProcessor
 	
 	public void dispose() {
 		GameModel.getInstance().dispose();
-		Sounds.getInstance().dispose();
 		view.dispose();
 	}
 	
