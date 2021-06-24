@@ -2,9 +2,11 @@ package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.constants.ParticleEffectConstants;
+import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.level.Room;
+import com.mygdx.game.view.audio.SoundHandler;
 
 public abstract class Enemy extends Entity {
 	
@@ -18,6 +20,7 @@ public abstract class Enemy extends Entity {
 	
 	@Override
 	public void takeDamage(float damage) {
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.HIT);
 		health-=damage;
 		if(health > 0)
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);

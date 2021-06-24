@@ -1,0 +1,27 @@
+package com.mygdx.game.view.audio;
+
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.constants.SoundConstants;
+
+public class SoundHandler {
+	private static SoundHandler instance = null;
+	private Array<Integer> soundQueue;
+	
+	private SoundHandler() {
+		soundQueue = new Array<Integer>();
+	}
+	
+	public static SoundHandler getInstance() {
+		if (instance == null)
+			instance = new SoundHandler();
+		return instance;
+	}
+	
+	public void addSoundToQueue(int s) {
+		soundQueue.add(s);
+	}
+	
+	public Array<Integer> getQueue() {
+		return soundQueue;
+	}
+}

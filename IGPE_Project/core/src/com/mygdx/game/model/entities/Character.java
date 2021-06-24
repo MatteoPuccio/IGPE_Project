@@ -4,10 +4,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.constants.Settings;
+import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.weapons.RockMagic;
 import com.mygdx.game.model.weapons.WaterMagic;
+import com.mygdx.game.view.audio.SoundHandler;
 import com.mygdx.game.model.weapons.BulletHandler;
 import com.mygdx.game.model.weapons.ExplosionMagic;
 import com.mygdx.game.model.weapons.FireMagic;
@@ -109,6 +111,7 @@ public class Character extends Entity{
 		if(!invincible) {
 			health -= 0;
 			invincible = true;
+			SoundHandler.getInstance().addSoundToQueue(SoundConstants.HIT);
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
 			if(health <= 0)
 				System.exit(0);

@@ -1,7 +1,6 @@
 package com.mygdx.game.view;
 
 import com.badlogic.gdx.Gdx;
-
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -48,11 +47,10 @@ public class GameView implements Screen{
 	private TiledMapRenderer tiledMapRenderer;
 	private Stage stage;
 
+	private Sounds sounds;
 	private ObjectMap<Integer, Animation> animations;
 	private ObjectMap<Integer, ParticleEffect> particleEffects;
 	private Array<ParticleEffect> activeParticleEffects;
-	
-	private Sounds sounds;
 	
 	public GameView() {	
 		camera = new OrthographicCamera();
@@ -63,12 +61,13 @@ public class GameView implements Screen{
 		
 		debugRenderer = new Box2DDebugRenderer();
 		
+		sounds = new Sounds();
+		
 		initAnimations();
 		batch = new SpriteBatch();
 		batchUI = new SpriteBatch();
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
 //		weaponAnimation = new WeaponSlashAnimation();
-		sounds = new Sounds();
 		
 		Pixmap pm = new Pixmap(Gdx.files.internal("cursor.png"));
 		Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2));
@@ -86,6 +85,8 @@ public class GameView implements Screen{
         tiledMapRenderer.render();
         
         UserInterface.getInstance().update();
+        
+        sounds.update();
 
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
@@ -128,7 +129,6 @@ public class GameView implements Screen{
 		debugRenderer.dispose();
 //		tiledMap.dispose();
 		batch.dispose();
-//		sounds.dispose();
 		UserInterface.getInstance().dispose();
 		batchUI.dispose();
 	}
@@ -236,10 +236,6 @@ public class GameView implements Screen{
 	
 	public OrthographicCamera getCamera() {
 		return camera;
-	}
-	
-	public Sounds getSounds() {
-		return sounds;
 	}
 
 	public Viewport getGamePort() {

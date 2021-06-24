@@ -3,10 +3,13 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.constants.Settings;
+import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.view.OptionsScreen;
 import com.mygdx.game.view.TitleScreen;
+import com.mygdx.game.view.audio.SoundHandler;
+import com.mygdx.game.view.audio.Sounds;
 
 public class GameMain extends Game{
 	
@@ -45,6 +48,7 @@ public class GameMain extends Game{
 
 	@Override
 	public void dispose() {
+		Sounds.getInstance().dispose();
 		controller.dispose();
 		titleScreen.dispose();
 		optionsScreen.dispose();
@@ -62,7 +66,7 @@ public class GameMain extends Game{
 
 	public void start() {
 		state = Settings.RUNNING;
-		controller.getView().getSounds().menu_confirm.play(Settings.getVolume());
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
 		setScreen(controller.getView());
 		Gdx.input.setInputProcessor(controller);
 	}
@@ -73,7 +77,7 @@ public class GameMain extends Game{
 
 	public void options() {
 		previousState = state;
-		controller.getView().getSounds().menu_confirm.play(Settings.getVolume());
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
 		state = Settings.OPTIONS;
 		setScreen(optionsScreen);
 	}
@@ -86,6 +90,6 @@ public class GameMain extends Game{
 		}
 		else
 			setScreen(titleScreen);
-		controller.getView().getSounds().menu_back.play(Settings.getVolume());
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
 	}
 }

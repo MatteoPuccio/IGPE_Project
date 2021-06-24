@@ -23,6 +23,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.Settings;
+import com.mygdx.game.constants.SoundConstants;
+import com.mygdx.game.view.audio.SoundHandler;
+import com.mygdx.game.view.audio.Sounds;
 
 public class OptionsScreen implements Screen{
 	
@@ -94,7 +97,7 @@ public class OptionsScreen implements Screen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				Settings.setVolume(volumeSlider.getValue());
-				game.getController().getView().getSounds().menu_error.play(Settings.getVolume());
+				SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
 			}
         });
         
@@ -110,8 +113,11 @@ public class OptionsScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
+	
+		Sounds.getInstance().update();
+		
 		Gdx.gl.glClearColor(0.26f, 0.16f, 0.2f, 1f);
-    	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();		
 	}
