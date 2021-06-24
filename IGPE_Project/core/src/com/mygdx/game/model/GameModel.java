@@ -119,6 +119,7 @@ public class GameModel {
 		world.step(deltaTime, 6, 2);
 		character.update(deltaTime);
 		EnemiesHandler.update(deltaTime);
+		RoomHandler.getInstance().updateTime(deltaTime);
 		if(characterTransform) {
 			characterTransform = false;
 			character.getBody().setTransform(switchPosition, switchAngle);
