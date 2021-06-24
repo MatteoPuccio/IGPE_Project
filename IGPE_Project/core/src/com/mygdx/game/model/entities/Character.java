@@ -244,7 +244,7 @@ public class Character extends Entity{
 	}
 	
 	public int getCurrentAnimationId() {
-		if(!body.getLinearVelocity().isZero()) {
+		if(body.getLinearVelocity().isZero()) {
 			if(invincible)
 				return AnimationConstants.KNIGHT_INVINCIBLE_IDLE_ANIMATION;
 			return AnimationConstants.KNIGHT_IDLE_ANIMATION;

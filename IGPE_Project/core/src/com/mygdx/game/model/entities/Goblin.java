@@ -29,6 +29,8 @@ public class Goblin extends Enemy {
 	private float attackCooldown;
 	private float attackTimePassed;
 	
+	private float damage;
+	
 	public Goblin(Vector2 position, Room home) {
 		super(position, 0.4f, 0, 6, 1, home);
 		
@@ -45,6 +47,8 @@ public class Goblin extends Enemy {
 		
 		attackCooldown = 1;
 		attackTimePassed = 0;
+		
+		damage = 1;
 	}
 	
 	public void update(float deltaTime) {
@@ -68,16 +72,21 @@ public class Goblin extends Enemy {
 					attackTimePassed += deltaTime;
 					if(attackTimePassed >= attackCooldown) {
 						attackTimePassed = 0;
-						GameModel.getInstance().getCharacter().takeDamage(1);
+						GameModel.getInstance().getCharacter().takeDamage(damage);
 					}
  
 					home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(false);
 				}
 				return;
 			}
-			else {
-				attackTimePassed = 0;
+			
+			if(tempPath.size() > 15) {
+				home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(false);
+				return;
 			}
+				
+			
+			
 			home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(true);
 			path = new LinkedList<GridCell>(tempPath);	
 			

@@ -68,7 +68,6 @@ public class GameMain extends Game{
 
 	@Override
 	public void dispose() {
-		Sounds.getInstance().dispose();
 		controller.dispose();
 		titleScreen.dispose();
 		optionsScreen.dispose();

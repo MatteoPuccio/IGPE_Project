@@ -103,7 +103,7 @@ public class GameView implements Screen{
         drawInterfaceBar(UserInterface.getInstance().healthBar);
         batchUI.end();
         
-        debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+//        debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {

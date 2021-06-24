@@ -96,8 +96,6 @@ public class OptionsScreen implements Screen{
 			public void changed(ChangeEvent event, Actor actor) {
 				Settings.setVolume(volumeSlider.getValue());
 //				SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
-				Settings.setVolume(volumeSlider.getValue());
-				SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
 			}
         });
         
