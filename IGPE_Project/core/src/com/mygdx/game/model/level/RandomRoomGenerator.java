@@ -98,7 +98,7 @@ public class RandomRoomGenerator {
 		}
 		Array<Room> deadends = new Array<Room>();
 		for(Room r:rooms) {		//chiude le connection ancora aperte (deadends)
-			if(r.hasFreeConnection()) {
+			while(r.hasFreeConnection()) {
 				if(!exitCreated) {
 					createFinalRoom(r);
 					exitCreated = true;
