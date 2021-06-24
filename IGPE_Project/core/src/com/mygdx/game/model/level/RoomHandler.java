@@ -9,12 +9,13 @@ public class RoomHandler {
 	
 	private Room currentRoom;
 	private Array<Room> rooms;
-
+	private boolean changeMap;
 	private float elapsedTeleportTime;
 	
 	private RoomHandler() {
 		rooms = new Array<Room>();
 		elapsedTeleportTime = 3f;
+		changeMap = false;
 	}
 	
 	public static RoomHandler getInstance() {
@@ -31,6 +32,7 @@ public class RoomHandler {
 		rooms = RandomRoomGenerator.getInstance().createRooms();
 		elapsedTeleportTime = 3f;
 		setCurrentRoom(rooms.first());
+		changeMap = true;
 	}
 	
 	public Room getCurrentRoom() {
@@ -43,6 +45,7 @@ public class RoomHandler {
 		this.currentRoom = currentRoom;
 		this.currentRoom.enableBodies(true);
 		System.out.println(currentRoom.getRoomIndex());
+		changeMap = true;
 		return this.currentRoom;
 	}
 
@@ -59,6 +62,14 @@ public class RoomHandler {
 
 	public void updateTime(float deltaTime) {
 		elapsedTeleportTime += deltaTime;
+	}
+
+	public boolean changeMap() {
+		if(changeMap) {
+			changeMap = false;
+			return true;
+		}
+		return false;
 	}
 	
 }

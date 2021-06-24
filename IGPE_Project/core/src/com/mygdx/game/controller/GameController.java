@@ -26,7 +26,9 @@ public class GameController implements InputProcessor
 	}
 	
 	public void update(float deltaTime) {
-		view.changeMap(RoomHandler.getInstance().getCurrentRoom().getTileMap());
+		if(RoomHandler.getInstance().changeMap()) {
+			view.changeMap(RoomHandler.getInstance().getCurrentRoom().getTileMap());
+		}
 		view.render(deltaTime);
 
 		GameModel.getInstance().update(deltaTime);

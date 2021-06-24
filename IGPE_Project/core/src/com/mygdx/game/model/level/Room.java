@@ -149,6 +149,7 @@ public class Room {
 	}
 	
 	public void dispose() {
+		tileMap.dispose();
 		for(int i = 0; i < gates.size;++i)
 			GameModel.getInstance().addBodyToDispose(gates.get(i).getBody());
 		for(int i = 0; i < holes.size;++i)
