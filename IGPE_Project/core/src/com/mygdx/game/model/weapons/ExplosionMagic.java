@@ -25,17 +25,17 @@ public class ExplosionMagic extends Magic {
 		super(0, 2.5f, 5, 0.3f, 10, owner);
 		
 		explosionDamage = 5;
-		explosionRadius = 0.6f;
+		explosionRadius = 1f;
 	}
 
 	@Override
-	public int getCurrentAnimationId() {
+	public int getBulletAnimationId() {
 		return AnimationConstants.BOMB_ANIMATION;
 	}
 	
 	@Override
 	protected void bulletDestroyedEffect(Collidable coll, Bullet bullet) {
-		ParticleHandler.getInstance().addParticle(bullet.getPosition(), ParticleEffectConstants.EXPLOSION, explosionRadius, explosionRadius);
+		ParticleHandler.getInstance().addParticle(bullet.getPosition(), ParticleEffectConstants.EXPLOSION, explosionRadius * 2, explosionRadius * 2);
 		explode(bullet.getPosition());
 	}
 
@@ -51,36 +51,6 @@ public class ExplosionMagic extends Magic {
 		Circle c2 = new Circle(GameModel.getInstance().getCharacter().getPosition(), GameModel.getInstance().getCharacter().getRadius());
 		if(Intersector.overlaps(c1, c2))
 			GameModel.getInstance().getCharacter().takeDamage(2);
-	}
-	
-	@Override
-	public boolean isFlipped() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Vector2 getAnimationPosition() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public float getAnimationWidth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float getAnimationHeigth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float getRotation() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }

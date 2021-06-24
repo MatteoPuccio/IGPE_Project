@@ -126,6 +126,7 @@ public class GameController implements InputProcessor
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		
 		if(button == Buttons.LEFT)
 			leftClickPressed = true;
 		

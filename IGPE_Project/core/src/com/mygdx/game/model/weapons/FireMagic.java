@@ -32,37 +32,8 @@ public class FireMagic extends Magic {
 	}
 
 	@Override
-	public int getCurrentAnimationId() {
+	public int getBulletAnimationId() {
 		return AnimationConstants.FIREBALL_ANIMATION;
-	}
-
-	@Override
-	public boolean isFlipped() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Vector2 getAnimationPosition() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public float getAnimationWidth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float getAnimationHeigth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float getRotation() {
-		return 0;
 	}
 
 }

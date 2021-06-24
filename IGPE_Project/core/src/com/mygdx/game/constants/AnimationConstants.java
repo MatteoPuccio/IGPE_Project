@@ -19,4 +19,13 @@ public class AnimationConstants {
 	public static final int FLYING_CREATURE_FLYING_ANIMATION = 12;
 	public static final int SLIME_IDLE_ANIMATION = 13;
 	
+	public static final int HEALTH_POTION_ANIMATION = 14;
+	public static final int COIN_ANIMATION = 15;
+	public static final int COIN_BAG_ANIMATION = 16;
+	public static final int FIRE_MAGIC_ANIMATION = 17;
+	public static final int LIGHTNING_MAGIC_ANIMATION = 18;
+	public static final int ROCK_MAGIC_ANIMATION = 19;
+	public static final int EXPLOSION_MAGIC_ANIMATION = 20;
+	public static final int WATER_MAGIC_ANIMATION = 21;
+
 }

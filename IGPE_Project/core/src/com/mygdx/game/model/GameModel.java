@@ -10,6 +10,7 @@ import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.level.Room2;
 import com.mygdx.game.model.level.RoomHandler;
+import com.mygdx.game.model.weapons.Magic;
 
 public class GameModel {
 	
@@ -18,13 +19,17 @@ public class GameModel {
 	private static GameModel gameModel = null;
 	private World world;
 	private Array<Body> bodiesToDispose;
-	public boolean toChangeMap;
+	private int coins;
+	private boolean settingMagicChangeScreen;
+	private Magic pickedUpMagic;
 	
 	private GameModel() {
 		bodiesToDispose = new Array<Body>();
 		world = new World(new Vector2(0,0), false);
 		world.setContactListener(new CollisionHandler());
-		toChangeMap = false;
+		
+		coins = 0;
+		settingMagicChangeScreen = false;
 	}
 	
 	public static GameModel getInstance() {
@@ -50,6 +55,15 @@ public class GameModel {
 	
 	public World getWorld() {
 		return world;
+	}
+	
+	public boolean isSettingMagicChangeScreen() {
+		return settingMagicChangeScreen;
+	}
+	
+	public void setSettingMagicChangeScreen(boolean settingMagicChangeScreen, Magic pickedUpMagic) {
+		this.settingMagicChangeScreen = settingMagicChangeScreen;
+		this.pickedUpMagic = pickedUpMagic;
 	}
 	
 	public void dispose() {
@@ -89,13 +103,8 @@ public class GameModel {
 		disposeBodies();
 	}
 	
-	public boolean changeMap() {
-		if (toChangeMap) {
-//			TODO: posizionamento nemici e personaggio nelle nuove stanze + animazione per cambio stanza
-			disposeMapBodies();
-			toChangeMap = false;
-			return true;
-		}
-		return false;
+	public void addCoins(int coinsToAdd) {
+		coins += coinsToAdd;
 	}
+	
 }

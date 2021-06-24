@@ -91,15 +91,14 @@ public class GameView implements Screen{
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
 		updateAnimations(deltaTime);
-//		if(weaponAnimation.isPlaying())
-//			swingAnimation(deltaTime);
+
 		batch.end();
 		
 		batchUI.begin();
         drawInterfaceBar(UserInterface.getInstance().manaBar);
         batchUI.end();
         
-        //debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+        debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {
@@ -153,6 +152,16 @@ public class GameView implements Screen{
 		animations.put(AnimationConstants.FLYING_CREATURE_FLYING_ANIMATION, new Animation(new TextureRegion(new Texture("animations/fly_anim_spritesheet.png")), 4, 0.5f));
 		animations.put(AnimationConstants.SLIME_IDLE_ANIMATION, new Animation(new TextureRegion(new Texture("animations/slime_idle_spritesheet.png")),6, 0.5f));
 		
+		animations.put(AnimationConstants.HEALTH_POTION_ANIMATION, new Animation(new TextureRegion(new Texture("health_potion.png")),1,1));
+		animations.put(AnimationConstants.COIN_ANIMATION, new Animation(new TextureRegion(new Texture("coin.png")),1,1));
+		animations.put(AnimationConstants.COIN_BAG_ANIMATION, new Animation(new TextureRegion(new Texture("coin_bag.png")),1,1));
+		animations.put(AnimationConstants.FIRE_MAGIC_ANIMATION, new Animation(new TextureRegion(new Texture("fire_magic.png")),1,1));
+		animations.put(AnimationConstants.LIGHTNING_MAGIC_ANIMATION, new Animation(new TextureRegion(new Texture("lightning_magic.png")),1,1));
+		animations.put(AnimationConstants.ROCK_MAGIC_ANIMATION, new Animation(new TextureRegion(new Texture("rock_magic.png")), 1, 1));
+		animations.put(AnimationConstants.EXPLOSION_MAGIC_ANIMATION, new Animation(new TextureRegion(new Texture("explosion_magic.png")),1,1));
+		animations.put(AnimationConstants.WATER_MAGIC_ANIMATION, new Animation(new TextureRegion(new Texture("water_magic.png")),1,1));
+		
+		
 		initParticles();
 	}
 	
@@ -190,9 +199,8 @@ public class GameView implements Screen{
 	private void updateParticleEffects(float deltaTime) {
 		
 		while(!ParticleHandler.getInstance().getParticles().isEmpty()) {
-			Particle temp = ParticleHandler.getInstance().getParticles().get(ParticleHandler.getInstance().getParticles().size - 1);
+			Particle temp = ParticleHandler.getInstance().getParticles().pop();
 			activeParticleEffects.add(new ParticleEffect(particleEffects.get(temp.getParticleId()), temp.getPosition(), temp.getWidth(), temp.getHeigth()));
-			ParticleHandler.getInstance().getParticles().pop();
 		}
 		
 		for(int i = 0; i < activeParticleEffects.size; ++i) {
@@ -213,8 +221,8 @@ public class GameView implements Screen{
 		float x = a.getAnimationPosition().x;
 		float y = a.getAnimationPosition().y;
 		TextureRegion currentFrame = animations.get(a.getCurrentAnimationId()).getFrame();
-		float w =  currentFrame.getRegionWidth() / Settings.PPM * a.getAnimationWidth() * 2;
-		float h = currentFrame.getRegionHeight() / Settings.PPM * a.getAnimationHeigth() * 2;
+		float w = a.getAnimationWidth();
+		float h = a.getAnimationHeigth();
 		
 		int flip = 1;
 		if(a.isFlipped())
@@ -227,8 +235,8 @@ public class GameView implements Screen{
 		float x = p.getEffectPosition().x;
 		float y = p.getEffectPosition().y;
 		TextureRegion currentFrame = p.getFrame();
-		float w = currentFrame.getRegionWidth() / Settings.PPM * p.getWidth() * 2;
-		float h = currentFrame.getRegionHeight() / Settings.PPM * p.getHeigth() * 2;
+		float w = p.getWidth();
+		float h = p.getHeigth();
 		
 		batch.draw(currentFrame, x - w / 2, y - h / 2, w, h);
 		p.update(deltaTime);

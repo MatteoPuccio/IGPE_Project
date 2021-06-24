@@ -11,6 +11,7 @@ public class Room3 extends Room {
 		TiledMapObjectsUtil.parse(tileMap);
 		navigationLayer = TiledMapObjectsUtil.getNavigationTiledMapLayer(tileMap);
 		
+		enemies = TiledMapObjectsUtil.parseEnemies(tileMap, this);		
 	}
 	
 }

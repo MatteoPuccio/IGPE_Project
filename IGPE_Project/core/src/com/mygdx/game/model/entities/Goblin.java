@@ -48,7 +48,7 @@ public class Goblin extends Enemy {
 		
 		super.update(deltaTime);
 		
-		if(health <= 0) {
+		if(currentHealth <= 0) {
 			home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(true);
 			return;
 		}
@@ -157,26 +157,6 @@ public class Goblin extends Enemy {
 	@Override
 	public boolean isFlipped() {
 		return flippedX;
-	}
-
-	@Override
-	public Vector2 getAnimationPosition() {
-		return body.getPosition();
-	}
-
-	@Override
-	public float getAnimationWidth() {
-		return radius;
-	}
-
-	@Override
-	public float getAnimationHeigth() {
-		return radius;
-	}
-
-	@Override
-	public float getRotation() {
-		return 0;
 	}
 
 	@Override
