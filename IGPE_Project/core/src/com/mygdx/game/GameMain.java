@@ -4,11 +4,15 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.mygdx.game.constants.Settings;
+import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.view.DeathScreen;
 import com.mygdx.game.view.OptionsScreen;
 import com.mygdx.game.view.TitleScreen;
+import com.mygdx.game.view.audio.SoundHandler;
+import com.mygdx.game.view.audio.Sounds;
 
 public class GameMain extends Game{
 	
@@ -43,15 +47,18 @@ public class GameMain extends Game{
 
 	@Override
 	public void render() {
+		
+		float deltaTime = Math.min(1 / 30f, Gdx.graphics.getDeltaTime());
+		
 		switch(state) {
 		case Settings.TITLE_SCREEN:
-			titleScreen.render(Gdx.graphics.getDeltaTime());
+			titleScreen.render(deltaTime);
 			break;
 		case Settings.RUNNING:
-			controller.update(Gdx.graphics.getDeltaTime());
+			controller.update(deltaTime);
 			break;
 		case Settings.OPTIONS:
-			optionsScreen.render(Gdx.graphics.getDeltaTime());
+			optionsScreen.render(deltaTime);
 			break;
 		case Settings.DEAD:
 			deathScreen.render(Gdx.graphics.getDeltaTime());
@@ -61,6 +68,7 @@ public class GameMain extends Game{
 
 	@Override
 	public void dispose() {
+		Sounds.getInstance().dispose();
 		controller.dispose();
 		titleScreen.dispose();
 		optionsScreen.dispose();
@@ -80,7 +88,7 @@ public class GameMain extends Game{
 
 	public void start() {
 		state = Settings.RUNNING;
-		controller.getView().getSounds().menu_confirm.play(Settings.getVolume());
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
 		setScreen(controller.getView());
 		Gdx.input.setInputProcessor(controller);
 	}
@@ -92,7 +100,7 @@ public class GameMain extends Game{
 	public void options() {
 		Gdx.graphics.setCursor(cursor);
 		previousState = state;
-		controller.getView().getSounds().menu_confirm.play(Settings.getVolume());
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
 		state = Settings.OPTIONS;
 		setScreen(optionsScreen);
 	}
@@ -105,7 +113,7 @@ public class GameMain extends Game{
 		}
 		else
 			setScreen(titleScreen);
-		controller.getView().getSounds().menu_back.play(Settings.getVolume());
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
 	}
 
 	public void death() {
@@ -116,7 +124,7 @@ public class GameMain extends Game{
 	
 	public void restart() {
 		state = Settings.TITLE_SCREEN;
-		controller.getView().getSounds().menu_back.play(Settings.getVolume());
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
 		GameModel.getInstance().init();
 		setScreen(titleScreen);
 		

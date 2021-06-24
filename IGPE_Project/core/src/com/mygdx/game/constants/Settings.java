@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.constants;
 
 public class Settings {
 	public final static float PPM = 16;

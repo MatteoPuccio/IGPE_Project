@@ -9,7 +9,7 @@ import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.entities.Entity;
 
-public abstract class Magic implements Animated {
+public abstract class Magic {
 
 	private float speed;
 	private float bulletSize;
@@ -42,9 +42,13 @@ public abstract class Magic implements Animated {
 		
 		timeSinceLastAttack = cooldown;
 	}
-
-	public void attack(float deltaTime) {
+	
+	public void update(float deltaTime) {
 		timeSinceLastAttack += deltaTime;
+		attack(deltaTime);
+	}
+
+	private void attack(float deltaTime) {
 		if(attacking && owner.getCurrentMana() > bulletCost)
 		{
 			if(timeSinceLastAttack >= cooldown)
@@ -96,6 +100,10 @@ public abstract class Magic implements Animated {
 	public boolean isAttacking() {
 		return attacking;
 	}
+	
+	public Entity getOwner() {
+		return owner;
+	}
 
 	public final void bulletCollidedWith(Collidable coll, Bullet bullet) {
 						
@@ -121,15 +129,28 @@ public abstract class Magic implements Animated {
 				
 		}
 			
-		else if(!(coll instanceof Hole)) {
+		else if(!(coll instanceof Hole) && !sameOwner(coll)) {
 			BulletHandler.getInstance().removeBullet(bullet);
 			bulletDestroyedEffect(coll, bullet);
 		}
 			
 	}
 	
+	private boolean sameOwner(Collidable coll) {
+		
+		if(coll instanceof Bullet) {
+			
+			Bullet temp = (Bullet) coll;
+			return(temp.getParent().getOwner() instanceof Character && owner instanceof Character) || (temp.getParent().getOwner() instanceof Enemy && owner instanceof Enemy);	
+		}
+		
+		return false;
+	}
+	
 	protected void bulletDestroyedEffect(Collidable coll, Bullet bullet) {
 		
 	}
+	
+	public abstract int getBulletAnimationId();
 
 }

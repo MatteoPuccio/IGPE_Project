@@ -2,22 +2,19 @@ package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.GameMain;
-import com.mygdx.game.Settings;
+import com.mygdx.game.constants.AnimationConstants;
+import com.mygdx.game.constants.ParticleEffectConstants;
+import com.mygdx.game.constants.Settings;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.collisions.Collidable;
-import com.mygdx.game.model.weapons.RockMagic;
-import com.mygdx.game.model.weapons.WaterMagic;
-import com.mygdx.game.model.weapons.BulletHandler;
-import com.mygdx.game.model.weapons.ExplosionMagic;
-import com.mygdx.game.model.weapons.FireMagic;
 import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
+import com.mygdx.game.model.weapons.WaterMagic;
 
 public class Character extends Entity{
 	
 	private Magic firstMagic;
 	private Magic secondMagic;
-	private Magic currentMagic;
 	
 	private float speed = 4;
 	
@@ -27,14 +24,16 @@ public class Character extends Entity{
 	
 	private float invincibilityTimer;
 	private float invincibilityElapsed;
+	
+	private float stepTimer;
+	private float stepElapsed;
 		
 	public Character(Vector2 position) {
 		super(position, 0.4f, false, 100, 10, 3);
 		
 		firstMagic = new WaterMagic(this);
-		secondMagic = new ExplosionMagic(this);		
-		currentMagic = firstMagic;
-				
+		secondMagic = new LightningMagic(this);		
+		
 		leftMove = false;
 		rightMove = false;
 		downMove = false;
@@ -44,6 +43,9 @@ public class Character extends Entity{
 		
 		invincibilityTimer = 1.5f;
 		invincibilityElapsed = 0;
+		
+		stepTimer = 0.3f;
+		stepElapsed = 0;
 	}
 	
 	private void move(float deltaTime) {
@@ -88,15 +90,14 @@ public class Character extends Entity{
 		}
 	}
 	
-	public Magic getCurrentMagic() {
-		return currentMagic;
-	}
-
 	public void update(float deltaTime) 
 	{
 		super.update(deltaTime);
 		move(deltaTime);
-		currentMagic.attack(deltaTime);
+		
+		firstMagic.update(deltaTime);
+		secondMagic.update(deltaTime);
+		
 		if(invincible) {
 			invincibilityElapsed += deltaTime;
 			if(invincibilityElapsed >= invincibilityTimer) {
@@ -111,24 +112,43 @@ public class Character extends Entity{
 		if(!invincible) {
 			currentHealth -= damage;
 			invincible = true;
-			ParticleHandler.getInstance().addParticle(getPosition(), "hit", radius, radius);
+			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
 			if(currentHealth <= 0)
 				GameMain.getInstance().death();
 		}
 	}
-
-	public void setWeapon(int i) {
-		switch(i)
-		{
-		case 1:
-			currentMagic = firstMagic;
-			break;
-		case 2:
-			if(secondMagic != null)
-				currentMagic = secondMagic;
-			break;
-		}
+	
+	public void recoverHealth(float healthRecovered) {
 		
+		if(currentHealth + healthRecovered >= maxHealth)
+			currentHealth = maxHealth;
+		
+		else
+			currentHealth += healthRecovered;
+		
+	}
+	
+	public void recoverMana(float manaRecovered) {
+		
+		if(currentMana + manaRecovered >= manaPool)
+			currentMana = manaPool;
+		
+		else
+			currentMana += manaRecovered;
+		
+	}
+
+	public void setFirstMagicAttacking(boolean attacking) {
+		firstMagic.setAttacking(attacking);
+	}
+	
+	public void setSecondMagicAttacking(boolean attacking) {
+		secondMagic.setAttacking(attacking);
+	}
+	
+	public void setAttackPoint(Vector2 attackPoint) {
+		firstMagic.setAttackPoint(attackPoint);
+		secondMagic.setAttackPoint(attackPoint);
 	}
 
 	public Magic getFirstMagic() {
@@ -139,16 +159,16 @@ public class Character extends Entity{
 		return secondMagic;
 	}
 	
-	public String getCurrentAnimationString() {
+	public int getCurrentAnimationId() {
 		if(direction.x == 0 && direction.y == 0) {
 			if(invincible)
-				return "knight invincible idle animation";
-			return "knight idle animation";
+				return AnimationConstants.KNIGHT_INVINCIBLE_IDLE_ANIMATION;
+			return AnimationConstants.KNIGHT_IDLE_ANIMATION;
 		}
 		else {
 			if(invincible)
-				return "knight invincible run animation";
-			return "knight run animation";
+				return AnimationConstants.KNIGHT_INVINCIBLE_RUN_ANIMATION;
+			return AnimationConstants.KNIGHT_RUN_ANIMATION;
 		}
 	}
 	
@@ -163,12 +183,12 @@ public class Character extends Entity{
 
 	@Override
 	public float getAnimationWidth() {
-		return radius;
+		return radius * 2;
 	}
 
 	@Override
 	public float getAnimationHeigth() {
-		return radius;
+		return radius * 2;
 	}
 
 	@Override

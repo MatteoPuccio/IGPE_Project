@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.view.animations.Animation;
+import com.mygdx.game.view.audio.Sounds;
 
 public class TitleScreen implements Screen {
 	
@@ -117,6 +118,8 @@ public class TitleScreen implements Screen {
 		//RGB => 66, 40, 53
 		Gdx.gl.glClearColor(0, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
+        Sounds.getInstance().update();
         
         batch.begin();
         titleScreenAnimation.update(delta);

@@ -22,7 +22,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.GameMain;
-import com.mygdx.game.Settings;
+import com.mygdx.game.constants.Settings;
+import com.mygdx.game.constants.SoundConstants;
+import com.mygdx.game.view.audio.SoundHandler;
+import com.mygdx.game.view.audio.Sounds;
 
 public class OptionsScreen implements Screen{
 	
@@ -92,7 +95,11 @@ public class OptionsScreen implements Screen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				Settings.setVolume(volumeSlider.getValue());
+<<<<<<< HEAD
 				GameMain.getInstance().getController().getView().getSounds().menu_error.play(Settings.getVolume());
+=======
+				SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
+>>>>>>> branch 'main' of https://github.com/MatteoPuccio/IGPE_Project.git
 			}
         });
         
@@ -108,8 +115,16 @@ public class OptionsScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
+<<<<<<< HEAD
 		Gdx.gl.glClearColor(0.259f, 0.157f, 0.208f, 1f);
     	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+=======
+	
+		Sounds.getInstance().update();
+		
+		Gdx.gl.glClearColor(0.26f, 0.16f, 0.2f, 1f);
+    		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+>>>>>>> branch 'main' of https://github.com/MatteoPuccio/IGPE_Project.git
         stage.act();
         stage.draw();		
 	}

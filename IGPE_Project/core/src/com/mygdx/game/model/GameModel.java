@@ -10,8 +10,7 @@ import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.level.RandomRoomGenerator;
 import com.mygdx.game.model.level.RoomHandler;
-import com.mygdx.game.model.level.prefab.Room1;
-import com.mygdx.game.model.level.prefab.Room2;
+import com.mygdx.game.model.weapons.Magic;
 
 public class GameModel {
 	
@@ -23,7 +22,10 @@ public class GameModel {
 	private Array<Body> bodiesToEnable;
 	private Array<Body> bodiesToDisable;
 	private boolean characterTransform;
-	public boolean toChangeMap;
+	
+	private int coins;
+	private boolean settingMagicChangeScreen;
+	private Magic pickedUpMagic;
 	
 	private Vector2 switchPosition;
 	private final Vector2 initialSpawnPosition;
@@ -44,7 +46,9 @@ public class GameModel {
 		newFloor = false;
 		world = new World(new Vector2(0,0), false);
 		world.setContactListener(new CollisionHandler());
-		toChangeMap = false;
+		
+		coins = 0;
+		settingMagicChangeScreen = false;
 	}
 	
 	public static GameModel getInstance() {
@@ -91,16 +95,6 @@ public class GameModel {
 		bodiesToDispose.clear();
 	}
 
-	private void disposeMapBodies() {
-		Array<Body> oldBodies = new Array<Body>();
-		world.getBodies(oldBodies);
-		for (Body b: oldBodies) {
-			if (b.getUserData() != "character") {
-				addBodyToDispose(b);
-			}
-		}
-	}
-	
 	private void enableBodies() {
 		for(Body body:bodiesToEnable)
 			body.setActive(true);
@@ -130,17 +124,8 @@ public class GameModel {
 		enableBodies();
 		disableBodies();
 	}
-	
-	
-
-	public boolean changeMap() {
-		if (toChangeMap) {
-//			TODO: posizionamento nemici e personaggio nelle nuove stanze + animazione per cambio stanza
-			disposeMapBodies();
-			toChangeMap = false;
-			return true;
-		}
-		return false;
+	public void addCoins(int coinsToAdd) {
+		coins += coinsToAdd;
 	}
 
 	public void setCharacterTransform(Vector2 position, float angle) {

@@ -16,12 +16,15 @@ import com.mygdx.game.model.ai.SteeringUtils;
 import com.mygdx.game.model.collisions.Collidable;
 
 public abstract class Entity implements Animated, Steerable<Vector2>, Collidable {
-	
+
 	protected Vector2 direction;
-	protected int health;
+	
+	protected float maxHealth;
 	protected float currentHealth;
+
 	protected Body body;
 	protected float radius;
+	
 	protected int manaPool;
 	protected float currentMana;
 	protected float manaRechargeMultiplier;
@@ -35,12 +38,15 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 	
 	protected boolean tagged;
 	
-	public Entity(Vector2 position, float radius, boolean isSensor, int manaPool, int health, float manaRechargeMultiplier) {
+	public Entity(Vector2 position, float radius, boolean isSensor, int manaPool, int maxHealth, float manaRechargeMultiplier) {
 		this.radius = radius;
+		
+		this.maxHealth = maxHealth;
+		this.currentHealth = maxHealth;
+		
 		this.manaPool = manaPool;
 		currentMana = manaPool;
-		this.health = health;
-		currentHealth = health;
+
 		this.manaRechargeMultiplier = manaRechargeMultiplier;
 		
 		body = createBody(position, isSensor);
@@ -81,8 +87,12 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 		return body.getPosition();
 	}
 	
-	public float getHealth() {
-		return health;
+	public float getMaxHealth() {
+		return maxHealth;
+	}
+	
+	public float getCurrentHealth() {
+		return currentHealth;
 	}
 	
 	public Body getBody() {
@@ -135,7 +145,6 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 	}
 	
 	public abstract void takeDamage(float damage);
-
 
 	@Override
 	public float vectorToAngle(Vector2 vector) {

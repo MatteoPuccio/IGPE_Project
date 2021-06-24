@@ -10,14 +10,14 @@ public class ParticleHandler {
 	public class Particle {
 		
 		Vector2 position;
-		String particleName;
+		int particleId;
 		
 		float width;
 		float heigth;
 		
-		public Particle(Vector2 position, String particleName, float width, float heigth) {
+		public Particle(Vector2 position, int particleId, float width, float heigth) {
 			this.position = new Vector2(position);
-			this.particleName = particleName;
+			this.particleId = particleId;
 			this.width = width;
 			this.heigth = heigth;
 		}
@@ -26,8 +26,8 @@ public class ParticleHandler {
 			return position;
 		}
 		
-		public String getParticleName() {
-			return particleName;
+		public int getParticleId() {
+			return particleId;
 		}
 		
 		public float getWidth() {
@@ -51,8 +51,8 @@ public class ParticleHandler {
 		return instance;
 	}
 	
-	public void addParticle(Vector2 position, String particleName, float width, float heigth) {
-		particles.add(new Particle(position, particleName, width, heigth));
+	public void addParticle(Vector2 position, int particleId, float width, float heigth) {
+		particles.add(new Particle(position, particleId, width, heigth));
 	}
 	
 	public Array<Particle> getParticles() {

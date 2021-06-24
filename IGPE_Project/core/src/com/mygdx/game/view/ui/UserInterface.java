@@ -12,7 +12,7 @@ public class UserInterface
 	
 	private UserInterface()
 	{
-		Vector2 manaBarPosition = new Vector2(50,Gdx.graphics.getHeight()-100);
+		Vector2 manaBarPosition = new Vector2(50,668);
 		manaBar = new InterfaceBar("bar_bg.png", "mana_bar_fg.png","dropIcon.png", manaBarPosition);
 		Vector2 healthBarPosition = new Vector2(50, manaBarPosition.y - 80);
 		healthBar = new InterfaceBar("bar_bg.png", "health_bar_fg.png","heartIcon.png", healthBarPosition);
@@ -27,7 +27,7 @@ public class UserInterface
 	
 	public void update()
 	{
-		healthBar.update(GameModel.getInstance().getCharacter().getCurrentHealth() / GameModel.getInstance().getCharacter().getHealth());
+		healthBar.update(GameModel.getInstance().getCharacter().getCurrentHealth() / GameModel.getInstance().getCharacter().getMaxHealth());
 		manaBar.update(GameModel.getInstance().getCharacter().getManaPercentage());
 	}
 	

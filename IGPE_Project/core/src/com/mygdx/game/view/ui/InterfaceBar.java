@@ -4,8 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-public class InterfaceBar 
-{
+public class InterfaceBar {
 	private Texture background,foreground,icon;
 	
 	private TextureRegion barFilled;
@@ -33,7 +32,7 @@ public class InterfaceBar
 
 	public void dispose()
 	{
-		getBackground().dispose();
+		background.dispose();
 		foreground.dispose();
 	}
 

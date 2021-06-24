@@ -62,8 +62,8 @@ public class Bullet implements Animated, Collidable {
 	}
 	
 	@Override
-	public String getCurrentAnimationString() {
-		return parent.getCurrentAnimationString();
+	public int getCurrentAnimationId() {
+		return parent.getBulletAnimationId();
 	}
 	
 	@Override
@@ -78,17 +78,17 @@ public class Bullet implements Animated, Collidable {
 
 	@Override
 	public float getAnimationWidth() {
-		return getSize();
+		return getSize() * 2;
 	}
 
 	@Override
 	public float getAnimationHeigth() {
-		return getSize();
+		return getSize() * 2;
 	}
 
 	@Override
 	public float getRotation() {
-		return (float) Math.toDegrees(SteeringUtils.vectorToAngle(direction));
+		return (float) Math.toDegrees(SteeringUtils.vectorToAngle(new Vector2(-direction.x, -direction.y)));
 	}
 	
 	@Override

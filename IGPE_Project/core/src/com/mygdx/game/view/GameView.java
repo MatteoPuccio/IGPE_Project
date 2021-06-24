@@ -19,7 +19,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.Settings;
+import com.mygdx.game.constants.AnimationConstants;
+import com.mygdx.game.constants.ParticleEffectConstants;
+import com.mygdx.game.constants.Settings;
 import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ParticleHandler;
@@ -31,7 +33,6 @@ import com.mygdx.game.model.weapons.Bullet;
 import com.mygdx.game.model.weapons.BulletHandler;
 import com.mygdx.game.view.animations.Animation;
 import com.mygdx.game.view.animations.ParticleEffect;
-import com.mygdx.game.view.animations.WeaponSlashAnimation;
 import com.mygdx.game.view.audio.Sounds;
 import com.mygdx.game.view.ui.InterfaceBar;
 import com.mygdx.game.view.ui.UserInterface;
@@ -47,12 +48,10 @@ public class GameView implements Screen{
 	private TiledMapRenderer tiledMapRenderer;
 	private Stage stage;
 
-	private ObjectMap<String, Animation> animations;
-	private ObjectMap<String, ParticleEffect> particleEffects;
-	private Array<ParticleEffect> activeParticleEffects;
-	
 	private Sounds sounds;
-	private WeaponSlashAnimation weaponAnimation;
+	private ObjectMap<Integer, Animation> animations;
+	private ObjectMap<Integer, ParticleEffect> particleEffects;
+	private Array<ParticleEffect> activeParticleEffects;
 	private Cursor cursor;
 	
 	public GameView() {	
@@ -64,12 +63,13 @@ public class GameView implements Screen{
 		
 		debugRenderer = new Box2DDebugRenderer();
 		
+		sounds = new Sounds();
+		
 		initAnimations();
 		batch = new SpriteBatch();
 		batchUI = new SpriteBatch();
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
 //		weaponAnimation = new WeaponSlashAnimation();
-		sounds = new Sounds();
 		
 		Pixmap pm = new Pixmap(Gdx.files.internal("game_cursor.png"));
 		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
@@ -89,12 +89,13 @@ public class GameView implements Screen{
         tiledMapRenderer.render();
         
         UserInterface.getInstance().update();
+        
+        sounds.update();
 
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
 		updateAnimations(deltaTime);
-//		if(weaponAnimation.isPlaying())
-//			swingAnimation(deltaTime);
+
 		batch.end();
 		
 		batchUI.begin();
@@ -135,42 +136,51 @@ public class GameView implements Screen{
 		cursor.dispose();
 //		tiledMap.dispose();
 		batch.dispose();
-//		sounds.dispose();
 		UserInterface.getInstance().dispose();
 		batchUI.dispose();
 	}
 	
 	private void initAnimations() {
-		animations = new ObjectMap<String, Animation>();
+		animations = new ObjectMap<Integer, Animation>();
 		
-		animations.put("knight idle animation",  new Animation(new TextureRegion(new Texture("animations/knight_idle_spritesheet.png")), 6, 0.5f));
-		animations.put("knight run animation", new Animation(new TextureRegion(new Texture("animations/knight_run_spritesheet.png")), 6, 0.5f));
-		animations.put("knight invincible idle animation", new Animation(new TextureRegion(new Texture("animations/knight_invincible_idle_spritesheet.png")), 12, 0.25f));
-		animations.put("knight invincible run animation", new Animation(new TextureRegion(new Texture("animations/knight_invincible_run_spritesheet.png")), 12, 0.25f));
+		animations.put(AnimationConstants.KNIGHT_IDLE_ANIMATION,  new Animation(new TextureRegion(new Texture("animations/knight_idle_spritesheet.png")), 6, 0.5f));
+		animations.put(AnimationConstants.KNIGHT_RUN_ANIMATION, new Animation(new TextureRegion(new Texture("animations/knight_run_spritesheet.png")), 6, 0.5f));
+		animations.put(AnimationConstants.KNIGHT_INVINCIBLE_IDLE_ANIMATION, new Animation(new TextureRegion(new Texture("animations/knight_invincible_idle_spritesheet.png")), 12, 0.25f));
+		animations.put(AnimationConstants.KNIGHT_INVINCIBLE_RUN_ANIMATION, new Animation(new TextureRegion(new Texture("animations/knight_invincible_run_spritesheet.png")), 12, 0.25f));
 		
-		animations.put("fireball animation", new Animation(new TextureRegion(new Texture("animations/fireball_anim_spritesheet.png")), 4, 0.2f));
-		animations.put("slimeball animation", new Animation(new TextureRegion(new Texture("animations/slimeball_anim_spritesheet.png")), 4, 0.2f));
-		animations.put("lightningbolt animation", new Animation(new TextureRegion(new Texture("animations/lightningbolt_anim_spritesheet.png")), 4, 0.1f));
-		animations.put("rock animation", new Animation(new TextureRegion(new Texture("animations/rock_anim_spritesheet.png")), 4, 0.2f));
-		animations.put("bomb animation", new Animation(new TextureRegion(new Texture("animations/bomb_anim_spritesheet.png")),4, 0.2f));
-		animations.put("droplet animation", new Animation(new TextureRegion(new Texture("animations/droplet_anim_spritesheet.png")), 4, 0.2f));
+		animations.put(AnimationConstants.FIREBALL_ANIMATION, new Animation(new TextureRegion(new Texture("animations/fireball_anim_spritesheet.png")), 4, 0.2f));
+		animations.put(AnimationConstants.SLIMEBALL_ANIMATION, new Animation(new TextureRegion(new Texture("animations/slimeball_anim_spritesheet.png")), 4, 0.2f));
+		animations.put(AnimationConstants.LIGHTNINGBOLT_ANIMATION, new Animation(new TextureRegion(new Texture("animations/lightningbolt_anim_spritesheet.png")), 4, 0.1f));
+		animations.put(AnimationConstants.ROCK_ANIMATION, new Animation(new TextureRegion(new Texture("animations/rock_anim_spritesheet.png")), 4, 0.2f));
+		animations.put(AnimationConstants.BOMB_ANIMATION, new Animation(new TextureRegion(new Texture("animations/bomb_anim_spritesheet.png")),4, 0.2f));
+		animations.put(AnimationConstants.DROPLET_ANIMATION, new Animation(new TextureRegion(new Texture("animations/droplet_anim_spritesheet.png")), 4, 0.2f));
 
-		animations.put("goblin idle animation", new Animation(new TextureRegion(new Texture("animations/goblin_idle_spritesheet.png")), 6, 0.5f));
-		animations.put("goblin run animation", new Animation(new TextureRegion(new Texture("animations/goblin_run_spritesheet.png")), 6, 0.5f));
-		animations.put("flying creature flying animation", new Animation(new TextureRegion(new Texture("animations/fly_anim_spritesheet.png")), 4, 0.5f));
-		animations.put("slime idle animation", new Animation(new TextureRegion(new Texture("animations/slime_idle_spritesheet.png")),6, 0.5f));
+		animations.put(AnimationConstants.GOBLIN_IDLE_ANIMATION, new Animation(new TextureRegion(new Texture("animations/goblin_idle_spritesheet.png")), 6, 0.5f));
+		animations.put(AnimationConstants.GOBLIN_RUN_ANIMATION, new Animation(new TextureRegion(new Texture("animations/goblin_run_spritesheet.png")), 6, 0.5f));
+		animations.put(AnimationConstants.FLYING_CREATURE_FLYING_ANIMATION, new Animation(new TextureRegion(new Texture("animations/fly_anim_spritesheet.png")), 4, 0.5f));
+		animations.put(AnimationConstants.SLIME_IDLE_ANIMATION, new Animation(new TextureRegion(new Texture("animations/slime_idle_spritesheet.png")),6, 0.5f));
+		
+		animations.put(AnimationConstants.HEALTH_POTION_ANIMATION, new Animation(new TextureRegion(new Texture("health_potion.png")),1,1));
+		animations.put(AnimationConstants.COIN_ANIMATION, new Animation(new TextureRegion(new Texture("coin.png")),1,1));
+		animations.put(AnimationConstants.COIN_BAG_ANIMATION, new Animation(new TextureRegion(new Texture("coin_bag.png")),1,1));
+		animations.put(AnimationConstants.FIRE_MAGIC_ANIMATION, new Animation(new TextureRegion(new Texture("fire_magic.png")),1,1));
+		animations.put(AnimationConstants.LIGHTNING_MAGIC_ANIMATION, new Animation(new TextureRegion(new Texture("lightning_magic.png")),1,1));
+		animations.put(AnimationConstants.ROCK_MAGIC_ANIMATION, new Animation(new TextureRegion(new Texture("rock_magic.png")), 1, 1));
+		animations.put(AnimationConstants.EXPLOSION_MAGIC_ANIMATION, new Animation(new TextureRegion(new Texture("explosion_magic.png")),1,1));
+		animations.put(AnimationConstants.WATER_MAGIC_ANIMATION, new Animation(new TextureRegion(new Texture("water_magic.png")),1,1));
+		
 		
 		initParticles();
 	}
 	
 	private void initParticles() {
-		particleEffects = new ObjectMap<String, ParticleEffect>();
+		particleEffects = new ObjectMap<Integer, ParticleEffect>();
 		
-		particleEffects.put("enemy death explosion", new ParticleEffect(new TextureRegion(new Texture("animations/particles/enemy_afterdead_explosion_anim_spritesheet.png")), 4, 0.25f));
-		particleEffects.put("hit", new ParticleEffect(new TextureRegion(new Texture("animations/particles/hit_effect_anim_spritesheet.png")), 3, 0.15f));
-		particleEffects.put("explosion", new ParticleEffect(new TextureRegion(new Texture("animations/particles/explosion_anim_spritesheet.png")), 7, 0.4f));
+		particleEffects.put(ParticleEffectConstants.ENEMY_DEATH_EXPLOSION, new ParticleEffect(new TextureRegion(new Texture("animations/particles/enemy_afterdead_explosion_anim_spritesheet.png")), 4, 0.25f));
+		particleEffects.put(ParticleEffectConstants.HIT, new ParticleEffect(new TextureRegion(new Texture("animations/particles/hit_effect_anim_spritesheet.png")), 3, 0.15f));
+		particleEffects.put(ParticleEffectConstants.EXPLOSION, new ParticleEffect(new TextureRegion(new Texture("animations/particles/explosion_anim_spritesheet.png")), 7, 0.4f));
 		
-		activeParticleEffects = new Array<ParticleEffect>();
+		activeParticleEffects = new Array<ParticleEffect>(false, 40);
 	}
 	
 	private void updateAnimations(float deltaTime) {
@@ -189,18 +199,16 @@ public class GameView implements Screen{
 		
 		updateParticleEffects(deltaTime);
 		
-		for(String s : animations.keys())
-		{
-			animations.get(s).update(deltaTime);
+		for(Integer i : animations.keys()) {
+			animations.get(i).update(deltaTime);
 		}
 	}
 	
 	private void updateParticleEffects(float deltaTime) {
 		
 		while(!ParticleHandler.getInstance().getParticles().isEmpty()) {
-			Particle temp = ParticleHandler.getInstance().getParticles().get(ParticleHandler.getInstance().getParticles().size - 1);
-			activeParticleEffects.add(new ParticleEffect(particleEffects.get(temp.getParticleName()), temp.getPosition(), temp.getWidth(), temp.getHeigth()));
-			ParticleHandler.getInstance().getParticles().pop();
+			Particle temp = ParticleHandler.getInstance().getParticles().pop();
+			activeParticleEffects.add(new ParticleEffect(particleEffects.get(temp.getParticleId()), temp.getPosition(), temp.getWidth(), temp.getHeigth()));
 		}
 		
 		for(int i = 0; i < activeParticleEffects.size; ++i) {
@@ -220,9 +228,9 @@ public class GameView implements Screen{
 	private void animate(Animated a, float deltaTime) {
 		float x = a.getAnimationPosition().x;
 		float y = a.getAnimationPosition().y;
-		TextureRegion currentFrame = animations.get(a.getCurrentAnimationString()).getFrame();
-		float w =  currentFrame.getRegionWidth() / Settings.PPM * a.getAnimationWidth() * 2;
-		float h = currentFrame.getRegionHeight() / Settings.PPM * a.getAnimationHeigth() * 2;
+		TextureRegion currentFrame = animations.get(a.getCurrentAnimationId()).getFrame();
+		float w = a.getAnimationWidth();
+		float h = a.getAnimationHeigth();
 		
 		int flip = 1;
 		if(a.isFlipped())
@@ -235,8 +243,8 @@ public class GameView implements Screen{
 		float x = p.getEffectPosition().x;
 		float y = p.getEffectPosition().y;
 		TextureRegion currentFrame = p.getFrame();
-		float w = currentFrame.getRegionWidth() / Settings.PPM * p.getWidth() * 2;
-		float h = currentFrame.getRegionHeight() / Settings.PPM * p.getHeigth() * 2;
+		float w = p.getWidth();
+		float h = p.getHeigth();
 		
 		batch.draw(currentFrame, x - w / 2, y - h / 2, w, h);
 		p.update(deltaTime);
@@ -244,10 +252,6 @@ public class GameView implements Screen{
 	
 	public OrthographicCamera getCamera() {
 		return camera;
-	}
-	
-	public Sounds getSounds() {
-		return sounds;
 	}
 
 	public Viewport getGamePort() {
