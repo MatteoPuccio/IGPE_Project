@@ -37,26 +37,6 @@ public class Slime extends Enemy {
 	}
 
 	@Override
-	public Vector2 getAnimationPosition() {
-		return body.getPosition();
-	}
-
-	@Override
-	public float getAnimationWidth() {
-		return radius;
-	}
-
-	@Override
-	public float getAnimationHeigth() {
-		return radius;
-	}
-
-	@Override
-	public float getRotation() {
-		return 0;
-	}
-
-	@Override
 	public void collidesWith(Collidable coll) {
 		// TODO Auto-generated method stub
 		

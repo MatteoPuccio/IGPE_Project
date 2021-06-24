@@ -5,8 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-public class InterfaceBar 
-{
+public class InterfaceBar {
 	public Texture background,foreground;
 	
 	public TextureRegion barFilled;
@@ -20,7 +19,7 @@ public class InterfaceBar
 		maxWidth = foreground.getWidth();
 		barFilled = new TextureRegion(foreground,0,0,foreground.getWidth(),foreground.getHeight());
 		
-		position = new Vector2(50,Gdx.graphics.getHeight()-100);
+		position = new Vector2(50, 668);
 		barPosition = new Vector2(position.x+12,position.y+10);
 
 	}

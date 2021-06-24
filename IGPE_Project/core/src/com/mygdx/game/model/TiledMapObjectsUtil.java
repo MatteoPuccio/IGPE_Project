@@ -53,7 +53,7 @@ public class TiledMapObjectsUtil {
 			createBody(shape, true);
 		}
 	}
-	
+		
 	private static void parseSolid(TiledMap tilemap, MapObjects objects) {
 		
 		for(MapObject object : objects)

@@ -18,17 +18,37 @@ public abstract class Enemy extends Entity {
 	
 	@Override
 	public void takeDamage(float damage) {
-		health-=damage;
-		if(health > 0)
+		currentHealth -= damage;
+		if(currentHealth > 0)
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
 	}
 	
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		if(health <= 0) {
+		if(currentHealth <= 0) {
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.ENEMY_DEATH_EXPLOSION, radius, radius);
 			GameModel.getInstance().addBodyToDispose(body);
 			EnemiesHandler.removeEnemy(this);
 		}
+	}
+	
+	@Override
+	public Vector2 getAnimationPosition() {
+		return body.getPosition();
+	}
+
+	@Override
+	public float getAnimationWidth() {
+		return radius * 2;
+	}
+
+	@Override
+	public float getAnimationHeigth() {
+		return radius * 2;
+	}
+
+	@Override
+	public float getRotation() {
+		return 0;
 	}
 }

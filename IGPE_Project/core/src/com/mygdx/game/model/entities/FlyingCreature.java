@@ -31,31 +31,6 @@ public class FlyingCreature extends Enemy {
 	public boolean isFlipped() {
 		return false;
 	}
-
-	@Override
-	public Vector2 getAnimationPosition() {
-		return body.getPosition();
-	}
-
-	@Override
-	public float getAnimationWidth() {
-		return radius;
-	}
-
-	@Override
-	public float getAnimationHeigth() {
-		return radius;
-	}
-
-	@Override
-	public void update(float deltaTime) {
-		super.update(deltaTime);
-	}
-
-	@Override
-	public float getRotation() {
-		return 0;
-	}
 	
 	@Override
 	public void collidesWith(Collidable coll) {
@@ -66,5 +41,10 @@ public class FlyingCreature extends Enemy {
 			temp.takeDamage(damage);
 			
 		}
+	}
+	
+	@Override
+	public void update(float deltaTime) {
+		super.update(deltaTime);
 	}
 }

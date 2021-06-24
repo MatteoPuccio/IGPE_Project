@@ -9,7 +9,7 @@ import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.entities.Entity;
 
-public abstract class Magic implements Animated {
+public abstract class Magic {
 
 	private float speed;
 	private float bulletSize;
@@ -150,5 +150,7 @@ public abstract class Magic implements Animated {
 	protected void bulletDestroyedEffect(Collidable coll, Bullet bullet) {
 		
 	}
+	
+	public abstract int getBulletAnimationId();
 
 }

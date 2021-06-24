@@ -27,13 +27,14 @@ public class Character extends Entity{
 	
 	private float invincibilityTimer;
 	private float invincibilityElapsed;
+	
 		
 	public Character(Vector2 position) {
 		super(position, 0.4f, false, 50, 10, 3);
 		
 		firstMagic = new WaterMagic(this);
-		secondMagic = new ExplosionMagic(this);		
-				
+		secondMagic = new LightningMagic(this);		
+		
 		leftMove = false;
 		rightMove = false;
 		downMove = false;
@@ -107,12 +108,32 @@ public class Character extends Entity{
 	@Override
 	public void takeDamage(float damage) {
 		if(!invincible) {
-			health -= 0;
+			currentHealth -= 0;
 			invincible = true;
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
-			if(health <= 0)
+			if(currentHealth <= 0)
 				System.exit(0);
 		}
+	}
+	
+	public void recoverHealth(float healthRecovered) {
+		
+		if(currentHealth + healthRecovered >= maxHealth)
+			currentHealth = maxHealth;
+		
+		else
+			currentHealth += healthRecovered;
+		
+	}
+	
+	public void recoverMana(float manaRecovered) {
+		
+		if(currentMana + manaRecovered >= manaPool)
+			currentMana = manaPool;
+		
+		else
+			currentMana += manaRecovered;
+		
 	}
 
 	public void setFirstMagicAttacking(boolean attacking) {
@@ -160,12 +181,12 @@ public class Character extends Entity{
 
 	@Override
 	public float getAnimationWidth() {
-		return radius;
+		return radius * 2;
 	}
 
 	@Override
 	public float getAnimationHeigth() {
-		return radius;
+		return radius * 2;
 	}
 
 	@Override
