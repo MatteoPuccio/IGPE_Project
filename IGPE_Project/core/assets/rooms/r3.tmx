@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="6">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="11">
  <tileset firstgid="1" source="0x72_16x16DungeonTileset_walls.v1.tsx"/>
  <tileset firstgid="257" source="0x72_16x16DungeonTileset.v4.tsx"/>
  <tileset firstgid="513" source="NavigationTileSet.tsx"/>
+ <tileset firstgid="515" source="Enemies.tsx"/>
  <layer id="1" name="bg" width="30" height="30">
   <data encoding="csv">
 130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,
@@ -223,6 +224,12 @@
   <object id="4" name="n" x="320" y="160">
    <polygon points="0,0 0,16 32,16 32,0"/>
   </object>
+ </objectgroup>
+ <objectgroup id="13" name="Enemies">
+  <object id="6" gid="516" x="176" y="336" width="16" height="16"/>
+  <object id="7" gid="516" x="208" y="368" width="16" height="16"/>
+  <object id="8" gid="517" x="336" y="368" width="16" height="16"/>
+  <object id="9" gid="517" x="304" y="368" width="16" height="16"/>
  </objectgroup>
  <layer id="11" name="navigation" width="30" height="30" opacity="0.14">
   <data encoding="csv">

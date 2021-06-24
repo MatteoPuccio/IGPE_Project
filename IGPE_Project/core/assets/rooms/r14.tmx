@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="5">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="7">
  <tileset firstgid="1" source="0x72_16x16DungeonTileset_walls.v1.tsx"/>
  <tileset firstgid="257" source="0x72_16x16DungeonTileset.v4.tsx"/>
  <tileset firstgid="513" source="NavigationTileSet.tsx"/>
+ <tileset firstgid="515" source="spawnTileset.tsx"/>
  <layer id="1" name="bg" width="20" height="20">
   <data encoding="csv">
 130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,
@@ -62,7 +63,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,448,0,0,448,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,448,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -151,9 +152,6 @@
   <object id="1" x="64" y="120">
    <polygon points="0,0 16,0 16,-32 176,-32 176,84 16,84 16,36 0,36"/>
   </object>
-  <object id="3" x="128" y="152">
-   <polygon points="0,0 16,0 16,-8 0,-8"/>
-  </object>
   <object id="4" x="176" y="152">
    <polygon points="0,0 16,0 16,-8 0,-8"/>
   </object>
@@ -163,6 +161,9 @@
   <object id="2" name="w" x="64" y="128">
    <polygon points="0,0 16,0 16,28 0,28"/>
   </object>
+ </objectgroup>
+ <objectgroup id="11" name="SpawnPoints">
+  <object id="6" gid="517" x="80" y="144" width="16" height="16"/>
  </objectgroup>
  <layer id="7" name="navigation" width="20" height="20" opacity="0.15">
   <data encoding="csv">
@@ -175,7 +176,7 @@
 0,0,0,0,514,513,513,513,513,513,513,513,513,513,513,514,0,0,0,0,
 0,0,0,0,514,513,513,513,513,513,513,513,513,513,513,514,0,0,0,0,
 0,0,0,0,514,513,513,513,513,513,513,513,513,513,513,514,0,0,0,0,
-0,0,0,0,514,513,513,513,514,513,513,514,513,513,513,514,0,0,0,0,
+0,0,0,0,514,513,513,513,513,513,513,514,513,513,513,514,0,0,0,0,
 0,0,0,0,514,513,513,513,513,513,513,513,513,513,513,514,0,0,0,0,
 0,0,0,0,514,513,513,513,513,513,513,513,513,513,513,514,0,0,0,0,
 0,0,0,0,514,513,513,513,513,513,513,513,513,513,513,514,0,0,0,0,

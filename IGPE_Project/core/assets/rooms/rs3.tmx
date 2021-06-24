@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="4">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="6">
  <tileset firstgid="1" source="0x72_16x16DungeonTileset_walls.v1.tsx"/>
  <tileset firstgid="257" source="0x72_16x16DungeonTileset.v4.tsx"/>
  <tileset firstgid="513" source="NavigationTileSet.tsx"/>
+ <tileset firstgid="515" source="spawnTileset.tsx"/>
  <layer id="1" name="bg" width="20" height="20">
   <data encoding="csv">
 130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,
@@ -129,6 +130,9 @@
   </object>
  </objectgroup>
  <objectgroup id="9" name="Void"/>
+ <objectgroup id="10" name="SpawnPoints">
+  <object id="5" gid="515" x="144" y="160" width="16" height="16"/>
+ </objectgroup>
  <objectgroup id="7" name="Gates">
   <object id="3" name="w" x="48" y="136">
    <polygon points="0,0 16,0 16,35.8182 0,35.8182"/>
