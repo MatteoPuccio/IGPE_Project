@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="5">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="5">
  <tileset firstgid="1" source="0x72_16x16DungeonTileset_walls.v1.tsx"/>
  <tileset firstgid="257" source="0x72_16x16DungeonTileset.v4.tsx"/>
  <tileset firstgid="513" source="NavigationTileSet.tsx"/>
@@ -128,6 +128,7 @@
    <polygon points="0,0 0,-132 16,-132 20,-128 28,-128 32,-132 80,-132 80,-156 112,-156 112,-132 160,-132 164,-128 172,-128 176,-132 192,-132 192,0"/>
   </object>
  </objectgroup>
+ <objectgroup id="9" name="Void"/>
  <objectgroup id="7" name="Gates">
   <object id="4" name="n" x="144" y="80">
    <polygon points="0,0 0,-16 32,-16 32,0"/>

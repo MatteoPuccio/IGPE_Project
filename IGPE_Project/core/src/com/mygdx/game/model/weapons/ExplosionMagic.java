@@ -6,12 +6,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.ParticleEffectConstants;
+import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.entities.Entity;
+import com.mygdx.game.view.audio.SoundHandler;
 
 //Konosuba reference
 public class ExplosionMagic extends Magic {
@@ -38,6 +40,7 @@ public class ExplosionMagic extends Magic {
 	}
 
 	private void explode(Vector2 center) {
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.EXPLOSION);
 		Circle c1 = new Circle(center,explosionRadius);
 		
 		Array<Enemy> enemiesInArea = EnemiesHandler.getEnemiesInArea(c1);

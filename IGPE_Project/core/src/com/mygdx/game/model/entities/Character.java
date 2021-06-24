@@ -29,6 +29,9 @@ public class Character extends Entity{
 	
 	private float invincibilityTimer;
 	private float invincibilityElapsed;
+	
+	private float stepTimer;
+	private float stepElapsed;
 		
 	public Character(Vector2 position) {
 		super(position, 0.4f, false, 50, 10, 3);
@@ -45,6 +48,9 @@ public class Character extends Entity{
 		
 		invincibilityTimer = 1.5f;
 		invincibilityElapsed = 0;
+		
+		stepTimer = 0.3f;
+		stepElapsed = 0;
 	}
 	
 	private void move(float deltaTime) {
@@ -104,6 +110,15 @@ public class Character extends Entity{
 				invincible = false;
 			}
 		}
+		
+		if(!body.getLinearVelocity().isZero()) {
+			stepElapsed += deltaTime;
+			if (stepElapsed >= stepTimer) {
+				stepElapsed = 0;
+				SoundHandler.getInstance().addSoundToQueue(SoundConstants.STEP);
+			}
+		}
+		
 	}
 
 	@Override
@@ -111,7 +126,7 @@ public class Character extends Entity{
 		if(!invincible) {
 			health -= 0;
 			invincible = true;
-			SoundHandler.getInstance().addSoundToQueue(SoundConstants.HIT);
+			SoundHandler.getInstance().addSoundToQueue(SoundConstants.HURT);
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
 			if(health <= 0)
 				System.exit(0);

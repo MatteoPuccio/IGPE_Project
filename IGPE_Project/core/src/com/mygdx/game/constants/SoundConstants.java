@@ -6,6 +6,7 @@ public class SoundConstants {
 	public static final int MENU_ERROR = 2;
 	public static final int HIT= 3;
 	public static final int PICKUP = 4;
-	
-	public static final int NUM = 5;
+	public static final int EXPLOSION = 5;
+	public static final int HURT = 6;
+	public static final int STEP = 7;
 }
