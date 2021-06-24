@@ -21,12 +21,8 @@ public abstract class Enemy extends Entity {
 	@Override
 	public void takeDamage(float damage) {
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.HIT);
-		health-=damage;
-		if(health > 0)
-=======
-		currentHealth -= damage;
+		currentHealth-=damage;
 		if(currentHealth > 0)
->>>>>>> branch 'main' of https://github.com/MatteoPuccio/IGPE_Project.git
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
 	}
 	

@@ -145,6 +145,10 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 		return (float)(currentMana/manaPool);
 	}
 	
+	public void setManaRechargeMultiplier(float manaRechargeMultiplier) {
+		this.manaRechargeMultiplier = manaRechargeMultiplier;
+	}
+	
 	public abstract void takeDamage(float damage);
 
 	@Override

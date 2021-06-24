@@ -19,8 +19,8 @@ public class Goblin extends Enemy {
 	private List<GridCell> path;
 	private List<GridCell> tempPath;
 	
-	private float timeForStep = 0.3f;
-	private float timePassed = 0;
+	private float timeForStep;
+	private float timePassed;
 	private Vector2 currentPosition;
 	private Vector2 nextPosition;
 	
@@ -39,6 +39,9 @@ public class Goblin extends Enemy {
 		opt.allowDiagonal = true;
 		
 		isRunning = false;
+		
+		timeForStep = 0.20f;
+		timePassed = 0;
 		
 		attackCooldown = 1;
 		attackTimePassed = 0;
@@ -67,12 +70,13 @@ public class Goblin extends Enemy {
 						attackTimePassed = 0;
 						GameModel.getInstance().getCharacter().takeDamage(1);
 					}
+ 
 					home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(false);
 				}
-				else {
-					attackTimePassed = 0;
-				}
 				return;
+			}
+			else {
+				attackTimePassed = 0;
 			}
 			home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(true);
 			path = new LinkedList<GridCell>(tempPath);	

@@ -12,7 +12,7 @@ public class Settings {
 	public final static int RUNNING = 1;
 	public final static int OPTIONS = 2;
 	
-	private static float volume = 0.05f;
+	private static float volume = 0.5f;
 
 	public static float getVolume() {
 		return volume;

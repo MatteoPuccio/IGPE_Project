@@ -69,7 +69,7 @@ public class OptionsScreen implements Screen{
         optionsLabel.setColor(new Color(Color.BLACK));
         volumeLabel.setColor(new Color(Color.BLACK));
         
-        volumeSlider = new Slider(0f, 0.1f, 0.01f, false, skin);
+        volumeSlider = new Slider(0f, 1f, 0.01f, false, skin);
         
         backButton = new TextButton("BACK", skin);
         
@@ -85,7 +85,7 @@ public class OptionsScreen implements Screen{
         if(game.getPreviousState() == Settings.RUNNING)
         	optionsLabel.setText("PAUSE");
         
-        volumeSlider.setVisualPercent(Settings.getVolume() * 10f);
+        volumeSlider.setVisualPercent(Settings.getVolume());
         backButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
@@ -97,7 +97,7 @@ public class OptionsScreen implements Screen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				Settings.setVolume(volumeSlider.getValue());
-				SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
+//				SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
 			}
         });
         
