@@ -24,8 +24,7 @@ public class RoomHandler {
 		for(int i = 0; i < rooms.size;++i) {
 			rooms.get(i).dispose();
 		}
-		float angle = GameModel.getInstance().getCharacter().getBody().getAngle();
-		GameModel.getInstance().setCharacterTransform(GameModel.getInstance().getInitialSpawnPosition(), angle);
+		rooms.clear();
 		rooms = RandomRoomGenerator.getInstance().createRooms();
 		setCurrentRoom(rooms.first());
 	}

@@ -32,8 +32,8 @@ public class Room {
 		roomIndex = rooms;
 		rooms++;
 		connections = new Connection[4];
-		enemies = new Array<Enemy>();
 		parseMap(tileMap);
+		
 	}
 	
 	public Room(Connection connection, String tileMapPath, int endingPoint) {
@@ -131,6 +131,7 @@ public class Room {
 		holes = TiledMapObjectsUtil.parseHoles(tileMap);
 		solids = TiledMapObjectsUtil.parseSolid(tileMap);
 		
+		enemies = TiledMapObjectsUtil.parseEnemies(tileMap, this);
 		navigationLayer = TiledMapObjectsUtil.getNavigationTiledMapLayer(tileMap);
 	}
 
@@ -142,6 +143,8 @@ public class Room {
 			bodies.add(hole.getBody());
 		for(Solid solid:solids)
 			bodies.add(solid.getBody());
+		for(Enemy enemy:enemies)
+			bodies.add(enemy.getBody());
 		GameModel.getInstance().addBodyToEnable(bodies, enabled);
 	}
 	
@@ -152,6 +155,8 @@ public class Room {
 			GameModel.getInstance().addBodyToDispose(holes.get(i).getBody());
 		for(int i = 0; i < solids.size;++i)
 			GameModel.getInstance().addBodyToDispose(solids.get(i).getBody());
+		for(int i = 0; i < enemies.size;++i)
+			GameModel.getInstance().addBodyToDispose(enemies.get(i).getBody());
 	}
 	
 	public Gate getGate(int direction) {

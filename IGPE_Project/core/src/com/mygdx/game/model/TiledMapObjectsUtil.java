@@ -100,6 +100,8 @@ public class TiledMapObjectsUtil {
 		Array<Enemy> enemies = new Array<Enemy>();
 		
 		MapLayer enemiesLayer = tiledMap.getLayers().get("Enemies");
+		if(enemiesLayer == null)
+			return enemies;
 		enemiesLayer.setVisible(false);
 		MapObjects enemiesObjects = enemiesLayer.getObjects();
 		
@@ -108,7 +110,6 @@ public class TiledMapObjectsUtil {
 				TiledMapTileMapObject tileObject = (TiledMapTileMapObject) object;
 				TiledMapTile tile = tileObject.getTile();
 				switch ((String) tile.getProperties().get("type")) {
-				
 				case "slime":
 					enemies.add(new Slime(new Vector2(tileObject.getX() / Settings.PPM + 0.5f, tileObject.getY() / Settings.PPM + 0.5f), home));
 					break;
@@ -119,9 +120,8 @@ public class TiledMapObjectsUtil {
 					enemies.add(new Goblin(new Vector2(tileObject.getX() / Settings.PPM + 0.5f, tileObject.getY() / Settings.PPM + 0.5f), home));
 					break;
 				}
-				
+				enemies.get(enemies.size-1).getBody().setActive(false);
 			}
-			
 		}
 		
 		return enemies;

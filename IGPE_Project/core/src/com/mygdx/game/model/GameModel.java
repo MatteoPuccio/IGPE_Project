@@ -2,13 +2,11 @@ package com.mygdx.game.model;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.collisions.CollisionHandler;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.entities.EnemiesHandler;
-import com.mygdx.game.model.level.RandomRoomGenerator;
 import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.model.weapons.Magic;
 
@@ -42,6 +40,7 @@ public class GameModel {
 		
 		characterTransform = false;
 		switchPosition = new Vector2();
+		switchAngle = 0f;
 		
 		newFloor = false;
 		world = new World(new Vector2(0,0), false);
@@ -58,13 +57,12 @@ public class GameModel {
 	}
 	
 	public void init() {
-		character = new Character(new Vector2(9.5f,7.5f));
-		createRooms();
-	}
-	
-	private void createRooms() {
+		if(GameModel.getInstance().getCharacter() != null)
+			GameModel.getInstance().addBodyToDispose(GameModel.getInstance().getCharacter().getBody()); 
+		character = new Character(new Vector2(initialSpawnPosition));
 		RoomHandler.getInstance().createRooms();
 	}
+	
 	
 	public Character getCharacter() {
 		return character;
@@ -72,6 +70,15 @@ public class GameModel {
 	
 	public World getWorld() {
 		return world;
+	}
+	
+	public boolean isSettingMagicChangeScreen() {
+		return settingMagicChangeScreen;
+	}
+	
+	public void setSettingMagicChangeScreen(boolean settingMagicChangeScreen, Magic pickedUpMagic) {
+		this.settingMagicChangeScreen = settingMagicChangeScreen;
+		this.pickedUpMagic = pickedUpMagic;
 	}
 	
 	public void dispose() {
@@ -114,9 +121,10 @@ public class GameModel {
 		EnemiesHandler.update(deltaTime);
 		if(characterTransform) {
 			characterTransform = false;
-			GameModel.getInstance().getCharacter().getBody().setTransform(switchPosition, switchAngle);
+			character.getBody().setTransform(switchPosition, switchAngle);
 		}
 		if(newFloor) {
+			character.getBody().setTransform(initialSpawnPosition, character.getBody().getAngle());
 			RoomHandler.getInstance().createRooms();
 			newFloor = false;
 		}
