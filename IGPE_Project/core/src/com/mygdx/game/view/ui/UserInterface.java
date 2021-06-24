@@ -1,6 +1,5 @@
 package com.mygdx.game.view.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.GameModel;
 

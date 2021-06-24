@@ -5,11 +5,13 @@ import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.constants.Settings;
+import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
 import com.mygdx.game.model.weapons.WaterMagic;
+import com.mygdx.game.view.audio.SoundHandler;
 
 public class Character extends Entity{
 	
@@ -105,6 +107,15 @@ public class Character extends Entity{
 				invincible = false;
 			}
 		}
+		
+		if(!body.getLinearVelocity().isZero()) {
+			stepElapsed += deltaTime;
+			if (stepElapsed >= stepTimer) {
+				stepElapsed = 0;
+				SoundHandler.getInstance().addSoundToQueue(SoundConstants.STEP);
+			}
+		}
+		
 	}
 
 	@Override
@@ -112,6 +123,7 @@ public class Character extends Entity{
 		if(!invincible) {
 			currentHealth -= damage;
 			invincible = true;
+			SoundHandler.getInstance().addSoundToQueue(SoundConstants.HURT);
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
 			if(currentHealth <= 0)
 				GameMain.getInstance().death();

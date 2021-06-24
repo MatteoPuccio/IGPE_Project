@@ -2,7 +2,6 @@ package com.mygdx.game.model.weapons;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.constants.AnimationConstants;
-import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.entities.Entity;
 
 public class FireMagic extends Magic {

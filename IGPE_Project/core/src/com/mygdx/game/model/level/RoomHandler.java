@@ -1,7 +1,6 @@
 package com.mygdx.game.model.level;
 
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.model.GameModel;
 
 public class RoomHandler {
 
