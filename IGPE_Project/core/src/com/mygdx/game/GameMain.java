@@ -39,7 +39,7 @@ public class GameMain extends Game{
 		optionsScreen = new OptionsScreen();
 		deathScreen = new DeathScreen();
 		Pixmap pm = new Pixmap(Gdx.files.internal("menu_cursor.png"));
-		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
+		cursor = Gdx.graphics.newCursor(pm, 0, 0);
 		Gdx.graphics.setCursor(cursor);
 		pm.dispose();
 		setScreen(titleScreen);
