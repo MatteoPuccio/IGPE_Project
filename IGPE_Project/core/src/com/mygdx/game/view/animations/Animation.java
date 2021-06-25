@@ -43,6 +43,8 @@ public class Animation {
 		maxFrameTime = cycleTime / frameCount;
 	}
 	
+	
+	//Non vengono create nuove TextureRegion, perciò non è necessario il dispose sulle animazioni create con questo costruttore
 	public Animation(Animation old) {
 		this.frames = new Array<TextureRegion>(old.frames);
 		

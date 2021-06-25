@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.Array;
 public class ParticleHandler {
 
 	private static ParticleHandler instance = null;
+	private Array<Particle> particles;
+	private boolean cleared;
 	
 	public class Particle {
 		
@@ -39,10 +41,9 @@ public class ParticleHandler {
 		}
 	}
 	
-	private Array<Particle> particles;
-	
 	private ParticleHandler() {
 		particles = new Array<Particle>();
+		cleared = false;
 	}
 	
 	public static ParticleHandler getInstance() {
@@ -52,11 +53,21 @@ public class ParticleHandler {
 	}
 	
 	public void addParticle(Vector2 position, int particleId, float width, float heigth) {
+		cleared = false;
 		particles.add(new Particle(position, particleId, width, heigth));
 	}
 	
 	public Array<Particle> getParticles() {
 		return particles;
+	}
+	
+	public void clear() {
+		cleared = true;
+		particles.clear();
+	}
+	
+	public boolean isCleared() {
+		return cleared;
 	}
 	
 }

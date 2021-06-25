@@ -223,6 +223,9 @@ public class GameView implements Screen{
 			activeParticleEffects.add(new ParticleEffect(particleEffects.get(temp.getParticleId()), temp.getPosition(), temp.getWidth(), temp.getHeigth()));
 		}
 		
+		if(ParticleHandler.getInstance().isCleared())
+			activeParticleEffects.clear();
+		
 		for(int i = 0; i < activeParticleEffects.size; ++i) {
 			if(activeParticleEffects.get(i).isDonePlaying()) {
 				ParticleEffect temp = activeParticleEffects.get(i);

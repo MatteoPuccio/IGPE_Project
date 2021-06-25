@@ -55,7 +55,7 @@ public class Character extends Entity{
 		invincibilityTimer = 1.5f;
 		invincibilityElapsed = 0;
 		
-		stepTimer = 0.4f;
+		stepTimer = 0.3f;
 		stepElapsed = 0;
 		
 		speedMultiplier = 1;
