@@ -136,9 +136,6 @@ public class Character extends Entity{
 	{
 		super.update(deltaTime);
 		
-		if(currentHealth <= 0)
-			GameMain.getInstance().death();
-		
 		move(deltaTime);
 		
 		firstMagic.update(deltaTime);
@@ -172,18 +169,34 @@ public class Character extends Entity{
 				elapsedPowerUpsTimes.put(i, elapsed);
 			}
 		}
+		
+		if(currentHealth <= 0)
+			GameMain.getInstance().death();
 	}
 
 	@Override
 	public void takeDamage(float damage) {
 		if(!invincible) {
-			currentHealth -= damage;
+			currentHealth -= (damage * getDamageMultiplier());
 			invincible = true;
 			SoundHandler.getInstance().addSoundToQueue(SoundConstants.PLAYER_HIT);
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
 		}
 	}
 	
+	private float getDamageMultiplier() {
+		switch(Settings.getDifficulty()) {
+		case Settings.EASY:
+			return 0.5f;
+		case Settings.NORMAL:
+			return 1.0f;
+		case Settings.HARD:
+			return 2.0f;
+		default:
+			return 1.0f;
+		}
+	}
+
 	public void recoverHealth(float healthRecovered) {
 		
 		if(currentHealth + healthRecovered >= maxHealth)
@@ -320,6 +333,9 @@ public class Character extends Entity{
 		
 	}
 	
+	public void stopMoving() {
+		body.setLinearVelocity(0f, 0f);
+	}
 	
 }
 

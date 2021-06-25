@@ -106,8 +106,9 @@ public class GameModel {
 	}
 	
 	private void disposeBodies() {
-		for(int i = 0; i < bodiesToDispose.size;++i)
+		for(int i = 0; i < bodiesToDispose.size;++i) {
 			world.destroyBody(bodiesToDispose.get(i));
+		}
 		bodiesToDispose.clear();
 	}
 

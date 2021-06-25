@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.constants.Settings;
@@ -38,6 +39,7 @@ import com.mygdx.game.view.animations.ParticleEffect;
 import com.mygdx.game.view.audio.Sounds;
 import com.mygdx.game.view.ui.InterfaceBar;
 import com.mygdx.game.view.ui.UserInterface;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class GameView implements Screen{
 
@@ -46,7 +48,6 @@ public class GameView implements Screen{
 	private Viewport gamePort;
 	
 	private SpriteBatch batch,batchUI;
-	
 	private TiledMapRenderer tiledMapRenderer;
 
 	private Sounds sounds;
@@ -54,6 +55,8 @@ public class GameView implements Screen{
 	private ObjectMap<Integer, ParticleEffect> particleEffects;
 	private Array<ParticleEffect> activeParticleEffects;
 	private Cursor cursor;
+	private ShapeRenderer shapeRenderer;
+	private float blackScreenAlpha;
 	
 	public GameView() {	
 		camera = new OrthographicCamera();
@@ -63,7 +66,7 @@ public class GameView implements Screen{
 		gamePort = new FitViewport(16, 10, camera);
 		
 		debugRenderer = new Box2DDebugRenderer();
-		
+		blackScreenAlpha = 1f;
 		sounds = new Sounds();
 		
 		initAnimations();
@@ -76,6 +79,8 @@ public class GameView implements Screen{
 		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
 		Gdx.graphics.setCursor(cursor);
 		pm.dispose();
+		
+		shapeRenderer = new ShapeRenderer();
 
 	}
 	
@@ -104,6 +109,16 @@ public class GameView implements Screen{
         drawInterfaceBar(UserInterface.getInstance().healthBar);
         batchUI.end();
         
+        
+        if(blackScreenAlpha > 0) {
+        	shapeRenderer.setColor(0f,0f,0f,blackScreenAlpha);
+			Gdx.gl.glEnable(GL20.GL_BLEND);
+			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+			shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+			shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			shapeRenderer.end();
+			Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
 //        debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
@@ -139,6 +154,7 @@ public class GameView implements Screen{
 		debugRenderer.dispose();
 		cursor.dispose();
 		batch.dispose();
+		shapeRenderer.dispose();
 		UserInterface.getInstance().dispose();
 		batchUI.dispose();
 		
@@ -310,6 +326,7 @@ public class GameView implements Screen{
 	@Override
 	public void show() {
 		Gdx.graphics.setCursor(cursor);
+		blackScreenAlpha = 1f;
 	}
 
 	@Override
@@ -327,6 +344,13 @@ public class GameView implements Screen{
 	@Override
 	public void hide() {
 		
+	}
+
+	public void setBlackScreen(float elapsedTeleportTime) {
+		blackScreenAlpha = RoomHandler.getInstance().getCurrentRoom().getTeleportTime() - elapsedTeleportTime;
+		if(blackScreenAlpha <= 0f)
+			blackScreenAlpha = 0f;
+		System.out.println(blackScreenAlpha);
 	}
 }
 

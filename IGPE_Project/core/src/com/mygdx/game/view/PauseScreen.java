@@ -5,68 +5,72 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.GameMain;
-import com.mygdx.game.view.animations.Animation;
+import com.mygdx.game.constants.Settings;
 import com.mygdx.game.view.audio.Sounds;
 
-public class TitleScreen implements Screen {
+public class PauseScreen implements Screen{
 	
 	private SpriteBatch batch;
     protected Stage stage;
     private Viewport viewport;
     private OrthographicCamera camera;
     private TextureAtlas atlas;
-    
-    private Animation titleScreenAnimation;
-    private Array<TextureRegion> titleScreenFrames;
-    private Skin skin;
+    protected Skin skin;
     private BitmapFont titleFont;
     private LabelStyle titleStyle;
 	private Table mainTable;
 	
-	public TitleScreen() {
+	private Label optionsLabel,volumeLabel;
+	private final Slider volumeSlider;
+	private TextButton backButton, menuButton;
+	
+	public PauseScreen() {
+		
 		atlas = new TextureAtlas("skin/skin.atlas");
 	    skin = new Skin(Gdx.files.internal("skin/skin.json"), atlas);
 	    skin.getFont("boldFont").getData().setScale(2f,2f);
-	    
+		
 	    titleFont = new BitmapFont(Gdx.files.internal("skin/AncientModernTales.fnt"));
-	    titleFont.getData().scale(0.8f);
-	    titleStyle = new LabelStyle(titleFont, Color.WHITE);
-	    
-	    //crea animazione per il title screen 
-	    titleScreenFrames = new Array<TextureRegion>();
-	    for(int i = 0; i < 6; ++i) 
-	    	titleScreenFrames.add(new TextureRegion(new Texture("title_screen/title-screen" + i + ".png")));
-	    titleScreenAnimation = new Animation(titleScreenFrames, 6, 0.5f);
+	    titleFont.getData().scale(0.7f);
+	    titleStyle = new Label.LabelStyle(titleFont, Color.BLACK);
 	    
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
         viewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), camera);
         viewport.apply();
-
         camera.position.set(0, 0, 0);
         camera.update();
 
-        stage = new Stage(viewport, batch);
+        optionsLabel = new Label("Pause", titleStyle);
+        volumeLabel = new Label("Volume",skin);
         
+        optionsLabel.setColor(new Color(Color.BLACK));
+        volumeLabel.setColor(new Color(Color.BLACK));
+        
+        volumeSlider = new Slider(0f, 1f, 0.01f, false, skin);
+        backButton = new TextButton("BACK", skin);
+        menuButton = new TextButton("MENU", skin);
+        stage = new Stage(viewport, batch); 
 	}
-
+	
 	@Override
 	public void show() {
 		if(mainTable != null)
@@ -74,62 +78,50 @@ public class TitleScreen implements Screen {
 		mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();
-
-        Label title = new Label("No Way To Go But Down",titleStyle);
-//        title.setWrap(true);
-        title.setColor(new Color(Color.BLACK));
-        TextButton playButton = new TextButton("PLAY", skin);
-        TextButton exitButton = new TextButton("EXIT", skin);
-        TextButton optionButton = new TextButton("OPTIONS", skin);
         
-        playButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-            	GameMain.getInstance().start();
-            }
-        });
-        
-        optionButton.addListener(new ClickListener(){
+        volumeSlider.setVisualPercent(Settings.getVolume());
+        backButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
-        		GameMain.getInstance().options();
+        		GameMain.getInstance().unpause();
         	}
         });
         
-        exitButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
+        menuButton.addListener(new ClickListener() {
+        	@Override
+        	public void clicked(InputEvent event, float x, float y) {
+        		GameMain.getInstance().confirmQuitScreen();
+        	}
         });
         
-        mainTable.add(title).pad(0,0,100,0);
-        mainTable.row();
-        mainTable.add(playButton).growX().pad(20, 300, 20, 300);
-        mainTable.row();
-        mainTable.add(optionButton).growX().pad(20, 300, 20, 300);
-        mainTable.row();
-        mainTable.add(exitButton).growX().pad(20, 300, 20, 300);
-        mainTable.row();
+        volumeSlider.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				Settings.setVolume(volumeSlider.getValue());
+			}
+        });
         
-		
+        
+        mainTable.add(optionsLabel).colspan(2).center();
+        mainTable.row();
+        mainTable.add(volumeLabel).colspan(1).left().padRight(100);
+        mainTable.add(volumeSlider).colspan(1).right().padLeft(100);
+        mainTable.row();
+        mainTable.add(backButton).colspan(2).center();
+        mainTable.row();
+        mainTable.add(menuButton).colspan(2).center();
+//        mainTable.debugAll();
         stage.addActor(mainTable);
 	}
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0f, 0f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        Sounds.getInstance().update();
-        
-        batch.begin();
-        titleScreenAnimation.update(delta);
-		batch.draw(titleScreenAnimation.getFrame(), 0,0);
-		batch.end();
-        
-		stage.act();
-        stage.draw();
+		Gdx.gl.glClearColor(0.259f, 0.157f, 0.208f, 1f);
+    	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		Sounds.getInstance().update();
+        stage.act();
+        stage.draw();		
 	}
 
 	@Override
@@ -138,7 +130,7 @@ public class TitleScreen implements Screen {
 		viewport.apply();
 		Gdx.input.setInputProcessor(stage);
 	}
-	
+
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
@@ -159,10 +151,9 @@ public class TitleScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		skin.dispose();
 		atlas.dispose();
-		stage.dispose();
 		batch.dispose();
-		titleFont.dispose();
+		stage.dispose();
 	}
+	
 }

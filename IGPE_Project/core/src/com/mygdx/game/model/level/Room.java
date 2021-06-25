@@ -65,8 +65,8 @@ public class Room {
 		rooms++;
 		connections = new Connection[4];
 		
-		teleportTime = 1;
-		elapsedTeleportTime = 0;
+		teleportTime = 1f;
+		elapsedTeleportTime = 0f;
 		
 		initPickups();
 		initPowerups();
@@ -75,8 +75,6 @@ public class Room {
 	}
 	
 	public void update(float deltaTime) {
-		elapsedTeleportTime += deltaTime;
-		
 		for(Enemy enemy : enemies)
 			enemy.update(deltaTime);
 		
@@ -92,14 +90,21 @@ public class Room {
 		}
 	}
 	
+	public void updateTeleportTime(float deltaTime) {
+		if(elapsedTeleportTime + deltaTime <= teleportTime)
+			elapsedTeleportTime += deltaTime;
+		else
+			elapsedTeleportTime = teleportTime;
+	}
+	
 	public Room(Connection connection, String tileMapPath, int endingPoint) {
 		tileMap = new NavTmxMapLoader().load(tileMapPath);
 		roomIndex = rooms;
 		rooms++;
 		connections = new Connection[4];
 		
-		teleportTime = 1;
-		elapsedTeleportTime = 0;
+		teleportTime = 1f;
+		elapsedTeleportTime = 0f;
 		
 		initPickups();
 		initPowerups();
@@ -237,6 +242,16 @@ public class Room {
 			GameModel.getInstance().addBodyToDispose(solids.get(i).getBody());
 		for(int i = 0; i < enemies.size;++i)
 			GameModel.getInstance().addBodyToDispose(enemies.get(i).getBody());
+		for(int i = 0; i < pickups.size;++i)
+			GameModel.getInstance().addBodyToDispose(pickups.get(i).getBody());
+		for(int i = 0; i < treasureChests.size;++i)
+			GameModel.getInstance().addBodyToDispose(treasureChests.get(i).getBody());
+		gates.clear();
+		holes.clear();
+		solids.clear();
+		enemies.clear();
+		pickups.clear();
+		treasureChests.clear();
 	}
 	
 	public Gate getGate(int direction) {

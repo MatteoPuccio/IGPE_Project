@@ -68,4 +68,8 @@ public class RoomHandler {
 		ParticleHandler.getInstance().clear();
 		SoundHandler.getInstance().clear();
 	}
+
+	public boolean canTeleport() {
+		 return RoomHandler.getInstance().getCurrentRoom().getElapsedTeleportTime() >= RoomHandler.getInstance().getCurrentRoom().getTeleportTime();
+	}
 }
