@@ -46,7 +46,7 @@ public class Goblin extends Enemy {
 		timeForStep = 0.20f;
 		elapsedTimeForStep = 0;
 		
-		attackCooldown = 1;
+		attackCooldown = 0.5f;
 		attackTimePassed = 0;
 		
 		damage = 1;
@@ -79,6 +79,9 @@ public class Goblin extends Enemy {
 					home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(false);
 				}
 				return;
+			}
+			else {
+				attackTimePassed = 0;
 			}
 			
 			if(Vector2.dst2(currentPosition.x, currentPosition.y, GameModel.getInstance().getCharacter().getPosition().x, GameModel.getInstance().getCharacter().getPosition().y) >= 10 * 10) {

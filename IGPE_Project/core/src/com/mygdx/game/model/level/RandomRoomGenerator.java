@@ -118,17 +118,6 @@ public class RandomRoomGenerator {
 		rooms.addAll(deadends); //aggiungi le stanze chiuse
 		return rooms;
 	}
-
-//	public void printRooms() {
-//		for(Room r:rooms) {
-//			System.out.println("Room " + r.getRoomIndex() + ": ");
-//			for(Connection c:r.getConnections())
-//				if(c != null)
-//					System.out.println("Connection from " + c.getStartingRoom().getRoomIndex() + " to " + c.getEndingRoom().getRoomIndex() + " from " 
-//							+ c.getStartingPoint() + " to " +c.getEndingPoint());
-//			System.out.println("");
-//		}
-//	}
 	
 	private static Room createStarterRoom() {
 		int index = r.nextInt(starterTypes.size);

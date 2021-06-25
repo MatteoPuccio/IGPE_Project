@@ -4,33 +4,37 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.constants.PowerUpsConstants;
 import com.mygdx.game.model.collisions.CollisionHandler;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.entities.EnemiesHandler;
+import com.mygdx.game.model.level.RandomRoomGenerator;
 import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.model.weapons.BulletHandler;
 import com.mygdx.game.model.weapons.Magic;
+import com.mygdx.game.view.audio.SoundHandler;
 
 public class GameModel {
 	
 	private Character character;
 	
-	private static GameModel gameModel = null;
+	private static GameModel instance = null;
 	private World world;
 	private Array<Body> bodiesToDispose;
 	private Array<Body> bodiesToEnable;
 	private Array<Body> bodiesToDisable;
+	
 	private boolean characterTransform;
+	private boolean settingMagicChangeScreen;
+	private boolean newFloor;
 	
 	private int coins;
-	private boolean settingMagicChangeScreen;
 	private Magic pickedUpMagic;
 	
 	private Vector2 switchPosition;
 	private final Vector2 initialSpawnPosition;
 	private float switchAngle;
 	
-	private boolean newFloor;
 	private int currentFloor;
 	
 	private GameModel() {
@@ -40,22 +44,23 @@ public class GameModel {
 		bodiesToDisable = new Array<Body>();
 		
 		characterTransform = false;
+		newFloor = false;
+		settingMagicChangeScreen = false;
+		
 		switchPosition = new Vector2();
 		switchAngle = 0f;
 		
-		newFloor = false;
 		
 		world = new World(new Vector2(0,0), false);
 		world.setContactListener(new CollisionHandler());
 		
 		coins = 0;
-		settingMagicChangeScreen = false;
 	}
 	
 	public static GameModel getInstance() {
-		if(gameModel == null)
-			gameModel = new GameModel();
-		return gameModel;
+		if(instance == null)
+			instance = new GameModel();
+		return instance;
 	}
 	
 	public void reset() {
@@ -124,12 +129,15 @@ public class GameModel {
 		character.update(deltaTime);
 		EnemiesHandler.update(deltaTime);
 		RoomHandler.getInstance().updateTime(deltaTime);
+		
 		if(characterTransform) {
 			characterTransform = false;
 			character.getBody().setTransform(switchPosition, switchAngle);
 		}
+		
 		if(newFloor) 
 			createNewFloor();
+		
 		disposeBodies();
 		enableBodies();
 		disableBodies();
@@ -151,7 +159,7 @@ public class GameModel {
 	public void setNewFloor() {
 		newFloor = true;
 	}
-
+	
 	public int getFloor() {
 		return currentFloor;
 	}

@@ -171,7 +171,7 @@ public class GameView implements Screen{
 		
 		animations.put(AnimationConstants.HEALTH_POTION_ANIMATION, new Animation("health_potion.png",1,1));
 		animations.put(AnimationConstants.COIN_ANIMATION, new Animation("coin.png",1,1));
-		animations.put(AnimationConstants.COIN_BAG_ANIMATION, new Animation("coin_bag.jpg",1,1));
+		animations.put(AnimationConstants.COIN_BAG_ANIMATION, new Animation("coin_bag.png",1,1));
 		animations.put(AnimationConstants.FIRE_MAGIC_ANIMATION, new Animation("fire_magic.png",1,1));
 		animations.put(AnimationConstants.LIGHTNING_MAGIC_ANIMATION, new Animation("lightning_magic.png",1,1));
 		animations.put(AnimationConstants.ROCK_MAGIC_ANIMATION, new Animation("rock_magic.png", 1, 1));

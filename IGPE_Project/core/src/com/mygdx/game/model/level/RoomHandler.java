@@ -14,6 +14,7 @@ public class RoomHandler {
 	private boolean changeMap;
 	private float elapsedTeleportTime;
 	private static final float teleportTime = 2.5f;
+	
 	private RoomHandler() {
 		rooms = new Array<Room>();
 		elapsedTeleportTime = teleportTime;
@@ -73,15 +74,15 @@ public class RoomHandler {
 		}
 		return false;
 	}
-	
-	public static float getTeleportTime() {
-		return teleportTime;
-	}
-	
+		
 	private void reset() {
 		BulletHandler.getInstance().removeAllBullets();
 		ParticleHandler.getInstance().clear();
 		SoundHandler.getInstance().clear();
+	}
+	
+	public static float getTeleportTime() {
+		return teleportTime;
 	}
 	
 }

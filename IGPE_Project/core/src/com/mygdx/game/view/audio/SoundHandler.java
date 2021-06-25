@@ -27,4 +27,8 @@ public class SoundHandler {
 	public void clear() {
 		soundQueue.clear();
 	}
+
+	public void setNull() {
+		instance = null;
+	}
 }

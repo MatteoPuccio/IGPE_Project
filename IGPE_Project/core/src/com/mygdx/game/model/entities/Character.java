@@ -11,8 +11,10 @@ import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.weapons.ExplosionMagic;
+import com.mygdx.game.model.weapons.FireMagic;
 import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
+import com.mygdx.game.model.weapons.RockMagic;
 import com.mygdx.game.model.weapons.WaterMagic;
 import com.mygdx.game.view.audio.SoundHandler;
 
@@ -42,8 +44,8 @@ public class Character extends Entity{
 	public Character(Vector2 position) {
 		super(position, 0.4f, false, 100, 10, 3);
 		
-		firstMagic = new WaterMagic(this);
-		secondMagic = new ExplosionMagic(this);		
+		firstMagic = new RockMagic(this);
+		secondMagic = new FireMagic(this);		
 		
 		leftMove = false;
 		rightMove = false;

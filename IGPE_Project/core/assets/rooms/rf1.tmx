@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="30" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="13">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="30" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="18">
  <tileset firstgid="1" source="0x72_16x16DungeonTileset_walls.v1.tsx"/>
  <tileset firstgid="257" source="0x72_16x16DungeonTileset.v4.tsx"/>
  <tileset firstgid="513" source="NavigationTileSet.tsx"/>
  <tileset firstgid="515" source="spawnTileset.tsx"/>
+ <tileset firstgid="519" source="Enemies.tsx"/>
  <layer id="1" name="bg" width="30" height="40">
   <data encoding="csv">
 130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,
@@ -254,7 +255,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,514,514,514,514,514,514,514,514,514,514,514,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,514,513,513,513,513,513,513,513,513,513,514,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,514,513,513,513,513,513,513,513,513,513,514,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,514,513,513,513,513,513,513,513,514,513,514,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,514,513,513,513,513,513,513,513,513,513,514,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,514,513,513,514,514,514,514,514,514,514,514,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,514,513,513,514,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -288,6 +289,13 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="13" name="Enemies">
+  <object id="13" gid="520" x="304" y="144" width="16" height="16"/>
+  <object id="14" gid="520" x="192" y="256" width="16" height="16"/>
+  <object id="15" gid="520" x="272" y="256" width="16" height="16"/>
+  <object id="16" gid="521" x="128" y="240" width="16" height="16"/>
+  <object id="17" gid="521" x="336" y="240" width="16" height="16"/>
+ </objectgroup>
  <objectgroup id="12" name="SpawnPoints">
   <object id="12" gid="518" x="224" y="368" width="16" height="16"/>
  </objectgroup>
