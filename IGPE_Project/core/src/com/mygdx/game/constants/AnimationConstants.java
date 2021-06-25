@@ -29,5 +29,6 @@ public class AnimationConstants {
 	public static final int WATER_MAGIC_ANIMATION = 21;
 	public static final int MANA_RECHARGE_POWERUP_ANIMATION = 22;
 	public static final int SPEED_POWERUP_ANIMATION = 23;	
-
+	public static final int INVINCIBILITY_POWERUP_ANIMATION = 24;
+	public static final int MAGIC_POWERUP_ANIMATION = 25;
 }

@@ -86,6 +86,10 @@ public abstract class Magic {
 		return cooldown;
 	}
 	
+	public void setCooldownByMultiplier(float multiplier) {
+		cooldown = cooldown * multiplier;
+	}
+	
 	public void setAttackPoint(Vector2 attackPoint) {
 		this.attackPoint = attackPoint;
 	}
