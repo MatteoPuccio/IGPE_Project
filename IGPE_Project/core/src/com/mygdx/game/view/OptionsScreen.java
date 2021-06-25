@@ -60,7 +60,7 @@ public class OptionsScreen implements Screen{
         camera.position.set(0, 0, 0);
         camera.update();
 
-        pauseLabel = new Label("PAUSE", titleStyle);
+        pauseLabel = new Label("Options", titleStyle);
         volumeLabel = new Label("Volume",skin);
         difficultyLabel = new Label("Difficulty",skin);
         

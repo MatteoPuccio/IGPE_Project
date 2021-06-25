@@ -30,13 +30,14 @@ public class Character extends Entity{
 	private boolean invincible;
 	
 	private float invincibilityTimer;
-	private float invincibilityElapsed;
+	private float invincibilityElapsed;	
 	
 	private float stepTimer;
 	private float stepElapsed;
 
 	private float speedMultiplier;
-		
+	private float cooldownMultiplier;
+	
 	private ObjectMap<Integer, Boolean> enabledPowerUps;
 	private ObjectMap<Integer, Float> maxPowerUpsTimes;
 	private ObjectMap<Integer, Float> elapsedPowerUpsTimes;
@@ -61,6 +62,7 @@ public class Character extends Entity{
 		stepElapsed = 0;
 		
 		speedMultiplier = 1;
+		cooldownMultiplier = 1;
 		
 		enabledPowerUps = new ObjectMap<Integer, Boolean>();
 		maxPowerUpsTimes = new ObjectMap<Integer, Float>();
@@ -73,12 +75,18 @@ public class Character extends Entity{
 		
 		enabledPowerUps.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, false);
 		enabledPowerUps.put(PowerUpsConstants.SPEED_POWERUP, false);
+		enabledPowerUps.put(PowerUpsConstants.INVINCIBILITY_POWERUP, false);
+		enabledPowerUps.put(PowerUpsConstants.MAGIC_POWERUP, false);
 		
 		maxPowerUpsTimes.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, 120f);
 		maxPowerUpsTimes.put(PowerUpsConstants.SPEED_POWERUP, 60f);
+		maxPowerUpsTimes.put(PowerUpsConstants.INVINCIBILITY_POWERUP, 20f);
+		maxPowerUpsTimes.put(PowerUpsConstants.MAGIC_POWERUP, 20f);
 		
 		elapsedPowerUpsTimes.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, 0f);
 		elapsedPowerUpsTimes.put(PowerUpsConstants.SPEED_POWERUP, 0f);
+		elapsedPowerUpsTimes.put(PowerUpsConstants.INVINCIBILITY_POWERUP, 0f);
+		elapsedPowerUpsTimes.put(PowerUpsConstants.MAGIC_POWERUP, 0f);
 		
 	}
 	
@@ -167,7 +175,7 @@ public class Character extends Entity{
 	@Override
 	public void takeDamage(float damage) {
 		if(!invincible) {
-			currentHealth -= damage * getDamageMultiplier();
+			currentHealth -= (damage * getDamageMultiplier());
 			invincible = true;
 			SoundHandler.getInstance().addSoundToQueue(SoundConstants.PLAYER_HIT);
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
@@ -177,11 +185,11 @@ public class Character extends Entity{
 	private float getDamageMultiplier() {
 		switch(Settings.getDifficulty()) {
 		case Settings.EASY:
-			return 0.6f;
+			return 0.5f;
 		case Settings.NORMAL:
 			return 1.0f;
 		case Settings.HARD:
-			return 1.4f;
+			return 2.0f;
 		default:
 			return 1.0f;
 		}
@@ -241,6 +249,17 @@ public class Character extends Entity{
 		case PowerUpsConstants.SPEED_POWERUP:
 			speedMultiplier *= 1.5f;
 			break;
+			
+		case PowerUpsConstants.INVINCIBILITY_POWERUP:
+			invincible = true;
+			invincibilityTimer = maxPowerUpsTimes.get(PowerUpsConstants.INVINCIBILITY_POWERUP);
+			break;
+		
+		case PowerUpsConstants.MAGIC_POWERUP:
+			cooldownMultiplier = 0.5f;
+			firstMagic.setCooldownByMultiplier(cooldownMultiplier);
+			secondMagic.setCooldownByMultiplier(cooldownMultiplier);
+			break;
 		}
 	}
 	
@@ -256,6 +275,16 @@ public class Character extends Entity{
 		
 		case PowerUpsConstants.SPEED_POWERUP:
 			speedMultiplier /= 1.5f;
+			break;
+			
+		case PowerUpsConstants.INVINCIBILITY_POWERUP:
+			invincible = false;
+			invincibilityTimer = 1.5f;
+			break;
+		case PowerUpsConstants.MAGIC_POWERUP:
+			cooldownMultiplier = 1;
+			firstMagic.setCooldownByMultiplier(cooldownMultiplier);
+			secondMagic.setCooldownByMultiplier(cooldownMultiplier);
 			break;
 		}
 		
