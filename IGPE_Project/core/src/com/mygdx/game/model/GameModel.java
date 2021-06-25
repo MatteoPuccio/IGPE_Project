@@ -126,9 +126,9 @@ public class GameModel {
 	
 	public void update(float deltaTime) {
 		world.step(deltaTime, 6, 2);
+		
 		character.update(deltaTime);
-		EnemiesHandler.update(deltaTime);
-		RoomHandler.getInstance().updateTime(deltaTime);
+		RoomHandler.getInstance().getCurrentRoom().update(deltaTime);
 		
 		if(characterTransform) {
 			characterTransform = false;

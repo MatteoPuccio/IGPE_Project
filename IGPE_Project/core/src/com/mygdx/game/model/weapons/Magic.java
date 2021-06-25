@@ -86,7 +86,7 @@ public abstract class Magic {
 		return cooldown;
 	}
 	
-	public void setCooldownByMultiplier(float multiplier) {
+	public void setCooldownMultiplier(float multiplier) {
 		cooldown = cooldown * multiplier;
 	}
 	

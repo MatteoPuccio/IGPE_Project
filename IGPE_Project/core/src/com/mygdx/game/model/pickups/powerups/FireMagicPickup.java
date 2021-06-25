@@ -12,7 +12,7 @@ import com.mygdx.game.model.weapons.FireMagic;
 public class FireMagicPickup extends Pickup {
 
 	public FireMagicPickup(Vector2 position, Room home) {
-		super(position, home);
+		super(position, home, 0.5f);
 	}
 
 	@Override
@@ -21,15 +21,8 @@ public class FireMagicPickup extends Pickup {
 	}
 
 	@Override
-	public void collidesWith(Collidable coll) {
-	
-		if(coll instanceof Character) {
-			Character temp = (Character) coll;
-			GameModel.getInstance().setSettingMagicChangeScreen(true, new FireMagic(temp));
-		}
-		
-		super.collidesWith(coll);
-		
-	}	
+	protected void collisionResponse(Character character) {
+		GameModel.getInstance().setSettingMagicChangeScreen(true, new FireMagic(character));
+	}
 	
 }
