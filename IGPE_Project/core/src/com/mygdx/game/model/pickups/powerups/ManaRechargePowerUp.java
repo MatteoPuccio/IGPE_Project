@@ -11,26 +11,17 @@ import com.mygdx.game.model.pickups.Pickup;
 public class ManaRechargePowerUp extends Pickup {
 
 	public ManaRechargePowerUp(Vector2 position, Room home) {
-		super(position, home);
+		super(position, home, 0.5f);
 	}
 
 	@Override
 	public int getCurrentAnimationId() {
 		return AnimationConstants.MANA_RECHARGE_POWERUP_ANIMATION;
 	}
-
+	
 	@Override
-	public void collidesWith(Collidable coll) {
-
-		if(coll instanceof Character) {
-			
-			Character temp = (Character) coll;
-			temp.enablePowerUp(PowerUpsConstants.MANA_RECHARGE_POWERUP);
-			
-		}
-		
-		super.collidesWith(coll);
-		
+	protected void collisionResponse(Character character) {
+		character.enablePowerUp(PowerUpsConstants.MANA_RECHARGE_POWERUP);		
 	}
 
 }

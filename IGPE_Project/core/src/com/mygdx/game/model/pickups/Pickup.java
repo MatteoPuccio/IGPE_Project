@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.collisions.Collidable;
+import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.level.Room;
 
 public abstract class Pickup implements Animated, Collidable {
@@ -18,13 +19,22 @@ public abstract class Pickup implements Animated, Collidable {
 	private float radius;
 	private Room home;
 	
-	public Pickup(Vector2 position, Room home) {
+	private float timeBeforePickup;
+	private float timeSinceCreation;
+	
+	public Pickup(Vector2 position, Room home, float radius) {
 		
 		this.position = new Vector2(position);
-		this.radius = 0.3f;
+		this.radius = radius;
 		this.home = home;
 		body = createBody();
 		
+		timeBeforePickup = 1f;
+		timeSinceCreation = 0;
+	}
+	
+	public void update(float deltaTime) {
+		timeSinceCreation += deltaTime;
 	}
 	
 	public Vector2 getPosition() {
@@ -85,8 +95,14 @@ public abstract class Pickup implements Animated, Collidable {
 	}
 	
 	@Override
-	public void collidesWith(Collidable coll) {
-		home.removePickup(this);
+	public final void collidesWith(Collidable coll) {
+		if(timeSinceCreation >= timeBeforePickup && coll instanceof Character) {
+			Character temp = (Character) coll;
+			collisionResponse(temp);
+			home.removePickup(this);
+		}
 	}
+	
+	protected abstract void collisionResponse(Character character);
 	
 }

@@ -31,4 +31,6 @@ public class AnimationConstants {
 	public static final int SPEED_POWERUP_ANIMATION = 23;	
 	public static final int INVINCIBILITY_POWERUP_ANIMATION = 24;
 	public static final int MAGIC_POWERUP_ANIMATION = 25;
+	public static final int CHEST_CLOSED_ANIMATION  = 26;
+	public static final int CHEST_OPEN_ANIMATION = 27;
 }

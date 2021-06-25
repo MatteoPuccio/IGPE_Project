@@ -80,12 +80,14 @@ public class GameMain extends Game{
 	@Override
 	public void dispose() {
 		controller.dispose();
+		Sounds.getInstance().dispose();
 		titleScreen.dispose();
 		optionsScreen.dispose();
 		deathScreen.dispose();
 		pauseScreen.dispose();
 		confirmQuitScreen.dispose();
 		cursor.dispose();
+		Sounds.getInstance().dispose();
 	}
 	
 	@Override

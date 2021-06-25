@@ -11,7 +11,7 @@ import com.mygdx.game.model.pickups.Pickup;
 public class InvincibilityPowerUp extends Pickup{
 
 	public InvincibilityPowerUp(Vector2 position, Room home) {
-		super(position, home);
+		super(position, home, 0.5f);
 	}
 
 	@Override
@@ -20,15 +20,7 @@ public class InvincibilityPowerUp extends Pickup{
 	}
 
 	@Override
-	public void collidesWith(Collidable coll) {
-
-		if(coll instanceof Character) {
-			
-			Character temp = (Character) coll;
-			temp.enablePowerUp(PowerUpsConstants.INVINCIBILITY_POWERUP);
-			
-		}
-		
-		super.collidesWith(coll);
-		
-	}}
+	protected void collisionResponse(Character character) {
+		character.enablePowerUp(PowerUpsConstants.INVINCIBILITY_POWERUP);		
+	}
+}

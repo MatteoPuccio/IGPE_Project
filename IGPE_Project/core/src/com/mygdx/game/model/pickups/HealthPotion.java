@@ -13,7 +13,7 @@ public class HealthPotion extends Pickup {
 	private float healthToRecover;
 	
 	public HealthPotion(Vector2 position, Room home) {
-		super(position, home);
+		super(position, home, 0.3f);
 	
 		this.healthToRecover = 2;
 	}
@@ -24,16 +24,9 @@ public class HealthPotion extends Pickup {
 	}
 
 	@Override
-	public void collidesWith(Collidable coll) {
-		
-		if(coll instanceof Character) {
-			
-			SoundHandler.getInstance().addSoundToQueue(SoundConstants.HEALTH_POTION);
-			Character temp = (Character) coll;
-			temp.recoverHealth(healthToRecover);
-			super.collidesWith(coll);
-			
-		}		
+	protected void collisionResponse(Character character) {
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.HEALTH_POTION);
+		character.recoverHealth(healthToRecover);
 	}
 	
 }

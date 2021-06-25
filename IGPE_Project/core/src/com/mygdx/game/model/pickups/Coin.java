@@ -12,22 +12,18 @@ import com.mygdx.game.view.audio.SoundHandler;
 public class Coin extends Pickup {
 
 	public Coin(Vector2 position, Room home) {
-		super(position, home);
+		super(position, home, 0.2f);
 	}
 
 	@Override
 	public int getCurrentAnimationId() {
 		return AnimationConstants.COIN_ANIMATION;
 	}
-
+	
 	@Override
-	public void collidesWith(Collidable coll) {
-
-		if(coll instanceof Character) {
-			SoundHandler.getInstance().addSoundToQueue(SoundConstants.COIN);
-			GameModel.getInstance().addCoins(1);
-			super.collidesWith(coll);
-		}
+	protected void collisionResponse(Character character) {
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.COIN);
+		GameModel.getInstance().addCoins(1);
 	}
 
 }

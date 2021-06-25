@@ -26,6 +26,7 @@ import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.ParticleHandler.Particle;
+import com.mygdx.game.model.collisions.TreasureChest;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.level.RoomHandler;
@@ -137,7 +138,6 @@ public class GameView implements Screen{
 	public void dispose() {
 		debugRenderer.dispose();
 		cursor.dispose();
-//		tiledMap.dispose();
 		batch.dispose();
 		UserInterface.getInstance().dispose();
 		batchUI.dispose();
@@ -172,11 +172,16 @@ public class GameView implements Screen{
 		animations.put(AnimationConstants.HEALTH_POTION_ANIMATION, new Animation("health_potion.png",1,1));
 		animations.put(AnimationConstants.COIN_ANIMATION, new Animation("coin.png",1,1));
 		animations.put(AnimationConstants.COIN_BAG_ANIMATION, new Animation("coin_bag.png",1,1));
+		animations.put(AnimationConstants.MANA_RECHARGE_POWERUP_ANIMATION,new Animation("mana_recharge_powerup.png",1,1));
+		animations.put(AnimationConstants.SPEED_POWERUP_ANIMATION, new Animation("speed_powerup.png",1,1));
 		animations.put(AnimationConstants.FIRE_MAGIC_ANIMATION, new Animation("fire_magic.png",1,1));
 		animations.put(AnimationConstants.LIGHTNING_MAGIC_ANIMATION, new Animation("lightning_magic.png",1,1));
 		animations.put(AnimationConstants.ROCK_MAGIC_ANIMATION, new Animation("rock_magic.png", 1, 1));
 		animations.put(AnimationConstants.EXPLOSION_MAGIC_ANIMATION, new Animation("explosion_magic.png",1,1));
 		animations.put(AnimationConstants.WATER_MAGIC_ANIMATION, new Animation("water_magic.png",1,1));
+		
+		animations.put(AnimationConstants.CHEST_CLOSED_ANIMATION, new Animation("animations/chest_closed_spritesheet.png",8,1));
+		animations.put(AnimationConstants.CHEST_OPEN_ANIMATION, new Animation("chest_open.png",1,1));
 		
 		
 		initParticles();
@@ -194,19 +199,29 @@ public class GameView implements Screen{
 	
 	private void updateAnimations(float deltaTime) {
 		
-		for(Bullet b : BulletHandler.getInstance().getBullets())
-		{
-			animate(b, deltaTime);
-		}
-		
 		for(Enemy e : EnemiesHandler.getEnemies())
 		{
 			animate(e, deltaTime);
 		}
 		
+		for(TreasureChest t : RoomHandler.getInstance().getCurrentRoom().getTreasureChests())
+		{
+			animate(t, deltaTime);
+		}
+		
 		for(Pickup p : RoomHandler.getInstance().getCurrentRoom().getPickups())
 		{
 			animate(p, deltaTime);
+		}
+		
+		for(Pickup p : RoomHandler.getInstance().getCurrentRoom().getPowerups())
+		{
+			animate(p, deltaTime);
+		}
+		
+		for(Bullet b : BulletHandler.getInstance().getBullets())
+		{
+			animate(b, deltaTime);
 		}
 		
 		animate(GameModel.getInstance().getCharacter(), deltaTime);
@@ -230,10 +245,7 @@ public class GameView implements Screen{
 		
 		for(int i = 0; i < activeParticleEffects.size; ++i) {
 			if(activeParticleEffects.get(i).isDonePlaying()) {
-				ParticleEffect temp = activeParticleEffects.get(i);
-				activeParticleEffects.set(i, activeParticleEffects.get(activeParticleEffects.size - 1));
-				activeParticleEffects.set(activeParticleEffects.size - 1, temp);
-				activeParticleEffects.pop();
+				activeParticleEffects.removeIndex(i);
 				--i;
 			}
 			else {

@@ -10,7 +10,7 @@ import com.mygdx.game.model.pickups.Pickup;
 
 public class MagicPowerUp extends Pickup {
 	public MagicPowerUp(Vector2 position, Room home) {
-		super(position, home);
+		super(position, home, 0.5f);
 	}
 
 	@Override
@@ -19,16 +19,7 @@ public class MagicPowerUp extends Pickup {
 	}
 
 	@Override
-	public void collidesWith(Collidable coll) {
-
-		if(coll instanceof Character) {
-			
-			Character temp = (Character) coll;
-			temp.enablePowerUp(PowerUpsConstants.MAGIC_POWERUP);
-			
-		}
-		
-		super.collidesWith(coll);
-		
+	protected void collisionResponse(Character character) {
+		character.enablePowerUp(PowerUpsConstants.MAGIC_POWERUP);
 	}
 }
