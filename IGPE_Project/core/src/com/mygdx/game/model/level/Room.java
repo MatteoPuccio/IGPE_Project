@@ -1,6 +1,8 @@
 package com.mygdx.game.model.level;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
+import java.util.prefs.Preferences;
 
 import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer;
 
@@ -9,16 +11,23 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.TiledMapObjectsUtil;
 import com.mygdx.game.model.ai.NavTmxMapLoader;
 import com.mygdx.game.model.collisions.Gate;
 import com.mygdx.game.model.collisions.Hole;
 import com.mygdx.game.model.collisions.Solid;
+import com.mygdx.game.model.collisions.TreasureChest;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.pickups.Coin;
 import com.mygdx.game.model.pickups.CoinBag;
 import com.mygdx.game.model.pickups.HealthPotion;
 import com.mygdx.game.model.pickups.Pickup;
+import com.mygdx.game.model.pickups.powerups.ExplosionMagicPickup;
+import com.mygdx.game.model.pickups.powerups.FireMagicPickup;
+import com.mygdx.game.model.pickups.powerups.LightningMagicPickup;
+import com.mygdx.game.model.pickups.powerups.ManaRechargePowerUp;
+import com.mygdx.game.model.pickups.powerups.RockMagicPickup;
+import com.mygdx.game.model.pickups.powerups.SpeedPowerUp;
+import com.mygdx.game.model.pickups.powerups.WaterMagicPickup;
 
 public class Room {
 	protected TiledMap tileMap;
@@ -33,9 +42,19 @@ public class Room {
 	protected Array<Gate> gates;
 	protected Array<Hole> holes;
 	protected Array<Solid> solids;
+	protected Array<TreasureChest> treasureChests;
 	
 	protected Array<Class<? extends Pickup>> pickupTypes;
 	protected Array<Pickup> pickups;
+	
+	protected Array<Class<? extends Pickup>> powerupTypes;
+	protected Array<Pickup> powerups;
+	
+	private float teleportTime;
+	private float elapsedTeleportTime;
+	
+	private boolean generatePowerup;
+	private Vector2 powerupSpawnPosition;
 	
 	public Room(String tileMapPath) {
 		tileMap = new NavTmxMapLoader().load(tileMapPath);
@@ -43,10 +62,31 @@ public class Room {
 		rooms++;
 		connections = new Connection[4];
 		
+		teleportTime = 1;
+		elapsedTeleportTime = 0;
+		
 		initPickups();
+		initPowerups();
 
 		parseMap(tileMap);
+	}
+	
+	public void update(float deltaTime) {
+		elapsedTeleportTime += deltaTime;
 		
+		for(Enemy enemy : enemies)
+			enemy.update(deltaTime);
+		
+		for(Pickup pickup : pickups)
+			pickup.update(deltaTime);
+		
+		for(Pickup powerup : powerups)
+			powerup.update(deltaTime);
+		
+		if(generatePowerup) {
+			generatePowerup = false;
+			generateRandomPowerup();
+		}
 	}
 	
 	public Room(Connection connection, String tileMapPath, int endingPoint) {
@@ -55,7 +95,11 @@ public class Room {
 		rooms++;
 		connections = new Connection[4];
 		
+		teleportTime = 1;
+		elapsedTeleportTime = 0;
+		
 		initPickups();
+		initPowerups();
 		
 		connection.generateEndingPoint(this, endingPoint);
 		connections[endingPoint] = connection;
@@ -69,6 +113,22 @@ public class Room {
 		pickupTypes.add(Coin.class);
 		pickupTypes.add(CoinBag.class);
 		pickupTypes.add(HealthPotion.class);
+	}
+	
+	private void initPowerups() {
+		powerups = new Array<Pickup>(false,10);
+		powerupTypes = new Array<Class<? extends Pickup>>();
+		
+		powerupTypes.add(ManaRechargePowerUp.class);
+		powerupTypes.add(SpeedPowerUp.class);
+		
+		powerupTypes.add(FireMagicPickup.class);
+		powerupTypes.add(LightningMagicPickup.class);
+		powerupTypes.add(RockMagicPickup.class);
+		powerupTypes.add(ExplosionMagicPickup.class);
+		powerupTypes.add(WaterMagicPickup.class);
+		
+		generatePowerup = false;
 	}
 	
 	public boolean hasFreeConnection() {
@@ -127,6 +187,10 @@ public class Room {
 		return enemies;
 	}
 	
+	public Array<TreasureChest> getTreasureChests() {
+		return treasureChests;
+	}
+	
 	public void addEnemy(Enemy enemy) {
 		enemies.add(enemy);
 	}
@@ -135,6 +199,7 @@ public class Room {
 		gates = TiledMapObjectsUtil.parseGates(tileMap);
 		holes = TiledMapObjectsUtil.parseHoles(tileMap);
 		solids = TiledMapObjectsUtil.parseSolid(tileMap);
+		treasureChests = TiledMapObjectsUtil.parseTreasureChests(tileMap);
 		
 		enemies = TiledMapObjectsUtil.parseEnemies(tileMap, this);
 		navigationLayer = TiledMapObjectsUtil.getNavigationTiledMapLayer(tileMap);
@@ -152,6 +217,8 @@ public class Room {
 			bodies.add(enemy.getBody());
 		for(Pickup pickup:pickups)
 			bodies.add(pickup.getBody());
+		for(TreasureChest treasureChest:treasureChests)
+			bodies.add(treasureChest.getBody());
 		GameModel.getInstance().addBodyToEnable(bodies, enabled);
 	}
 	
@@ -193,12 +260,39 @@ public class Room {
 		}
 	}
 	
+	private void generateRandomPowerup() {
+		
+		Random r = new Random();
+		
+		int index = r.nextInt(pickupTypes.size);
+		try {
+			powerups.add(powerupTypes.get(index).getDeclaredConstructor(Vector2.class, Room.class).newInstance(powerupSpawnPosition, this));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void setPowerupSpawnPosition(Vector2 powerupSpawnPosition) {
+		generatePowerup = true;
+		this.powerupSpawnPosition = powerupSpawnPosition;
+	}
+	
 	public void removePickup(Pickup pickupToRemove) {
 		
 		for(int i = 0; i < pickups.size; ++i) {
 			if(pickups.get(i) == pickupToRemove) {
 				pickups.removeIndex(i);
 				GameModel.getInstance().addBodyToDispose(pickupToRemove.getBody());
+				return;
+			}
+		}
+		
+		for(int i = 0; i < powerups.size; ++i) {
+			if(powerups.get(i) == pickupToRemove) {
+				powerups.removeIndex(i);
+				GameModel.getInstance().addBodyToDispose(pickupToRemove.getBody());
+				return;
 			}
 		}
 		
@@ -206,5 +300,21 @@ public class Room {
 	
 	public Array<Pickup> getPickups() {
 		return pickups;
+	}
+	
+	public Array<Pickup> getPowerups() {
+		return powerups;
+	}
+	
+	public void setElapsedTeleportTime(float elapsedTeleportTime) {
+		this.elapsedTeleportTime = elapsedTeleportTime;
+	}
+	
+	public float getElapsedTeleportTime() {
+		return elapsedTeleportTime;
+	}
+	
+	public float getTeleportTime() {
+		return teleportTime;
 	}
 }

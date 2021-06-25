@@ -19,18 +19,9 @@ public class ExplosionMagicPickup extends Pickup {
 	public int getCurrentAnimationId() {
 		return AnimationConstants.EXPLOSION_MAGIC_ANIMATION;
 	}
-
+	
 	@Override
-	public void collidesWith(Collidable coll) {
-
-		if(coll instanceof Character) {
-			
-			Character temp = (Character) coll;
-			GameModel.getInstance().setSettingMagicChangeScreen(true, new ExplosionMagic(temp));
-			
-		}
-		
-		super.collidesWith(coll);
-		
+	protected void collisionResponse(Character character) {
+		GameModel.getInstance().setSettingMagicChangeScreen(true, new ExplosionMagic(character));
 	}
 }

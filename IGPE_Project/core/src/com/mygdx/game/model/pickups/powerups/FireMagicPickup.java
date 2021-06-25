@@ -21,15 +21,8 @@ public class FireMagicPickup extends Pickup {
 	}
 
 	@Override
-	public void collidesWith(Collidable coll) {
-	
-		if(coll instanceof Character) {
-			Character temp = (Character) coll;
-			GameModel.getInstance().setSettingMagicChangeScreen(true, new FireMagic(temp));
-		}
-		
-		super.collidesWith(coll);
-		
-	}	
+	protected void collisionResponse(Character character) {
+		GameModel.getInstance().setSettingMagicChangeScreen(true, new FireMagic(character));
+	}
 	
 }

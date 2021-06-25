@@ -24,16 +24,9 @@ public class HealthPotion extends Pickup {
 	}
 
 	@Override
-	public void collidesWith(Collidable coll) {
-		
-		if(coll instanceof Character) {
-			
-			SoundHandler.getInstance().addSoundToQueue(SoundConstants.HEALTH_POTION);
-			Character temp = (Character) coll;
-			temp.recoverHealth(healthToRecover);
-			super.collidesWith(coll);
-			
-		}		
+	protected void collisionResponse(Character character) {
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.HEALTH_POTION);
+		character.recoverHealth(healthToRecover);
 	}
 	
 }

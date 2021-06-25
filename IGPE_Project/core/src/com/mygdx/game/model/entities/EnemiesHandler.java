@@ -25,11 +25,6 @@ public class EnemiesHandler {
 			}
 	}
 	
-	public static void update(float deltaTime) {
-		for(Enemy e : getEnemies())
-			e.update(deltaTime);
-	}
-	
 	public static boolean isPositionOccupied(Vector2 pos) {
 		for(int i = 0; i <getEnemies().size; ++i) {
 			if(getEnemies().get(i) instanceof Goblin) {

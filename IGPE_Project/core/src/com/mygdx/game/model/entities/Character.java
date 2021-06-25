@@ -44,8 +44,8 @@ public class Character extends Entity{
 	public Character(Vector2 position) {
 		super(position, 0.4f, false, 100, 10, 3);
 		
-		firstMagic = new RockMagic(this);
-		secondMagic = new FireMagic(this);		
+		firstMagic = new WaterMagic(this);
+		secondMagic = new LightningMagic(this);		
 		
 		leftMove = false;
 		rightMove = false;
@@ -101,7 +101,7 @@ public class Character extends Entity{
 			direction.y = 1;
 		}
 		
-		body.setLinearVelocity(speed * direction.x, speed * direction.y);
+		body.setLinearVelocity(speed * direction.x * speedMultiplier, speed * direction.y * speedMultiplier);
 	}
 	
 	public void setMove(int direction, boolean moving) {
@@ -157,8 +157,10 @@ public class Character extends Entity{
 			if(enabledPowerUps.get(i)) {
 				float elapsed = elapsedPowerUpsTimes.get(i);
 				elapsed += deltaTime;
-				if(elapsed >= maxPowerUpsTimes.get(i))
+				if(elapsed >= maxPowerUpsTimes.get(i)) {
 					elapsed = 0;
+					disablePowerUp(i);
+				}
 				elapsedPowerUpsTimes.put(i, elapsed);
 			}
 		}
@@ -217,17 +219,19 @@ public class Character extends Entity{
 	
 	public void enablePowerUp(int powerup) {
 		
-		enabledPowerUps.put(powerup, true);
-		
-		switch(powerup) {
-		
-		case PowerUpsConstants.MANA_RECHARGE_POWERUP:
-			manaRechargeMultiplier *= 2;
-			break;
+		if(!enabledPowerUps.get(powerup)) {
+			enabledPowerUps.put(powerup, true);
 			
-		case PowerUpsConstants.SPEED_POWERUP:
-			speedMultiplier *= 1.5f;
-			break;
+			switch(powerup) {
+			
+			case PowerUpsConstants.MANA_RECHARGE_POWERUP:
+				manaRechargeMultiplier *= 2;
+				break;
+				
+			case PowerUpsConstants.SPEED_POWERUP:
+				speedMultiplier *= 1.5f;
+				break;
+			}
 		}
 	}
 	

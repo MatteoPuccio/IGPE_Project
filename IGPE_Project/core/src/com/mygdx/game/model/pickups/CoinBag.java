@@ -19,15 +19,11 @@ public class CoinBag extends Pickup {
 	public int getCurrentAnimationId() {
 		return AnimationConstants.COIN_BAG_ANIMATION;
 	}
-
+	
 	@Override
-	public void collidesWith(Collidable coll) {
-
-		if(coll instanceof Character) {
-			SoundHandler.getInstance().addSoundToQueue(SoundConstants.COIN_BAG);
-			GameModel.getInstance().addCoins(5);
-			super.collidesWith(coll);
-		}	
+	protected void collisionResponse(Character character) {
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.COIN_BAG);
+		GameModel.getInstance().addCoins(5);
 	}
 
 }

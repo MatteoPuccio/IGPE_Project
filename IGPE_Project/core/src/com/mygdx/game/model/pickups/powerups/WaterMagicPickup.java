@@ -19,19 +19,10 @@ public class WaterMagicPickup extends Pickup {
 	public int getCurrentAnimationId() {
 		return AnimationConstants.WATER_MAGIC_ANIMATION;
 	}
-
+	
 	@Override
-	public void collidesWith(Collidable coll) {
-
-		if(coll instanceof Character) {
-			
-			Character temp = (Character) coll;
-			GameModel.getInstance().setSettingMagicChangeScreen(true, new WaterMagic(temp));
-			
-		}
-		
-		super.collidesWith(coll);
-		
+	protected void collisionResponse(Character character) {
+		GameModel.getInstance().setSettingMagicChangeScreen(true, new WaterMagic(character));		
 	}
 
 }
