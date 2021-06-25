@@ -14,6 +14,7 @@ import com.mygdx.game.view.OptionsScreen;
 import com.mygdx.game.view.PauseScreen;
 import com.mygdx.game.view.TitleScreen;
 import com.mygdx.game.view.audio.SoundHandler;
+import com.mygdx.game.view.audio.Sounds;
 
 public class GameMain extends Game{
 	
@@ -87,7 +88,6 @@ public class GameMain extends Game{
 		pauseScreen.dispose();
 		confirmQuitScreen.dispose();
 		cursor.dispose();
-		Sounds.getInstance().dispose();
 	}
 	
 	@Override

@@ -30,26 +30,30 @@ public class GameController implements InputProcessor
 			view.changeMap(RoomHandler.getInstance().getCurrentRoom().getTileMap());
 		}
 		view.render(deltaTime);
-
-		GameModel.getInstance().update(deltaTime);
+		RoomHandler.getInstance().getCurrentRoom().updateTeleportTime(deltaTime);
+		if(RoomHandler.getInstance().canTeleport()) {
+			GameModel.getInstance().update(deltaTime);
 		
-		if(leftClickPressed) {
-			Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-			GameModel.getInstance().getCharacter().setFirstMagicAttacking(true);
-			GameModel.getInstance().getCharacter().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
-		}
+			if(leftClickPressed) {
+				Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+				GameModel.getInstance().getCharacter().setFirstMagicAttacking(true);
+				GameModel.getInstance().getCharacter().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
+			}
 		
-		else	
-			GameModel.getInstance().getCharacter().setFirstMagicAttacking(false);
+			else	
+				GameModel.getInstance().getCharacter().setFirstMagicAttacking(false);
 		
-		if(rightClickPressed && !leftClickPressed) {
-			Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-			GameModel.getInstance().getCharacter().setSecondMagicAttacking(true);
-			GameModel.getInstance().getCharacter().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
+			if(rightClickPressed && !leftClickPressed) {
+				Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+				GameModel.getInstance().getCharacter().setSecondMagicAttacking(true);
+				GameModel.getInstance().getCharacter().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
+			}
+			else
+				GameModel.getInstance().getCharacter().setSecondMagicAttacking(false);
 		}
 		else
-			GameModel.getInstance().getCharacter().setSecondMagicAttacking(false);
-		
+			GameModel.getInstance().getCharacter().stopMoving();
+		view.setBlackScreen(RoomHandler.getInstance().getCurrentRoom().getElapsedTeleportTime());
 	}
 	
 	public void dispose() {

@@ -333,6 +333,9 @@ public class Character extends Entity{
 		
 	}
 	
+	public void stopMoving() {
+		body.setLinearVelocity(0f, 0f);
+	}
 	
 }
 
