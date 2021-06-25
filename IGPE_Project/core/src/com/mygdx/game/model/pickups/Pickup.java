@@ -29,7 +29,7 @@ public abstract class Pickup implements Animated, Collidable {
 		this.home = home;
 		body = createBody();
 		
-		timeBeforePickup = 1f;
+		timeBeforePickup = 0.5f;
 		timeSinceCreation = 0;
 	}
 	

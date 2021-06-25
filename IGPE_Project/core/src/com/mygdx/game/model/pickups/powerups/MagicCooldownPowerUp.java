@@ -8,14 +8,14 @@ import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.level.Room;
 import com.mygdx.game.model.pickups.Pickup;
 
-public class MagicPowerUp extends Pickup {
-	public MagicPowerUp(Vector2 position, Room home) {
+public class MagicCooldownPowerUp extends Pickup {
+	public MagicCooldownPowerUp(Vector2 position, Room home) {
 		super(position, home, 0.5f);
 	}
 
 	@Override
 	public int getCurrentAnimationId() {
-		return AnimationConstants.MAGIC_POWERUP_ANIMATION;
+		return AnimationConstants.MAGIC_COOLDOWN_POWERUP_ANIMATION;
 	}
 
 	@Override

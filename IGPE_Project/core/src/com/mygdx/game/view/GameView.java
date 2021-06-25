@@ -174,6 +174,8 @@ public class GameView implements Screen{
 		animations.put(AnimationConstants.COIN_BAG_ANIMATION, new Animation("coin_bag.png",1,1));
 		animations.put(AnimationConstants.MANA_RECHARGE_POWERUP_ANIMATION,new Animation("mana_recharge_powerup.png",1,1));
 		animations.put(AnimationConstants.SPEED_POWERUP_ANIMATION, new Animation("speed_powerup.png",1,1));
+		animations.put(AnimationConstants.INVINCIBILITY_POWERUP_ANIMATION, new Animation("invincibility_powerup.png",1,1));
+		animations.put(AnimationConstants.MAGIC_COOLDOWN_POWERUP_ANIMATION, new Animation("magic_cooldown_powerup.png",1,1));
 		animations.put(AnimationConstants.FIRE_MAGIC_ANIMATION, new Animation("fire_magic.png",1,1));
 		animations.put(AnimationConstants.LIGHTNING_MAGIC_ANIMATION, new Animation("lightning_magic.png",1,1));
 		animations.put(AnimationConstants.ROCK_MAGIC_ANIMATION, new Animation("rock_magic.png", 1, 1));
@@ -199,14 +201,14 @@ public class GameView implements Screen{
 	
 	private void updateAnimations(float deltaTime) {
 		
-		for(Enemy e : EnemiesHandler.getEnemies())
-		{
-			animate(e, deltaTime);
-		}
-		
 		for(TreasureChest t : RoomHandler.getInstance().getCurrentRoom().getTreasureChests())
 		{
 			animate(t, deltaTime);
+		}
+		
+		for(Enemy e : EnemiesHandler.getEnemies())
+		{
+			animate(e, deltaTime);
 		}
 		
 		for(Pickup p : RoomHandler.getInstance().getCurrentRoom().getPickups())

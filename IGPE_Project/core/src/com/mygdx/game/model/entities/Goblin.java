@@ -49,7 +49,7 @@ public class Goblin extends Enemy {
 		attackCooldown = 0.5f;
 		attackTimePassed = 0;
 		
-		damage = 1;
+		damage = 2;
 	}
 	
 	public void update(float deltaTime) {

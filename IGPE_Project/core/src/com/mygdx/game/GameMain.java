@@ -74,7 +74,6 @@ public class GameMain extends Game{
 		optionsScreen.dispose();
 		deathScreen.dispose();
 		cursor.dispose();
-		Sounds.getInstance().dispose();
 	}
 	
 	@Override

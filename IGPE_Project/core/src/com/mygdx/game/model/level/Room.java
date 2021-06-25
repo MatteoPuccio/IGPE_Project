@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.constants.PowerUpsConstants;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ai.NavTmxMapLoader;
 import com.mygdx.game.model.collisions.Gate;
@@ -23,7 +24,9 @@ import com.mygdx.game.model.pickups.HealthPotion;
 import com.mygdx.game.model.pickups.Pickup;
 import com.mygdx.game.model.pickups.powerups.ExplosionMagicPickup;
 import com.mygdx.game.model.pickups.powerups.FireMagicPickup;
+import com.mygdx.game.model.pickups.powerups.InvincibilityPowerUp;
 import com.mygdx.game.model.pickups.powerups.LightningMagicPickup;
+import com.mygdx.game.model.pickups.powerups.MagicCooldownPowerUp;
 import com.mygdx.game.model.pickups.powerups.ManaRechargePowerUp;
 import com.mygdx.game.model.pickups.powerups.RockMagicPickup;
 import com.mygdx.game.model.pickups.powerups.SpeedPowerUp;
@@ -121,6 +124,8 @@ public class Room {
 		
 		powerupTypes.add(ManaRechargePowerUp.class);
 		powerupTypes.add(SpeedPowerUp.class);
+		powerupTypes.add(InvincibilityPowerUp.class);
+		powerupTypes.add(MagicCooldownPowerUp.class);
 		
 		powerupTypes.add(FireMagicPickup.class);
 		powerupTypes.add(LightningMagicPickup.class);
