@@ -8,6 +8,7 @@ import com.mygdx.game.model.collisions.CollisionHandler;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.level.RoomHandler;
+import com.mygdx.game.model.weapons.BulletHandler;
 import com.mygdx.game.model.weapons.Magic;
 
 public class GameModel {
@@ -27,10 +28,10 @@ public class GameModel {
 	
 	private Vector2 switchPosition;
 	private final Vector2 initialSpawnPosition;
-	
 	private float switchAngle;
-
+	
 	private boolean newFloor;
+	private int currentFloor;
 	
 	private GameModel() {
 		initialSpawnPosition = new Vector2(10f,10f);
@@ -43,6 +44,7 @@ public class GameModel {
 		switchAngle = 0f;
 		
 		newFloor = false;
+		
 		world = new World(new Vector2(0,0), false);
 		world.setContactListener(new CollisionHandler());
 		
@@ -56,9 +58,11 @@ public class GameModel {
 		return gameModel;
 	}
 	
-	public void init() {
+	public void reset() {
+		currentFloor = 1;
+		BulletHandler.getInstance().removeAllBullets();
 		if(GameModel.getInstance().getCharacter() != null)
-			GameModel.getInstance().addBodyToDispose(GameModel.getInstance().getCharacter().getBody()); 
+			GameModel.getInstance().getWorld().destroyBody(GameModel.getInstance().getCharacter().getBody()); 
 		character = new Character(new Vector2(initialSpawnPosition));
 		RoomHandler.getInstance().createRooms();
 	}
@@ -119,15 +123,13 @@ public class GameModel {
 		world.step(deltaTime, 6, 2);
 		character.update(deltaTime);
 		EnemiesHandler.update(deltaTime);
+		RoomHandler.getInstance().updateTime(deltaTime);
 		if(characterTransform) {
 			characterTransform = false;
 			character.getBody().setTransform(switchPosition, switchAngle);
 		}
-		if(newFloor) {
-			character.getBody().setTransform(initialSpawnPosition, character.getBody().getAngle());
-			RoomHandler.getInstance().createRooms();
-			newFloor = false;
-		}
+		if(newFloor) 
+			createNewFloor();
 		disposeBodies();
 		enableBodies();
 		disableBodies();
@@ -148,5 +150,16 @@ public class GameModel {
 
 	public void setNewFloor() {
 		newFloor = true;
+	}
+
+	public int getFloor() {
+		return currentFloor;
+	}
+	
+	private void createNewFloor() {
+		character.getBody().setTransform(initialSpawnPosition, character.getBody().getAngle());
+		RoomHandler.getInstance().createRooms();
+		currentFloor++;
+		newFloor = false;
 	}
 }

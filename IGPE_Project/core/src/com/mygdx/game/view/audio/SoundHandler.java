@@ -1,7 +1,6 @@
 package com.mygdx.game.view.audio;
 
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.constants.SoundConstants;
 
 public class SoundHandler {
 	private static SoundHandler instance = null;
@@ -23,5 +22,9 @@ public class SoundHandler {
 	
 	public Array<Integer> getQueue() {
 		return soundQueue;
+	}
+	
+	public void clear() {
+		soundQueue.clear();
 	}
 }

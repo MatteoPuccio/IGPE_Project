@@ -9,17 +9,20 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.collisions.Collidable;
+import com.mygdx.game.model.level.Room;
 
 public abstract class Pickup implements Animated, Collidable {
 
 	private Vector2 position;
 	private Body body;
 	private float radius;
+	private Room home;
 	
-	public Pickup(Vector2 position) {
+	public Pickup(Vector2 position, Room home) {
 		
 		this.position = new Vector2(position);
 		this.radius = 0.3f;
+		this.home = home;
 		body = createBody();
 		
 	}
@@ -79,6 +82,11 @@ public abstract class Pickup implements Animated, Collidable {
 	@Override
 	public float getRotation() {
 		return 0;
+	}
+	
+	@Override
+	public void collidesWith(Collidable coll) {
+		home.removePickup(this);
 	}
 	
 }

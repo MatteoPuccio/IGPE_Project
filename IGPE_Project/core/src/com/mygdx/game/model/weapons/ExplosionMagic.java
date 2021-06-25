@@ -45,12 +45,16 @@ public class ExplosionMagic extends Magic {
 		
 		Array<Enemy> enemiesInArea = EnemiesHandler.getEnemiesInArea(c1);
 		
-		for(Enemy e : enemiesInArea)
+		for(Enemy e : enemiesInArea) {
+			SoundHandler.getInstance().addSoundToQueue(SoundConstants.HIT);
 			e.takeDamage(explosionDamage);
+		}
 		
 		Circle c2 = new Circle(GameModel.getInstance().getCharacter().getPosition(), GameModel.getInstance().getCharacter().getRadius());
-		if(Intersector.overlaps(c1, c2))
-			GameModel.getInstance().getCharacter().takeDamage(2);
+		if(Intersector.overlaps(c1, c2)) {
+			GameModel.getInstance().getCharacter().takeDamage(explosionDamage / 2);
+			SoundHandler.getInstance().addSoundToQueue(SoundConstants.PLAYER_HIT);
+		}
 	}
 
 }

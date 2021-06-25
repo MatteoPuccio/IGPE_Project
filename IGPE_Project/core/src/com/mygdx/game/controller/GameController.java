@@ -26,7 +26,9 @@ public class GameController implements InputProcessor
 	}
 	
 	public void update(float deltaTime) {
-		view.changeMap(RoomHandler.getInstance().getCurrentRoom().getTileMap());
+		if(RoomHandler.getInstance().changeMap()) {
+			view.changeMap(RoomHandler.getInstance().getCurrentRoom().getTileMap());
+		}
 		view.render(deltaTime);
 
 		GameModel.getInstance().update(deltaTime);
@@ -160,6 +162,12 @@ public class GameController implements InputProcessor
 	public boolean scrolled(float amountX, float amountY) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public void reset() {
+		leftClickPressed = false;
+		rightClickPressed = false;
+		GameModel.getInstance().reset();
 	}
 	
 }

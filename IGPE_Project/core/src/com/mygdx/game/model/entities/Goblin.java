@@ -19,8 +19,9 @@ public class Goblin extends Enemy {
 	private List<GridCell> path;
 	private List<GridCell> tempPath;
 	
-	private float timeForStep = 0.3f;
-	private float timePassed = 0;
+	private float timeForStep;
+	private float elapsedTimeForStep;
+	
 	private Vector2 currentPosition;
 	private Vector2 nextPosition;
 	
@@ -28,6 +29,8 @@ public class Goblin extends Enemy {
 	
 	private float attackCooldown;
 	private float attackTimePassed;
+	
+	private float damage;
 	
 	public Goblin(Vector2 position, Room home) {
 		super(position, 0.4f, 0, 6, 1, home);
@@ -40,8 +43,13 @@ public class Goblin extends Enemy {
 		
 		isRunning = false;
 		
+		timeForStep = 0.20f;
+		elapsedTimeForStep = 0;
+		
 		attackCooldown = 1;
 		attackTimePassed = 0;
+		
+		damage = 1;
 	}
 	
 	public void update(float deltaTime) {
@@ -53,9 +61,9 @@ public class Goblin extends Enemy {
 			return;
 		}
 		
-		if(timePassed == 0) {
+		if(elapsedTimeForStep == 0) {
 		
-			Vector2 tempPos;
+			Vector2 positionToCheck;
 			tempPath = AStarUtils.findPathNextToPlayer((int) Math.floor(getPosition().x),(int) Math.floor(getPosition().y));
 			
 			if(tempPath == null || tempPath.size() == 0 || nextToPlayer()) {
@@ -65,35 +73,46 @@ public class Goblin extends Enemy {
 					attackTimePassed += deltaTime;
 					if(attackTimePassed >= attackCooldown) {
 						attackTimePassed = 0;
-						GameModel.getInstance().getCharacter().takeDamage(1);
+						GameModel.getInstance().getCharacter().takeDamage(damage);
 					}
+ 
 					home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(false);
-				}
-				else {
-					attackTimePassed = 0;
 				}
 				return;
 			}
+			
+			if(Vector2.dst2(currentPosition.x, currentPosition.y, GameModel.getInstance().getCharacter().getPosition().x, GameModel.getInstance().getCharacter().getPosition().y) >= 10 * 10) {
+				home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(false);
+				return;
+			}	
+			
 			home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(true);
 			path = new LinkedList<GridCell>(tempPath);	
 			
-			tempPos = new Vector2(path.get(0).getX() + 0.5f, path.get(0).getY() + 0.5f);
+			positionToCheck = new Vector2(path.get(0).getX() + 0.5f, path.get(0).getY() + 0.5f);
 			
 			Array<Vector2> cellsToMakeWalkable = new Array<Vector2>();
-			while(EnemiesHandler.isPositionOccupied(tempPos)) {
+			while(EnemiesHandler.isPositionOccupied(positionToCheck)) {
 				
-				home.getNavigationLayer().getCell((int) tempPos.x, (int) tempPos.y).setWalkable(false);
-				cellsToMakeWalkable.add(new Vector2(tempPos.x, tempPos.y));
+				home.getNavigationLayer().getCell((int) positionToCheck.x, (int) positionToCheck.y).setWalkable(false);
+				cellsToMakeWalkable.add(new Vector2(positionToCheck.x, positionToCheck.y));
 				tempPath = AStarUtils.findPathNextToPlayer((int) Math.floor(getPosition().x),(int) Math.floor(getPosition().y));
 				
 				if(tempPath == null || tempPath.size() == 0) {
+					
+					for(Vector2 cell : cellsToMakeWalkable) {
+						home.getNavigationLayer().getCell((int) cell.x, (int) cell.y).setWalkable(true);
+					}
+					
+					home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(false);
+					
 					isRunning = false;				
 					return;
 				}
 				
 				path = new LinkedList<GridCell>(tempPath);
 				
-				tempPos = new Vector2(path.get(0).getX() + 0.5f, path.get(0).getY() + 0.5f);
+				positionToCheck = new Vector2(path.get(0).getX() + 0.5f, path.get(0).getY() + 0.5f);
 			}
 			
 			for(Vector2 cell : cellsToMakeWalkable) {
@@ -101,11 +120,11 @@ public class Goblin extends Enemy {
 			}
 			
 			isRunning = true;
-			nextPosition = tempPos;
+			nextPosition = positionToCheck;
 		}
 			
 		if(isRunning) {
-			timePassed += deltaTime;
+			elapsedTimeForStep += deltaTime;
 				
 			direction.x = nextPosition.x - currentPosition.x;
 			if(direction.x == -1)
@@ -119,7 +138,7 @@ public class Goblin extends Enemy {
 			body.setTransform(tempPos, body.getAngle());
 			
 			if(alpha == 1) {
-				timePassed = 0;
+				elapsedTimeForStep = 0;
 				path.remove(0);
 				currentPosition = nextPosition;
 			}
@@ -127,16 +146,16 @@ public class Goblin extends Enemy {
 	}
 	
 	private float calculateAlpha() {
-		if(timePassed >= timeForStep)
+		if(elapsedTimeForStep >= timeForStep)
 			return 1;
 		
-		return timePassed / timeForStep;
+		return elapsedTimeForStep / timeForStep;
 	}
 	
 	private boolean nextToPlayer() {
 		Array<Vector2> possiblePositions = AStarUtils.getPossibleCellsNextToPlayer(GameModel.getInstance().getCharacter().getPosition().x, GameModel.getInstance().getCharacter().getPosition().y, false);
 		
-		return possiblePositions.contains(new Vector2((int) currentPosition.x, (int) currentPosition.y), false);			
+		return possiblePositions.contains(new Vector2((int) currentPosition.x, (int) currentPosition.y), false) || currentPosition.equals(new Vector2((int) GameModel.getInstance().getCharacter().getPosition().x + 0.5f, (int) GameModel.getInstance().getCharacter().getPosition().y + 0.5f));			
 	}
 	
 	public Vector2 getNextPosition() {

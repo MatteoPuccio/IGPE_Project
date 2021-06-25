@@ -41,7 +41,7 @@ public class DeathScreen implements Screen{
 	    skin.getFont("boldFont").getData().setScale(2f,2f);
 		
 	    titleFont = new BitmapFont(Gdx.files.internal("skin/AncientModernTales.fnt"));
-	    titleFont.getData().scale(1.5f);
+	    titleFont.getData().scale(0.7f);
 	    titleStyle = new Label.LabelStyle(titleFont, Color.BLACK);
 	    
 	    batch = new SpriteBatch();

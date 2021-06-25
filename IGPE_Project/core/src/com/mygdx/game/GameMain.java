@@ -33,13 +33,13 @@ public class GameMain extends Game{
 	@Override
 	public void create() {
 		state = Settings.TITLE_SCREEN;
-		GameModel.getInstance().init();
+		GameModel.getInstance().reset();
 		controller = new GameController();
 		titleScreen = new TitleScreen();
 		optionsScreen = new OptionsScreen();
 		deathScreen = new DeathScreen();
 		Pixmap pm = new Pixmap(Gdx.files.internal("menu_cursor.png"));
-		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
+		cursor = Gdx.graphics.newCursor(pm, 0, 0);
 		Gdx.graphics.setCursor(cursor);
 		pm.dispose();
 		setScreen(titleScreen);
@@ -68,7 +68,6 @@ public class GameMain extends Game{
 
 	@Override
 	public void dispose() {
-		Sounds.getInstance().dispose();
 		controller.dispose();
 		titleScreen.dispose();
 		optionsScreen.dispose();
@@ -125,7 +124,7 @@ public class GameMain extends Game{
 	public void restart() {
 		state = Settings.TITLE_SCREEN;
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
-		GameModel.getInstance().init();
+		controller.reset();
 		setScreen(titleScreen);
 		
 	}

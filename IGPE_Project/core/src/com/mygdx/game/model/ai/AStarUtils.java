@@ -2,7 +2,6 @@ package com.mygdx.game.model.ai;
 
 import java.util.List;
 
-import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer;
 import org.xguzm.pathfinding.grid.GridCell;
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder;
 
@@ -48,7 +47,7 @@ public class AStarUtils {
 			adjacentX = (int) (playerX + Math.round(direction.x));
 			adjacentY =  (int) (playerY + Math.round(direction.y));
 			if(checkWalkable) {
-				if(RoomHandler.getInstance().getCurrentRoom().getNavigationLayer().getCell(adjacentX, adjacentY).isWalkable())
+				if(RoomHandler.getInstance().getCurrentRoom().getNavigationLayer().getCell(adjacentX, adjacentY) != null && RoomHandler.getInstance().getCurrentRoom().getNavigationLayer().getCell(adjacentX, adjacentY).isWalkable())
 					possiblePositions.add(new Vector2(adjacentX,adjacentY));
 			}
 			else

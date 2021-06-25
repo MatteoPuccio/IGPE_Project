@@ -46,7 +46,7 @@ public class TitleScreen implements Screen {
 	    skin.getFont("boldFont").getData().setScale(2f,2f);
 	    
 	    titleFont = new BitmapFont(Gdx.files.internal("skin/AncientModernTales.fnt"));
-	    titleFont.getData().scale(3);
+	    titleFont.getData().scale(0.8f);
 	    titleStyle = new LabelStyle(titleFont, Color.WHITE);
 	    
 	    //crea animazione per il title screen 
@@ -73,7 +73,8 @@ public class TitleScreen implements Screen {
         mainTable.setFillParent(true);
         mainTable.center();
 
-        Label title = new Label("RogueLike",titleStyle);
+        Label title = new Label("No Way To Go But Down",titleStyle);
+//        title.setWrap(true);
         title.setColor(new Color(Color.BLACK));
         TextButton playButton = new TextButton("PLAY", skin);
         TextButton exitButton = new TextButton("EXIT", skin);
@@ -100,7 +101,7 @@ public class TitleScreen implements Screen {
             }
         });
         
-        mainTable.add(title).top();
+        mainTable.add(title).pad(0,0,100,0);
         mainTable.row();
         mainTable.add(playButton).growX().pad(20, 300, 20, 300);
         mainTable.row();
@@ -115,7 +116,6 @@ public class TitleScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		//RGB => 66, 40, 53
 		Gdx.gl.glClearColor(0, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
