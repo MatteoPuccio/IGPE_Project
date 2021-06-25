@@ -29,6 +29,7 @@ import com.mygdx.game.model.ParticleHandler.Particle;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.level.RoomHandler;
+import com.mygdx.game.model.pickups.Pickup;
 import com.mygdx.game.model.weapons.Bullet;
 import com.mygdx.game.model.weapons.BulletHandler;
 import com.mygdx.game.view.animations.Animation;
@@ -140,6 +141,12 @@ public class GameView implements Screen{
 		batch.dispose();
 		UserInterface.getInstance().dispose();
 		batchUI.dispose();
+		
+		for(Integer i : animations.keys())
+			animations.get(i).dispose();
+		
+		for(Integer i : particleEffects.keys())
+			particleEffects.get(i).dispose();
 	}
 	
 	private void initAnimations() {
@@ -170,7 +177,7 @@ public class GameView implements Screen{
 		animations.put(AnimationConstants.ROCK_MAGIC_ANIMATION, new Animation("rock_magic.png", 1, 1));
 		animations.put(AnimationConstants.EXPLOSION_MAGIC_ANIMATION, new Animation("explosion_magic.png",1,1));
 		animations.put(AnimationConstants.WATER_MAGIC_ANIMATION, new Animation("water_magic.png",1,1));
-
+		
 		
 		initParticles();
 	}
@@ -197,6 +204,11 @@ public class GameView implements Screen{
 			animate(e, deltaTime);
 		}
 		
+		for(Pickup p : RoomHandler.getInstance().getCurrentRoom().getPickups())
+		{
+			animate(p, deltaTime);
+		}
+		
 		animate(GameModel.getInstance().getCharacter(), deltaTime);
 		
 		updateParticleEffects(deltaTime);
@@ -212,6 +224,9 @@ public class GameView implements Screen{
 			Particle temp = ParticleHandler.getInstance().getParticles().pop();
 			activeParticleEffects.add(new ParticleEffect(particleEffects.get(temp.getParticleId()), temp.getPosition(), temp.getWidth(), temp.getHeigth()));
 		}
+		
+		if(ParticleHandler.getInstance().isCleared())
+			activeParticleEffects.clear();
 		
 		for(int i = 0; i < activeParticleEffects.size; ++i) {
 			if(activeParticleEffects.get(i).isDonePlaying()) {
