@@ -3,7 +3,11 @@ package com.mygdx.game.model.level;
 import java.util.Random;
 
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.level.prefab.Room1;
+import com.mygdx.game.model.level.prefab.Room10;
+import com.mygdx.game.model.level.prefab.Room11;
+import com.mygdx.game.model.level.prefab.Room12;
 import com.mygdx.game.model.level.prefab.Room1F;
 import com.mygdx.game.model.level.prefab.Room1S;
 import com.mygdx.game.model.level.prefab.Room1T;
@@ -56,6 +60,9 @@ public class RandomRoomGenerator {
 		roomTypes.add(Room7.class);
 		roomTypes.add(Room8.class);
 		roomTypes.add(Room9.class);
+		roomTypes.add(Room10.class);
+		roomTypes.add(Room11.class);
+		roomTypes.add(Room12.class);
 	}
 	
 	private void initStarterTypes() {
@@ -85,11 +92,12 @@ public class RandomRoomGenerator {
 	
 	public Array<Room> createRooms() {
 		rooms.clear();
+		Room.resetIndex();
 		startingRoom = createStarterRoom();
 		rooms.add(startingRoom);
 		Room adjacentRoom;
 		boolean exitCreated = false;
-		for(int i = 0; rooms.size < roomsNumber(1) && i < rooms.size;++i) {		//genera minimo roomsNumber() stanze
+		for(int i = 0; rooms.size < roomsNumber(GameModel.getInstance().getFloor()) && i < rooms.size;++i) {		//genera minimo roomsNumber() stanze
 			adjacentRoom = rooms.get(i);
 			if(adjacentRoom.hasFreeConnection()) {
 				Array<Room> generatedRooms = adjacentRoom.createAdjacentRooms(false);
@@ -159,8 +167,7 @@ public class RandomRoomGenerator {
 	}
 	
 	public int roomsNumber(int floorDepth) {
-//		return r.nextInt(3*floorDepth + 2) +  (2*floorDepth + 1);
-		return  (2*floorDepth + 1);
+		return r.nextInt(3*floorDepth + 2) +  (2*floorDepth + 1);
 	}
 	
 }

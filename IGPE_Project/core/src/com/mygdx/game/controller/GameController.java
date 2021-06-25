@@ -166,4 +166,10 @@ public class GameController implements InputProcessor
 		return false;
 	}
 	
+	public void reset() {
+		leftClickPressed = false;
+		rightClickPressed = false;
+		GameModel.getInstance().reset();
+	}
+	
 }

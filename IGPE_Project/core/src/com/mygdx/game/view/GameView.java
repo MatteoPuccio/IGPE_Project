@@ -46,7 +46,6 @@ public class GameView implements Screen{
 	private SpriteBatch batch,batchUI;
 	
 	private TiledMapRenderer tiledMapRenderer;
-	private Stage stage;
 
 	private Sounds sounds;
 	private ObjectMap<Integer, Animation> animations;
@@ -115,9 +114,12 @@ public class GameView implements Screen{
 		Vector2 position = bar.getPosition();
 		Vector2 barPosition = bar.getBarPosition();
 		
+		int iconWidth = icon.getWidth();
+		int iconHeight = icon.getHeight();
+		
 		batchUI.draw(background, position.x,position.y,background.getWidth(),background.getHeight());
 		batchUI.draw(barFilled,barPosition.x,barPosition.y,barFilled.getRegionWidth(),barFilled.getRegionHeight());
-		batchUI.draw(icon, position.x, position.y, icon.getWidth(),icon.getHeight());
+		batchUI.draw(icon, position.x + background.getWidth()/2 - iconWidth/2, (barPosition.y + position.y) / 2, iconWidth,iconHeight);
 	}
 
 	private void updateCamera() {

@@ -11,10 +11,10 @@ public class RoomHandler {
 	private Array<Room> rooms;
 	private boolean changeMap;
 	private float elapsedTeleportTime;
-	
+	private static final float teleportTime = 2.5f;
 	private RoomHandler() {
 		rooms = new Array<Room>();
-		elapsedTeleportTime = 3f;
+		elapsedTeleportTime = teleportTime;
 		changeMap = false;
 	}
 	
@@ -30,7 +30,7 @@ public class RoomHandler {
 		}
 		rooms.clear();
 		rooms = RandomRoomGenerator.getInstance().createRooms();
-		elapsedTeleportTime = 3f;
+		elapsedTeleportTime = teleportTime;
 		setCurrentRoom(rooms.first());
 		changeMap = true;
 	}
@@ -70,6 +70,10 @@ public class RoomHandler {
 			return true;
 		}
 		return false;
+	}
+	
+	public static float getTeleportTime() {
+		return teleportTime;
 	}
 	
 }

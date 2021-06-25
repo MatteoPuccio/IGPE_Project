@@ -46,25 +46,6 @@ public class Room {
 		enemies = new Array<Enemy>();
 		parseMap(tileMap);
 	}
-
-//	public void generateDoors() {
-//		r = new Random();
-//		double chance = r.nextDouble();
-//		int doorsNumber = 0,counter = 0;
-//		// se chance >= 25 una porta, se chance >= 65 2 porte, chance >= 90 tre porte
-//		if(chance >= 0.9d)
-//			doorsNumber = 3;
-//		else if(chance >= 0.65d)
-//			doorsNumber = 2;
-//		else if(chance >= 0.25d)
-//			doorsNumber = 1;
-//		for(int i = 0; i < 4;++i) {
-//			if(connections[i] == null && counter < doorsNumber) {
-//				connections[i] = new Connection(i,this);
-//				counter++;
-//			}
-//		}
-//	}
 	
 	public boolean hasFreeConnection() {
 		boolean freeConnection = false;
@@ -165,5 +146,9 @@ public class Room {
 			if(gate.getDirection() == direction)
 				return gate;
 		return null;
+	}
+	
+	public static void resetIndex() {
+		rooms = 0;
 	}
 }
