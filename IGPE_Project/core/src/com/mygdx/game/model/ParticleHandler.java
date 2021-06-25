@@ -70,4 +70,8 @@ public class ParticleHandler {
 		return cleared;
 	}
 	
+	public void setNull() {
+		instance = null;
+	}
+	
 }
