@@ -66,8 +66,8 @@ public class TreasureChest implements Collidable, Animated {
 	@Override
 	public int getCurrentAnimationId() {
 		if(state == CLOSED)
-			return AnimationConstants.CHEST_CLOSED;
-		return AnimationConstants.CHEST_OPEN;
+			return AnimationConstants.CHEST_CLOSED_ANIMATION;
+		return AnimationConstants.CHEST_OPEN_ANIMATION;
 	}
 
 	@Override

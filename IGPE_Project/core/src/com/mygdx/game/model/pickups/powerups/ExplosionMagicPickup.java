@@ -12,7 +12,7 @@ import com.mygdx.game.model.weapons.ExplosionMagic;
 public class ExplosionMagicPickup extends Pickup {
 
 	public ExplosionMagicPickup(Vector2 position, Room home) {
-		super(position, home);
+		super(position, home, 0.5f);
 	}
 
 	@Override

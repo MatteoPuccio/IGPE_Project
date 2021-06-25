@@ -12,7 +12,7 @@ import com.mygdx.game.model.weapons.WaterMagic;
 public class WaterMagicPickup extends Pickup {
 
 	public WaterMagicPickup(Vector2 position, Room home) {
-		super(position, home);
+		super(position, home, 0.5f);
 	}
 	
 	@Override

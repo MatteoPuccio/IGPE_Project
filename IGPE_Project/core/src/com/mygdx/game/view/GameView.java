@@ -180,8 +180,8 @@ public class GameView implements Screen{
 		animations.put(AnimationConstants.EXPLOSION_MAGIC_ANIMATION, new Animation("explosion_magic.png",1,1));
 		animations.put(AnimationConstants.WATER_MAGIC_ANIMATION, new Animation("water_magic.png",1,1));
 		
-		animations.put(AnimationConstants.CHEST_CLOSED, new Animation("animations/chest_closed_spritesheet.png",8,1));
-		animations.put(AnimationConstants.CHEST_OPEN, new Animation("chest_open.png",1,1));
+		animations.put(AnimationConstants.CHEST_CLOSED_ANIMATION, new Animation("animations/chest_closed_spritesheet.png",8,1));
+		animations.put(AnimationConstants.CHEST_OPEN_ANIMATION, new Animation("chest_open.png",1,1));
 		
 		
 		initParticles();

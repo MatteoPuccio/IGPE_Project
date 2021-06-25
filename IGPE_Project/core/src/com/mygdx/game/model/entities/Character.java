@@ -36,7 +36,8 @@ public class Character extends Entity{
 	private float stepElapsed;
 
 	private float speedMultiplier;
-		
+	private float magicCooldownMultiplier;
+	
 	private ObjectMap<Integer, Boolean> enabledPowerUps;
 	private ObjectMap<Integer, Float> maxPowerUpsTimes;
 	private ObjectMap<Integer, Float> elapsedPowerUpsTimes;
@@ -61,6 +62,7 @@ public class Character extends Entity{
 		stepElapsed = 0;
 		
 		speedMultiplier = 1;
+		magicCooldownMultiplier = 1;
 		
 		enabledPowerUps = new ObjectMap<Integer, Boolean>();
 		maxPowerUpsTimes = new ObjectMap<Integer, Float>();
@@ -73,12 +75,18 @@ public class Character extends Entity{
 		
 		enabledPowerUps.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, false);
 		enabledPowerUps.put(PowerUpsConstants.SPEED_POWERUP, false);
+		enabledPowerUps.put(PowerUpsConstants.INVINCIBILITY_POWERUP, false);
+		enabledPowerUps.put(PowerUpsConstants.MAGIC_POWERUP, false);
 		
 		maxPowerUpsTimes.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, 120f);
 		maxPowerUpsTimes.put(PowerUpsConstants.SPEED_POWERUP, 60f);
+		maxPowerUpsTimes.put(PowerUpsConstants.INVINCIBILITY_POWERUP, 20f);
+		maxPowerUpsTimes.put(PowerUpsConstants.MAGIC_POWERUP, 20f);
 		
 		elapsedPowerUpsTimes.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, 0f);
 		elapsedPowerUpsTimes.put(PowerUpsConstants.SPEED_POWERUP, 0f);
+		elapsedPowerUpsTimes.put(PowerUpsConstants.INVINCIBILITY_POWERUP, 0f);
+		elapsedPowerUpsTimes.put(PowerUpsConstants.MAGIC_POWERUP, 0f);
 		
 	}
 	
@@ -231,8 +239,21 @@ public class Character extends Entity{
 			case PowerUpsConstants.SPEED_POWERUP:
 				speedMultiplier *= 1.5f;
 				break;
+					
+			case PowerUpsConstants.INVINCIBILITY_POWERUP:
+				invincible = true;
+				invincibilityTimer = maxPowerUpsTimes.get(PowerUpsConstants.INVINCIBILITY_POWERUP);
+				break;
+			
+			case PowerUpsConstants.MAGIC_POWERUP:
+				magicCooldownMultiplier = 0.5f;
+				firstMagic.setCooldownMultiplier(magicCooldownMultiplier);
+				secondMagic.setCooldownMultiplier(magicCooldownMultiplier);
+				break;
 			}
 		}
+		else
+			elapsedPowerUpsTimes.put(powerup, 0f);
 	}
 	
 	private void disablePowerUp(int powerup) {

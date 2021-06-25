@@ -11,7 +11,7 @@ import com.mygdx.game.model.pickups.Pickup;
 public class ManaRechargePowerUp extends Pickup {
 
 	public ManaRechargePowerUp(Vector2 position, Room home) {
-		super(position, home);
+		super(position, home, 0.5f);
 	}
 
 	@Override

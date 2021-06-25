@@ -22,10 +22,10 @@ public abstract class Pickup implements Animated, Collidable {
 	private float timeBeforePickup;
 	private float timeSinceCreation;
 	
-	public Pickup(Vector2 position, Room home) {
+	public Pickup(Vector2 position, Room home, float radius) {
 		
 		this.position = new Vector2(position);
-		this.radius = 0.3f;
+		this.radius = radius;
 		this.home = home;
 		body = createBody();
 		

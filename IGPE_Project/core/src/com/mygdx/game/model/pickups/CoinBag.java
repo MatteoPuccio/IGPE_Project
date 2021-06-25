@@ -12,7 +12,7 @@ import com.mygdx.game.view.audio.SoundHandler;
 public class CoinBag extends Pickup {
 
 	public CoinBag(Vector2 position, Room home) {
-		super(position, home);
+		super(position, home, 0.3f);
 	}
 
 	@Override

@@ -13,7 +13,7 @@ public class HealthPotion extends Pickup {
 	private float healthToRecover;
 	
 	public HealthPotion(Vector2 position, Room home) {
-		super(position, home);
+		super(position, home, 0.3f);
 	
 		this.healthToRecover = 2;
 	}
