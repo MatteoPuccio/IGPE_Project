@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -23,8 +24,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.Settings;
-import com.mygdx.game.constants.SoundConstants;
-import com.mygdx.game.view.audio.SoundHandler;
 import com.mygdx.game.view.audio.Sounds;
 
 public class OptionsScreen implements Screen{
@@ -39,10 +38,10 @@ public class OptionsScreen implements Screen{
     private LabelStyle titleStyle;
 	private Table mainTable;
 	
-	private Label optionsLabel,volumeLabel;
+	private Label pauseLabel,volumeLabel,difficultyLabel;
 	private final Slider volumeSlider;
 	private TextButton backButton;
-	
+	private SelectBox<String> difficultyBox;
 	
 	public OptionsScreen() {
 		
@@ -54,7 +53,6 @@ public class OptionsScreen implements Screen{
 	    titleFont.getData().scale(0.7f);
 	    titleStyle = new Label.LabelStyle(titleFont, Color.BLACK);
 	    
-	    
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
         viewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), camera);
@@ -62,32 +60,36 @@ public class OptionsScreen implements Screen{
         camera.position.set(0, 0, 0);
         camera.update();
 
-        optionsLabel = new Label("Options", titleStyle);
+        pauseLabel = new Label("PAUSE", titleStyle);
         volumeLabel = new Label("Volume",skin);
-        optionsLabel.setColor(new Color(Color.BLACK));
+        difficultyLabel = new Label("Difficulty",skin);
+        
+        pauseLabel.setColor(new Color(Color.BLACK));
         volumeLabel.setColor(new Color(Color.BLACK));
+        difficultyLabel.setColor(new Color(Color.BLACK));
         
         volumeSlider = new Slider(0f, 1f, 0.01f, false, skin);
-        
         backButton = new TextButton("BACK", skin);
+        difficultyBox = new SelectBox<String>(skin);
         
+        String [] difficultyLevels = new String[] {"Easy","Normal","Hard"};
+        difficultyBox.setItems(difficultyLevels);
+        difficultyBox.setSelectedIndex(1);
         stage = new Stage(viewport, batch); 
 	}
 	
 	@Override
 	public void show() {
+		if(mainTable != null)
+			mainTable.clear();
 		mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();
-
-        if(GameMain.getInstance().getPreviousState() == Settings.RUNNING)
-        	optionsLabel.setText("Pause");
-        
         volumeSlider.setVisualPercent(Settings.getVolume());
         backButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
-        		GameMain.getInstance().backOptions();
+        		GameMain.getInstance().backToTitle();
         	}
         });
         
@@ -95,17 +97,27 @@ public class OptionsScreen implements Screen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				Settings.setVolume(volumeSlider.getValue());
-//				SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
 			}
         });
         
-        mainTable.add(optionsLabel).colspan(2).center();
+        difficultyBox.addListener(new ChangeListener() {
+        	@Override
+        	public void changed(ChangeEvent event, Actor actor) {
+        		Settings.setDifficulty(difficultyBox.getSelectedIndex());
+        	}
+        });
+        
+        mainTable.add(pauseLabel).colspan(2).center();
         mainTable.row();
         mainTable.add(volumeLabel).colspan(1).left().padRight(100);
         mainTable.add(volumeSlider).colspan(1).right().padLeft(100);
         mainTable.row();
+        mainTable.add(difficultyLabel).colspan(1).left().padRight(100);
+        mainTable.add(difficultyBox).colspan(1).right().padLeft(100);
+        mainTable.row();
         mainTable.add(backButton).colspan(2).center();
-//        mainTable.debugAll();
+        
+        mainTable.debugAll();
         stage.addActor(mainTable);
 	}
 
@@ -146,7 +158,9 @@ public class OptionsScreen implements Screen{
 
 	@Override
 	public void dispose() {
-		
+		atlas.dispose();
+		batch.dispose();
+		stage.dispose();
 	}
 	
 }

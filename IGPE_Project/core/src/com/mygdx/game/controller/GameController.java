@@ -83,7 +83,7 @@ public class GameController implements InputProcessor
 			direction = Settings.DOWN;
 			break;
 		case Keys.ESCAPE:
-			GameMain.getInstance().options();
+			GameMain.getInstance().pauseScreen();
 			break;
 	    }
 		GameModel.getInstance().getCharacter().setMove(direction, true);

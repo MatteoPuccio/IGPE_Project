@@ -156,7 +156,7 @@ public class RandomRoomGenerator {
 	}
 	
 	public int roomsNumber(int floorDepth) {
-		return r.nextInt(3*floorDepth + 2) +  (2*floorDepth + 1);
+		return Integer.min(r.nextInt(3*floorDepth) +  (2*floorDepth + 1), 24);
 	}
 	
 }

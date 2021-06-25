@@ -167,13 +167,26 @@ public class Character extends Entity{
 	@Override
 	public void takeDamage(float damage) {
 		if(!invincible) {
-			currentHealth -= damage;
+			currentHealth -= damage * getDamageMultiplier();
 			invincible = true;
 			SoundHandler.getInstance().addSoundToQueue(SoundConstants.PLAYER_HIT);
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
 		}
 	}
 	
+	private float getDamageMultiplier() {
+		switch(Settings.getDifficulty()) {
+		case Settings.EASY:
+			return 0.6f;
+		case Settings.NORMAL:
+			return 1.0f;
+		case Settings.HARD:
+			return 1.4f;
+		default:
+			return 1.0f;
+		}
+	}
+
 	public void recoverHealth(float healthRecovered) {
 		
 		if(currentHealth + healthRecovered >= maxHealth)
