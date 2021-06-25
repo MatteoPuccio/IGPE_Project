@@ -47,7 +47,6 @@ public class GameView implements Screen{
 	private SpriteBatch batch,batchUI;
 	
 	private TiledMapRenderer tiledMapRenderer;
-	private Stage stage;
 
 	private Sounds sounds;
 	private ObjectMap<Integer, Animation> animations;
@@ -116,9 +115,12 @@ public class GameView implements Screen{
 		Vector2 position = bar.getPosition();
 		Vector2 barPosition = bar.getBarPosition();
 		
+		int iconWidth = icon.getWidth();
+		int iconHeight = icon.getHeight();
+		
 		batchUI.draw(background, position.x,position.y,background.getWidth(),background.getHeight());
 		batchUI.draw(barFilled,barPosition.x,barPosition.y,barFilled.getRegionWidth(),barFilled.getRegionHeight());
-		batchUI.draw(icon, position.x + 10, position.y, icon.getWidth(),icon.getHeight());
+		batchUI.draw(icon, position.x + background.getWidth()/2 - iconWidth/2, (barPosition.y + position.y) / 2, iconWidth,iconHeight);
 	}
 
 	private void updateCamera() {
@@ -161,7 +163,7 @@ public class GameView implements Screen{
 		animations.put(AnimationConstants.ROCK_ANIMATION, new Animation("animations/rock_anim_spritesheet.png", 4, 0.2f));
 		animations.put(AnimationConstants.BOMB_ANIMATION, new Animation("animations/bomb_anim_spritesheet.png",4, 0.2f));
 		animations.put(AnimationConstants.DROPLET_ANIMATION, new Animation("animations/droplet_anim_spritesheet.png", 4, 0.2f));
-
+		
 		animations.put(AnimationConstants.GOBLIN_IDLE_ANIMATION, new Animation("animations/goblin_idle_spritesheet.png", 6, 0.5f));
 		animations.put(AnimationConstants.GOBLIN_RUN_ANIMATION, new Animation("animations/goblin_run_spritesheet.png", 6, 0.5f));
 		animations.put(AnimationConstants.FLYING_CREATURE_FLYING_ANIMATION, new Animation("animations/fly_anim_spritesheet.png", 4, 0.5f));
@@ -169,7 +171,7 @@ public class GameView implements Screen{
 		
 		animations.put(AnimationConstants.HEALTH_POTION_ANIMATION, new Animation("health_potion.png",1,1));
 		animations.put(AnimationConstants.COIN_ANIMATION, new Animation("coin.png",1,1));
-		animations.put(AnimationConstants.COIN_BAG_ANIMATION, new Animation("coin_bag.jpg",1,1));
+		animations.put(AnimationConstants.COIN_BAG_ANIMATION, new Animation("coin_bag.png",1,1));
 		animations.put(AnimationConstants.FIRE_MAGIC_ANIMATION, new Animation("fire_magic.png",1,1));
 		animations.put(AnimationConstants.LIGHTNING_MAGIC_ANIMATION, new Animation("lightning_magic.png",1,1));
 		animations.put(AnimationConstants.ROCK_MAGIC_ANIMATION, new Animation("rock_magic.png", 1, 1));

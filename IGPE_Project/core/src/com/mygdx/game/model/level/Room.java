@@ -1,6 +1,5 @@
 package com.mygdx.game.model.level;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer;
@@ -60,7 +59,6 @@ public class Room {
 		
 		connection.generateEndingPoint(this, endingPoint);
 		connections[endingPoint] = connection;
-//		enemies = new Array<Enemy>();
 		parseMap(tileMap);
 	}
 	
@@ -72,29 +70,10 @@ public class Room {
 		pickupTypes.add(CoinBag.class);
 		pickupTypes.add(HealthPotion.class);
 	}
-
-//	public void generateDoors() {
-//		r = new Random();
-//		double chance = r.nextDouble();
-//		int doorsNumber = 0,counter = 0;
-//		// se chance >= 25 una porta, se chance >= 65 2 porte, chance >= 90 tre porte
-//		if(chance >= 0.9d)
-//			doorsNumber = 3;
-//		else if(chance >= 0.65d)
-//			doorsNumber = 2;
-//		else if(chance >= 0.25d)
-//			doorsNumber = 1;
-//		for(int i = 0; i < 4;++i) {
-//			if(connections[i] == null && counter < doorsNumber) {
-//				connections[i] = new Connection(i,this);
-//				counter++;
-//			}
-//		}
-//	}
 	
 	public boolean hasFreeConnection() {
 		boolean freeConnection = false;
-		for(Connection connection : connections) {
+		for(Connection connection:connections) {
 			if(connection != null)
 				if(connection.getEndingRoom() == null)
 					freeConnection = true;
@@ -186,8 +165,6 @@ public class Room {
 			GameModel.getInstance().addBodyToDispose(solids.get(i).getBody());
 		for(int i = 0; i < enemies.size;++i)
 			GameModel.getInstance().addBodyToDispose(enemies.get(i).getBody());
-		for(int i = 0; i < pickups.size;++i)
-			GameModel.getInstance().addBodyToDispose(pickups.get(i).getBody());
 	}
 	
 	public Gate getGate(int direction) {
@@ -195,6 +172,10 @@ public class Room {
 			if(gate.getDirection() == direction)
 				return gate;
 		return null;
+	}
+	
+	public static void resetIndex() {
+		rooms = 0;
 	}
 	
 	public void generateRandomPickup(Vector2 position) {

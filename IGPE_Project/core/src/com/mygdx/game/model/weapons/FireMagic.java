@@ -6,6 +6,8 @@ import com.mygdx.game.model.entities.Entity;
 
 public class FireMagic extends Magic {
 
+	private float bulletSpreadAngle = 10;
+	
 	public FireMagic(Entity owner) {
 		super(1, 0.5f, 10, 0.1f, 4, owner);
 	}
@@ -22,8 +24,8 @@ public class FireMagic extends Magic {
 		Vector2 leftDirection = new Vector2(direction);
 		Vector2 rightDirection = new Vector2(direction);
 		
-		leftDirection.rotateDeg(20);
-		rightDirection.rotateDeg(-20);
+		leftDirection.rotateDeg(10);
+		rightDirection.rotateDeg(-10);
 		
 		BulletHandler.getInstance().addBullet(new Bullet(this, position, leftDirection));
 		BulletHandler.getInstance().addBullet(new Bullet(this, position, rightDirection));

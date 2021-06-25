@@ -32,8 +32,8 @@ public class GameMain extends Game{
 	
 	@Override
 	public void create() {
-		GameModel.getInstance().init();
 		state = Settings.TITLE_SCREEN;
+		GameModel.getInstance().reset();
 		controller = new GameController();
 		titleScreen = new TitleScreen();
 		optionsScreen = new OptionsScreen();
@@ -124,6 +124,7 @@ public class GameMain extends Game{
 	public void restart() {
 		state = Settings.TITLE_SCREEN;
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
+		controller.reset();
 		setScreen(titleScreen);
 		
 	}

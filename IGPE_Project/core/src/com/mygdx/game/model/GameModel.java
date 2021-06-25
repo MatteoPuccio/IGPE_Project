@@ -26,7 +26,6 @@ public class GameModel {
 	
 	private boolean characterTransform;
 	private boolean settingMagicChangeScreen;
-	private boolean resetting;
 	private boolean newFloor;
 	
 	private int coins;
@@ -34,8 +33,9 @@ public class GameModel {
 	
 	private Vector2 switchPosition;
 	private final Vector2 initialSpawnPosition;
-	
 	private float switchAngle;
+	
+	private int currentFloor;
 	
 	private GameModel() {
 		initialSpawnPosition = new Vector2(10f,10f);
@@ -46,10 +46,10 @@ public class GameModel {
 		characterTransform = false;
 		newFloor = false;
 		settingMagicChangeScreen = false;
-		resetting = false;
 		
 		switchPosition = new Vector2();
 		switchAngle = 0f;
+		
 		
 		world = new World(new Vector2(0,0), false);
 		world.setContactListener(new CollisionHandler());
@@ -63,9 +63,11 @@ public class GameModel {
 		return instance;
 	}
 	
-	public void init() {
+	public void reset() {
+		currentFloor = 1;
+		BulletHandler.getInstance().removeAllBullets();
 		if(GameModel.getInstance().getCharacter() != null)
-			GameModel.getInstance().addBodyToDispose(GameModel.getInstance().getCharacter().getBody()); 
+			GameModel.getInstance().getWorld().destroyBody(GameModel.getInstance().getCharacter().getBody()); 
 		character = new Character(new Vector2(initialSpawnPosition));
 		RoomHandler.getInstance().createRooms();
 	}
@@ -133,18 +135,8 @@ public class GameModel {
 			character.getBody().setTransform(switchPosition, switchAngle);
 		}
 		
-		if(newFloor) {
-			character.getBody().setTransform(initialSpawnPosition, character.getBody().getAngle());
-			RoomHandler.getInstance().createRooms();
-			newFloor = false;
-		}
-		
-		if(resetting) {
-			BulletHandler.getInstance().removeAllBullets();
-			ParticleHandler.getInstance().clear();
-			SoundHandler.getInstance().clear();
-			resetting = false;
-		}
+		if(newFloor) 
+			createNewFloor();
 		
 		disposeBodies();
 		enableBodies();
@@ -160,10 +152,6 @@ public class GameModel {
 		switchAngle = angle;
 	}
 	
-	public void reset() {
-		resetting = true;
-	}
-	
 	public Vector2 getInitialSpawnPosition() {
 		return initialSpawnPosition;
 	}
@@ -172,11 +160,14 @@ public class GameModel {
 		newFloor = true;
 	}
 	
-	public void setNull() {
-		ParticleHandler.getInstance().setNull();
-		RandomRoomGenerator.getInstance().setNull();
-		RoomHandler.getInstance().setNull();
-		SoundHandler.getInstance().setNull();
-		instance = null;
+	public int getFloor() {
+		return currentFloor;
+	}
+	
+	private void createNewFloor() {
+		character.getBody().setTransform(initialSpawnPosition, character.getBody().getAngle());
+		RoomHandler.getInstance().createRooms();
+		currentFloor++;
+		newFloor = false;
 	}
 }

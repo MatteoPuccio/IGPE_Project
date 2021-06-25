@@ -1,7 +1,9 @@
 package com.mygdx.game.model.level;
 
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.model.GameModel;
+import com.mygdx.game.model.ParticleHandler;
+import com.mygdx.game.model.weapons.BulletHandler;
+import com.mygdx.game.view.audio.SoundHandler;
 
 public class RoomHandler {
 
@@ -11,10 +13,11 @@ public class RoomHandler {
 	private Array<Room> rooms;
 	private boolean changeMap;
 	private float elapsedTeleportTime;
+	private static final float teleportTime = 2.5f;
 	
 	private RoomHandler() {
 		rooms = new Array<Room>();
-		elapsedTeleportTime = 1f;
+		elapsedTeleportTime = teleportTime;
 		changeMap = false;
 	}
 	
@@ -25,13 +28,13 @@ public class RoomHandler {
 	}
 	
 	public void createRooms() {
-		GameModel.getInstance().reset();
+		reset();
 		for(int i = 0; i < rooms.size;++i) {
 			rooms.get(i).dispose();
 		}
 		rooms.clear();
 		rooms = RandomRoomGenerator.getInstance().createRooms();
-		elapsedTeleportTime = 3f;
+		elapsedTeleportTime = teleportTime;
 		setCurrentRoom(rooms.first());
 		changeMap = true;
 	}
@@ -50,7 +53,7 @@ public class RoomHandler {
 	}
 
 	public Room switchRoom(int direction) {
-		GameModel.getInstance().reset();
+		reset();
 		elapsedTeleportTime = 0f;
 		Connection [] connections = currentRoom.getConnections();
 		return setCurrentRoom(connections[direction].getOtherRoom(currentRoom));
@@ -71,9 +74,15 @@ public class RoomHandler {
 		}
 		return false;
 	}
+		
+	private void reset() {
+		BulletHandler.getInstance().removeAllBullets();
+		ParticleHandler.getInstance().clear();
+		SoundHandler.getInstance().clear();
+	}
 	
-	public void setNull() {
-		instance = null;
+	public static float getTeleportTime() {
+		return teleportTime;
 	}
 	
 }
