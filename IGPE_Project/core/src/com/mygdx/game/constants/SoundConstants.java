@@ -7,6 +7,9 @@ public class SoundConstants {
 	public static final int HIT= 3;
 	public static final int PICKUP = 4;
 	public static final int EXPLOSION = 5;
-	public static final int HURT = 6;
+	public static final int PLAYER_HIT = 6;
 	public static final int STEP = 7;
+	public static final int COIN = 8;
+	public static final int COIN_BAG = 9;
+	public static final int HEALTH_POTION = 10;
 }

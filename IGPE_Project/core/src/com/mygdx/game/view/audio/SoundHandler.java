@@ -23,4 +23,8 @@ public class SoundHandler {
 	public Array<Integer> getQueue() {
 		return soundQueue;
 	}
+	
+	public void clear() {
+		soundQueue.clear();
+	}
 }

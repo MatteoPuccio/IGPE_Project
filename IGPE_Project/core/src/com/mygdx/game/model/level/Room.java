@@ -1,8 +1,11 @@
 package com.mygdx.game.model.level;
 
+import java.util.Random;
+
 import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.GameModel;
@@ -12,6 +15,10 @@ import com.mygdx.game.model.collisions.Gate;
 import com.mygdx.game.model.collisions.Hole;
 import com.mygdx.game.model.collisions.Solid;
 import com.mygdx.game.model.entities.Enemy;
+import com.mygdx.game.model.pickups.Coin;
+import com.mygdx.game.model.pickups.CoinBag;
+import com.mygdx.game.model.pickups.HealthPotion;
+import com.mygdx.game.model.pickups.Pickup;
 
 public class Room {
 	protected TiledMap tileMap;
@@ -27,11 +34,17 @@ public class Room {
 	protected Array<Hole> holes;
 	protected Array<Solid> solids;
 	
+	protected Array<Class<? extends Pickup>> pickupTypes;
+	protected Array<Pickup> pickups;
+	
 	public Room(String tileMapPath) {
 		tileMap = new NavTmxMapLoader().load(tileMapPath);
 		roomIndex = rooms;
 		rooms++;
 		connections = new Connection[4];
+		
+		initPickups();
+
 		parseMap(tileMap);
 		
 	}
@@ -41,10 +54,21 @@ public class Room {
 		roomIndex = rooms;
 		rooms++;
 		connections = new Connection[4];
+		
+		initPickups();
+		
 		connection.generateEndingPoint(this, endingPoint);
 		connections[endingPoint] = connection;
-		enemies = new Array<Enemy>();
 		parseMap(tileMap);
+	}
+	
+	private void initPickups() {
+		pickups = new Array<Pickup>(false, 10);
+		pickupTypes = new Array<Class<? extends Pickup>>();
+		
+		pickupTypes.add(Coin.class);
+		pickupTypes.add(CoinBag.class);
+		pickupTypes.add(HealthPotion.class);
 	}
 	
 	public boolean hasFreeConnection() {
@@ -126,6 +150,8 @@ public class Room {
 			bodies.add(solid.getBody());
 		for(Enemy enemy:enemies)
 			bodies.add(enemy.getBody());
+		for(Pickup pickup:pickups)
+			bodies.add(pickup.getBody());
 		GameModel.getInstance().addBodyToEnable(bodies, enabled);
 	}
 	
@@ -150,5 +176,35 @@ public class Room {
 	
 	public static void resetIndex() {
 		rooms = 0;
+	}
+	
+	public void generateRandomPickup(Vector2 position) {
+		Random r = new Random();
+		
+		if(navigationLayer.getCell((int) position.x, (int) position.y) != null && navigationLayer.getCell((int) position.x, (int) position.y).isWalkable()) {
+			if(r.nextInt(10) <= 4) {
+				int index = r.nextInt(pickupTypes.size);
+				try {
+					pickups.add(pickupTypes.get(index).getDeclaredConstructor(Vector2.class, Room.class).newInstance(position, this));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public void removePickup(Pickup pickupToRemove) {
+		
+		for(int i = 0; i < pickups.size; ++i) {
+			if(pickups.get(i) == pickupToRemove) {
+				pickups.removeIndex(i);
+				GameModel.getInstance().addBodyToDispose(pickupToRemove.getBody());
+			}
+		}
+		
+	}
+	
+	public Array<Pickup> getPickups() {
+		return pickups;
 	}
 }

@@ -19,8 +19,11 @@ public class Sounds {
 		sounds.put(SoundConstants.HIT, Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/hurt_020.wav")));
 		sounds.put(SoundConstants.PICKUP, Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/retro_pickUp_18.wav")));
 		sounds.put(SoundConstants.EXPLOSION, Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/explosion_03.wav")));
-		sounds.put(SoundConstants.HURT, Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/hurt_185.wav")));
+		sounds.put(SoundConstants.PLAYER_HIT, Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/hurt_185.wav")));
 		sounds.put(SoundConstants.STEP, Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/feet_49.wav")));
+		sounds.put(SoundConstants.COIN, Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/coin.wav")));
+		sounds.put(SoundConstants.COIN_BAG, Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/coin_bag.wav")));
+		sounds.put(SoundConstants.HEALTH_POTION, Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/health_potion.ogg")));
 	}
 	
 	public static Sounds getInstance() {

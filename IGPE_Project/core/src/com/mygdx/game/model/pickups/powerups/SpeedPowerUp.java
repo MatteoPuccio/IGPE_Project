@@ -5,12 +5,13 @@ import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.PowerUpsConstants;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.entities.Character;
+import com.mygdx.game.model.level.Room;
 import com.mygdx.game.model.pickups.Pickup;
 
 public class SpeedPowerUp extends Pickup {
 
-	public SpeedPowerUp(Vector2 position) {
-		super(position);
+	public SpeedPowerUp(Vector2 position, Room home) {
+		super(position, home);
 	}
 
 	@Override
@@ -27,6 +28,8 @@ public class SpeedPowerUp extends Pickup {
 			temp.enablePowerUp(PowerUpsConstants.SPEED_POWERUP);
 			
 		}
+		
+		super.collidesWith(coll);
 		
 	}
 

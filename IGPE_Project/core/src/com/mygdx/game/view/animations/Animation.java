@@ -1,16 +1,22 @@
 package com.mygdx.game.view.animations;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
 public class Animation {
+	private Texture spriteSheet;
 	protected Array<TextureRegion> frames;
 	protected float maxFrameTime;
 	protected float currentFrameTime;
 	protected int frameCount;
 	protected int frame;
 	
-	public Animation(TextureRegion region, int frameCount, float cycleTime) {
+	public Animation(String internalPath,int frameCount, float cycleTime) {
+		
+		spriteSheet = new Texture(internalPath);
+		TextureRegion region = new TextureRegion(spriteSheet);
+		
 		frames = new Array<TextureRegion>();
 		int frameWidth = region.getRegionWidth() / frameCount;
 		
@@ -28,6 +34,7 @@ public class Animation {
 		}
 		
 		frame = 0;
+		
 	}
 	
 	public Animation(Array<TextureRegion> frames, int frameCount, float cycleTime) {
@@ -36,6 +43,8 @@ public class Animation {
 		maxFrameTime = cycleTime / frameCount;
 	}
 	
+	
+	//Non vengono create nuove TextureRegion, perciò non è necessario il dispose sulle animazioni create con questo costruttore
 	public Animation(Animation old) {
 		this.frames = new Array<TextureRegion>(old.frames);
 		
@@ -48,15 +57,21 @@ public class Animation {
 	}
 	
 	public void update(float deltaTime) {
-		currentFrameTime += deltaTime;
-		
-		if(currentFrameTime >= maxFrameTime)
-		{
-			++frame;
-			currentFrameTime = 0;
+		if(frameCount > 1) {
+			currentFrameTime += deltaTime;
+			
+			if(currentFrameTime >= maxFrameTime)
+			{
+				++frame;
+				currentFrameTime = 0;
+			}
+			if(frame == frameCount)
+				frame = 0;
 		}
-		if(frame == frameCount)
-			frame = 0;
+	}
+	
+	public void dispose() {
+		spriteSheet.dispose();
 	}
 	
 	public TextureRegion getFrame() {

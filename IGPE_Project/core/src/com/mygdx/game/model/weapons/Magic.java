@@ -2,11 +2,13 @@ package com.mygdx.game.model.weapons;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.collisions.Collidable;
+import com.mygdx.game.model.collisions.Gate;
 import com.mygdx.game.model.collisions.Hole;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.entities.Entity;
+import com.mygdx.game.model.pickups.Pickup;
 
 public abstract class Magic {
 
@@ -128,7 +130,7 @@ public abstract class Magic {
 				
 		}
 			
-		else if(!(coll instanceof Hole) && !sameOwner(coll)) {
+		else if(!(coll instanceof Hole) && !(coll instanceof Gate) && !sameOwner(coll) && !(coll instanceof Pickup)) {
 			BulletHandler.getInstance().removeBullet(bullet);
 			bulletDestroyedEffect(coll, bullet);
 		}
