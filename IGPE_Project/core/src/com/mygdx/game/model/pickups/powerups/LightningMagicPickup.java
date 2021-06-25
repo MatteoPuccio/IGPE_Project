@@ -1,16 +1,18 @@
-package com.mygdx.game.model.pickups;
+package com.mygdx.game.model.pickups.powerups;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.entities.Character;
+import com.mygdx.game.model.level.Room;
+import com.mygdx.game.model.pickups.Pickup;
 import com.mygdx.game.model.weapons.LightningMagic;
 
 public class LightningMagicPickup extends Pickup {
 
-	public LightningMagicPickup(Vector2 position) {
-		super(position);
+	public LightningMagicPickup(Vector2 position, Room home) {
+		super(position, home);
 	}
 
 	@Override
@@ -27,6 +29,8 @@ public class LightningMagicPickup extends Pickup {
 			GameModel.getInstance().setSettingMagicChangeScreen(true, new LightningMagic(temp));
 			
 		}
+		
+		super.collidesWith(coll);
 		
 	}
 	

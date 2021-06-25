@@ -55,7 +55,7 @@ public class Character extends Entity{
 		invincibilityTimer = 1.5f;
 		invincibilityElapsed = 0;
 		
-		stepTimer = 0.3f;
+		stepTimer = 0.4f;
 		stepElapsed = 0;
 		
 		speedMultiplier = 1;
@@ -125,10 +125,15 @@ public class Character extends Entity{
 	public void update(float deltaTime) 
 	{
 		super.update(deltaTime);
+		
+		if(currentHealth <= 0)
+			GameMain.getInstance().death();
+		
 		move(deltaTime);
 		
 		firstMagic.update(deltaTime);
-		secondMagic.update(deltaTime);
+		if(secondMagic != null)
+			secondMagic.update(deltaTime);
 		
 		if(invincible) {
 			invincibilityElapsed += deltaTime;
@@ -162,10 +167,8 @@ public class Character extends Entity{
 		if(!invincible) {
 			currentHealth -= damage;
 			invincible = true;
-			SoundHandler.getInstance().addSoundToQueue(SoundConstants.HURT);
+			SoundHandler.getInstance().addSoundToQueue(SoundConstants.PLAYER_HIT);
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
-			if(currentHealth <= 0)
-				GameMain.getInstance().death();
 		}
 	}
 	

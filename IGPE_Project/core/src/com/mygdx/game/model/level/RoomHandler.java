@@ -44,7 +44,6 @@ public class RoomHandler {
 			this.currentRoom.enableBodies(false);
 		this.currentRoom = currentRoom;
 		this.currentRoom.enableBodies(true);
-		System.out.println(currentRoom.getRoomIndex());
 		changeMap = true;
 		return this.currentRoom;
 	}

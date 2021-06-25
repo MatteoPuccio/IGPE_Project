@@ -10,8 +10,8 @@ public class ParticleEffect extends Animation {
 	private float width;
 	private float heigth;
 	
-	public ParticleEffect(TextureRegion region, int frameCount, float cycleTime) {
-		super(region, frameCount, cycleTime);
+	public ParticleEffect(String internalPath, int frameCount, float cycleTime) {
+		super(internalPath, frameCount, cycleTime);
 		
 		donePlaying = false;
 		effectPosition = null;
