@@ -136,9 +136,6 @@ public class Character extends Entity{
 	{
 		super.update(deltaTime);
 		
-		if(currentHealth <= 0)
-			GameMain.getInstance().death();
-		
 		move(deltaTime);
 		
 		firstMagic.update(deltaTime);
@@ -172,6 +169,9 @@ public class Character extends Entity{
 				elapsedPowerUpsTimes.put(i, elapsed);
 			}
 		}
+		
+		if(currentHealth <= 0)
+			GameMain.getInstance().death();
 	}
 
 	@Override
