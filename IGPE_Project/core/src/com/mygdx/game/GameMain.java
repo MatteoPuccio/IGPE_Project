@@ -129,8 +129,8 @@ public class GameMain extends Game{
 	
 	public void restart() {
 		state = Settings.TITLE_SCREEN;
-		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
 		controller.reset();
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
 		setScreen(titleScreen);
 		
 	}
