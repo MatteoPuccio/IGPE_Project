@@ -65,6 +65,17 @@ public class ConfirmQuitScreen implements Screen{
 				GameMain.getInstance().pauseScreen();
 			}
 		});
+        stage = new Stage(viewport, batch); 
+	}
+	
+	@Override
+	public void show() {
+		if(mainTable != null)
+			mainTable.clear();
+		mainTable = new Table();
+		mainTable.setFillParent(true);
+		mainTable.center();
+		
 		mainTable.add(confirmQuit).colspan(2).top();
 		mainTable.row();
 		mainTable.add(yesButton);
