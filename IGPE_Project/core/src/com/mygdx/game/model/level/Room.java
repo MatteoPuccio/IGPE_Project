@@ -308,7 +308,7 @@ public class Room {
 		
 		Random r = new Random();
 		
-		int index = r.nextInt(pickupTypes.size);
+		int index = r.nextInt(powerupTypes.size);
 		try {
 			powerups.add(powerupTypes.get(index).getDeclaredConstructor(Vector2.class, Room.class).newInstance(powerupSpawnPosition, this));
 		} catch (Exception e) {
@@ -319,7 +319,7 @@ public class Room {
 	
 	public void setPowerupSpawnPosition(Vector2 powerupSpawnPosition) {
 		generatePowerup = true;
-		this.powerupSpawnPosition = powerupSpawnPosition;
+		this.powerupSpawnPosition = new Vector2(powerupSpawnPosition);
 	}
 	
 	public void removePickup(Pickup pickupToRemove) {

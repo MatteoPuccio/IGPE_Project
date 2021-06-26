@@ -46,7 +46,7 @@ public class Character extends Entity{
 		super(position, 0.4f, false, 100, 10, 3);
 		
 		firstMagic = new WaterMagic(this);
-		secondMagic = new LightningMagic(this);		
+		secondMagic = new ExplosionMagic(this);		
 		
 		leftMove = false;
 		rightMove = false;

@@ -139,9 +139,9 @@ public class GameModel {
 		if(newFloor) 
 			createNewFloor();
 		
-		disposeBodies();
 		enableBodies();
 		disableBodies();
+		disposeBodies();
 	}
 	public void addCoins(int coinsToAdd) {
 		coins += coinsToAdd;
