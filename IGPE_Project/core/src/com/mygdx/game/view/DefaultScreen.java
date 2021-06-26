@@ -70,7 +70,6 @@ public abstract class DefaultScreen implements Screen {
     	
     	draw(delta);
 
-		Sounds.getInstance().update();
         stage.act();
         stage.draw();	
 	}

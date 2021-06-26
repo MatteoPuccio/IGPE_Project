@@ -67,6 +67,8 @@ public class GameMain extends Game{
 		// delta time è limitato a 1/30 secondi per evitare errori nella simulazione di box2d
 		float deltaTime = Math.min(1 / 30f, Gdx.graphics.getDeltaTime());
 		
+		Sounds.getInstance().update();
+		
 		switch(state) {
 		case ScreenConstants.TITLE_SCREEN:
 			titleScreen.render(deltaTime);
