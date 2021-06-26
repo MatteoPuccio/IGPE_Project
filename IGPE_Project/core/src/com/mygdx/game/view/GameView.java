@@ -350,7 +350,6 @@ public class GameView implements Screen{
 		blackScreenAlpha = RoomHandler.getInstance().getCurrentRoom().getTeleportTime() - elapsedTeleportTime;
 		if(blackScreenAlpha <= 0f)
 			blackScreenAlpha = 0f;
-		System.out.println(blackScreenAlpha);
 	}
 }
 

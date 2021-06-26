@@ -36,7 +36,6 @@ public class Room {
 	protected TiledMap tileMap;
 	protected NavigationTiledMapLayer navigationLayer;
 	
-	private static int rooms = 0;
 	private int roomIndex;
 	protected Connection [] connections;
 		
@@ -56,13 +55,32 @@ public class Room {
 	private float teleportTime;
 	private float elapsedTeleportTime;
 	
+	private String tileMapPath;
+	
 	private boolean generatePowerup;
 	private Vector2 powerupSpawnPosition;
 	
+	private int endingPoint;
+	
 	public Room(String tileMapPath) {
+		init(tileMapPath);
+	}
+	
+	public Room(Room old) {
+		init(old.tileMapPath);
+	}
+	
+	public Room(Room old, Connection connection) {
+		init(old.tileMapPath);
+		
+		connection.generateEndingPoint(this, endingPoint);
+		connections[endingPoint] = connection;
+	}
+	
+	private void init(String tileMapPath) {
+		
+		this.tileMapPath = tileMapPath;
 		tileMap = new NavTmxMapLoader().load(tileMapPath);
-		roomIndex = rooms;
-		rooms++;
 		connections = new Connection[4];
 		
 		teleportTime = 1f;
@@ -70,8 +88,30 @@ public class Room {
 		
 		initPickups();
 		initPowerups();
-
+		
 		parseMap(tileMap);
+		
+		if(tileMapPath.contains("rs")) {
+			connections[gates.get(0).getDirection()] = new Connection(this, gates.get(0).getDirection());
+			return;
+		}
+		
+		if(tileMapPath.contains("rf")) {
+			for(int i = 0; i < gates.size; ++i) {
+				if(gates.get(i).getDirection() != Gate.END) {
+					endingPoint = gates.get(i).getDirection();
+					return;
+				}
+			}
+		}
+		
+		endingPoint = gates.get(0).getDirection();
+		
+		for(int i = 1; i < gates.size; ++i) {
+			if(gates.get(i).getDirection() < connections.length) {
+				connections[gates.get(i).getDirection()] = new Connection(this, gates.get(i).getDirection());
+			}
+		}
 	}
 	
 	public void update(float deltaTime) {
@@ -95,23 +135,6 @@ public class Room {
 			elapsedTeleportTime += deltaTime;
 		else
 			elapsedTeleportTime = teleportTime;
-	}
-	
-	public Room(Connection connection, String tileMapPath, int endingPoint) {
-		tileMap = new NavTmxMapLoader().load(tileMapPath);
-		roomIndex = rooms;
-		rooms++;
-		connections = new Connection[4];
-		
-		teleportTime = 1f;
-		elapsedTeleportTime = 0f;
-		
-		initPickups();
-		initPowerups();
-		
-		connection.generateEndingPoint(this, endingPoint);
-		connections[endingPoint] = connection;
-		parseMap(tileMap);
 	}
 	
 	private void initPickups() {
@@ -162,18 +185,20 @@ public class Room {
 	
 	public Room createAdjacentRoom() {
 		Connection roomConnection = getFreeConnection();
-		Room newRoom = RandomRoomGenerator.createRoom(roomConnection, false);
+		Room newRoom = RandomRoomGenerator.getInstance().createRoom(roomConnection, false);
 		return newRoom;
 	}
 	
 	public Array<Room> createAdjacentRooms(boolean deadend) {
 		Array<Room> rooms = new Array<Room>();
 		Connection roomConnection;
+		
 		while(hasFreeConnection()) {
 			roomConnection = getFreeConnection();
-			Room newRoom = RandomRoomGenerator.createRoom(roomConnection, deadend);
+			Room newRoom = RandomRoomGenerator.getInstance().createRoom(roomConnection, deadend);
 			rooms.add(newRoom);
 		}
+		
 		return rooms;
 	}
 	
@@ -234,16 +259,18 @@ public class Room {
 	
 	public void dispose() {
 		tileMap.dispose();
-		for(int i = 0; i < gates.size;++i)
+		for(int i = 0; i < gates.size; ++i)
 			GameModel.getInstance().addBodyToDispose(gates.get(i).getBody());
-		for(int i = 0; i < holes.size;++i)
+		for(int i = 0; i < holes.size; ++i)
 			GameModel.getInstance().addBodyToDispose(holes.get(i).getBody());
-		for(int i = 0; i < solids.size;++i)
+		for(int i = 0; i < solids.size; ++i)
 			GameModel.getInstance().addBodyToDispose(solids.get(i).getBody());
-		for(int i = 0; i < enemies.size;++i)
+		for(int i = 0; i < enemies.size; ++i)
 			GameModel.getInstance().addBodyToDispose(enemies.get(i).getBody());
-		for(int i = 0; i < pickups.size;++i)
+		for(int i = 0; i < pickups.size; ++i)
 			GameModel.getInstance().addBodyToDispose(pickups.get(i).getBody());
+		for(int i = 0; i < powerups.size; ++i)
+			GameModel.getInstance().addBodyToDispose(powerups.get(i).getBody());
 		for(int i = 0; i < treasureChests.size;++i)
 			GameModel.getInstance().addBodyToDispose(treasureChests.get(i).getBody());
 		gates.clear();
@@ -251,6 +278,7 @@ public class Room {
 		solids.clear();
 		enemies.clear();
 		pickups.clear();
+		powerups.clear();
 		treasureChests.clear();
 	}
 	
@@ -261,15 +289,11 @@ public class Room {
 		return null;
 	}
 	
-	public static void resetIndex() {
-		rooms = 0;
-	}
-	
 	public void generateRandomPickup(Vector2 position) {
 		Random r = new Random();
 		
 		if(navigationLayer.getCell((int) position.x, (int) position.y) != null && navigationLayer.getCell((int) position.x, (int) position.y).isWalkable()) {
-			if(r.nextInt(10) <= 4) {
+			if(r.nextInt(10) < 5) {
 				int index = r.nextInt(pickupTypes.size);
 				try {
 					pickups.add(pickupTypes.get(index).getDeclaredConstructor(Vector2.class, Room.class).newInstance(position, this));

@@ -22,7 +22,7 @@ public class CoinBag extends Pickup {
 	
 	@Override
 	protected void collisionResponse(Character character) {
-		SoundHandler.getInstance().addSoundToQueue(SoundConstants.COIN_BAG);
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.COINS);
 		GameModel.getInstance().addCoins(5);
 	}
 

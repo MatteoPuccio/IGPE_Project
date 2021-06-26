@@ -12,7 +12,7 @@ import com.mygdx.game.model.weapons.RockMagic;
 public class RockMagicPickup extends Pickup {
 
 	public RockMagicPickup(Vector2 position, Room home) {
-		super(position, home, 0.5f);
+		super(position, home, 0.6f);
 	}
 	
 	@Override

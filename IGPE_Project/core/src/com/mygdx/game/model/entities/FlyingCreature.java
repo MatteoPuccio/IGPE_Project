@@ -10,15 +10,15 @@ import com.mygdx.game.model.level.Room;
 public class FlyingCreature extends Enemy {
 	
 	private int damage;
+	private Arrive<Vector2> arriveBehavior;
 	
 	public FlyingCreature(Vector2 position, Room home) {
 		super(position, 0.3f, 0, 3, 1, home);
-		
-		behavior = new Arrive<Vector2>(this, GameModel.getInstance().getCharacter())
+		arriveBehavior = new Arrive<Vector2>(this, GameModel.getInstance().getCharacter())
 				.setTimeToTarget(0.01f)
 				.setArrivalTolerance(0)
 				.setDecelerationRadius(0);
-		
+		behavior = arriveBehavior;
 		damage = 1;
 	}
 
@@ -46,5 +46,10 @@ public class FlyingCreature extends Enemy {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
+		
+		if(Vector2.dst2(getPosition().x, getPosition().y, GameModel.getInstance().getCharacter().getPosition().x, GameModel.getInstance().getCharacter().getPosition().y) >= 10 * 10)
+			arriveBehavior.setEnabled(false);
+		else
+			arriveBehavior.setEnabled(true);
 	}
 }

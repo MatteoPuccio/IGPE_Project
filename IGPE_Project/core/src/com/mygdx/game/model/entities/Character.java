@@ -76,17 +76,17 @@ public class Character extends Entity{
 		enabledPowerUps.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, false);
 		enabledPowerUps.put(PowerUpsConstants.SPEED_POWERUP, false);
 		enabledPowerUps.put(PowerUpsConstants.INVINCIBILITY_POWERUP, false);
-		enabledPowerUps.put(PowerUpsConstants.MAGIC_POWERUP, false);
+		enabledPowerUps.put(PowerUpsConstants.MAGIC_COOLDOWN_POWERUP, false);
 		
-		maxPowerUpsTimes.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, 120f);
-		maxPowerUpsTimes.put(PowerUpsConstants.SPEED_POWERUP, 60f);
+		maxPowerUpsTimes.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, 60f);
+		maxPowerUpsTimes.put(PowerUpsConstants.SPEED_POWERUP, 40f);
 		maxPowerUpsTimes.put(PowerUpsConstants.INVINCIBILITY_POWERUP, 20f);
-		maxPowerUpsTimes.put(PowerUpsConstants.MAGIC_POWERUP, 20f);
+		maxPowerUpsTimes.put(PowerUpsConstants.MAGIC_COOLDOWN_POWERUP, 20f);
 		
 		elapsedPowerUpsTimes.put(PowerUpsConstants.MANA_RECHARGE_POWERUP, 0f);
 		elapsedPowerUpsTimes.put(PowerUpsConstants.SPEED_POWERUP, 0f);
 		elapsedPowerUpsTimes.put(PowerUpsConstants.INVINCIBILITY_POWERUP, 0f);
-		elapsedPowerUpsTimes.put(PowerUpsConstants.MAGIC_POWERUP, 0f);
+		elapsedPowerUpsTimes.put(PowerUpsConstants.MAGIC_COOLDOWN_POWERUP, 0f);
 		
 	}
 	
@@ -137,7 +137,7 @@ public class Character extends Entity{
 		super.update(deltaTime);
 		
 		move(deltaTime);
-		
+				
 		firstMagic.update(deltaTime);
 		if(secondMagic != null)
 			secondMagic.update(deltaTime);
@@ -252,21 +252,23 @@ public class Character extends Entity{
 			case PowerUpsConstants.SPEED_POWERUP:
 				speedMultiplier *= 1.5f;
 				break;
+				
+			case PowerUpsConstants.MAGIC_COOLDOWN_POWERUP:
+				magicCooldownMultiplier /= 2;
+				firstMagic.setCooldownMultiplier(magicCooldownMultiplier);
+				secondMagic.setCooldownMultiplier(magicCooldownMultiplier);
+				break;
 					
 			case PowerUpsConstants.INVINCIBILITY_POWERUP:
 				invincible = true;
 				invincibilityTimer = maxPowerUpsTimes.get(PowerUpsConstants.INVINCIBILITY_POWERUP);
 				break;
-			
-			case PowerUpsConstants.MAGIC_POWERUP:
-				magicCooldownMultiplier = 0.5f;
-				firstMagic.setCooldownMultiplier(magicCooldownMultiplier);
-				secondMagic.setCooldownMultiplier(magicCooldownMultiplier);
-				break;
 			}
 		}
-		else
+		else {
 			elapsedPowerUpsTimes.put(powerup, 0f);
+			invincibilityElapsed = 0;
+		}
 	}
 	
 	private void disablePowerUp(int powerup) {
@@ -281,6 +283,16 @@ public class Character extends Entity{
 		
 		case PowerUpsConstants.SPEED_POWERUP:
 			speedMultiplier /= 1.5f;
+			break;
+		case PowerUpsConstants.MAGIC_COOLDOWN_POWERUP:
+			magicCooldownMultiplier *= 2;
+			firstMagic.setCooldownMultiplier(magicCooldownMultiplier);
+			secondMagic.setCooldownMultiplier(magicCooldownMultiplier);
+			break;
+			
+		case PowerUpsConstants.INVINCIBILITY_POWERUP:
+			invincibilityTimer = 1.5f;
+			invincibilityElapsed = 0;
 			break;
 		}
 		

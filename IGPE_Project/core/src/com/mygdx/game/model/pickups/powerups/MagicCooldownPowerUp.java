@@ -10,7 +10,7 @@ import com.mygdx.game.model.pickups.Pickup;
 
 public class MagicCooldownPowerUp extends Pickup {
 	public MagicCooldownPowerUp(Vector2 position, Room home) {
-		super(position, home, 0.5f);
+		super(position, home, 0.6f);
 	}
 
 	@Override
@@ -20,6 +20,6 @@ public class MagicCooldownPowerUp extends Pickup {
 
 	@Override
 	protected void collisionResponse(Character character) {
-		character.enablePowerUp(PowerUpsConstants.MAGIC_POWERUP);
+		character.enablePowerUp(PowerUpsConstants.MAGIC_COOLDOWN_POWERUP);
 	}
 }

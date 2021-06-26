@@ -51,7 +51,7 @@ public class RoomHandler {
 
 	public Room switchRoom(int direction) {
 		reset();
-		Connection [] connections = currentRoom.getConnections();
+		Connection [] connections = currentRoom.getConnections();		
 		return setCurrentRoom(connections[direction].getOtherRoom(currentRoom));
 	}
 

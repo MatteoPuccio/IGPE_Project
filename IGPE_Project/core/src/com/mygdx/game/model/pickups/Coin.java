@@ -22,7 +22,7 @@ public class Coin extends Pickup {
 	
 	@Override
 	protected void collisionResponse(Character character) {
-		SoundHandler.getInstance().addSoundToQueue(SoundConstants.COIN);
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.COINS);
 		GameModel.getInstance().addCoins(1);
 	}
 

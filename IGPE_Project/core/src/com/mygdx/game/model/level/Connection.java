@@ -35,7 +35,7 @@ public class Connection {
 	}
 	
 	public Room getOtherRoom(Room room) {
-		if(room.equals(endingRoom))	
+		if(room == endingRoom)	
 			return startingRoom;
 		return endingRoom;
 	}

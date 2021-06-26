@@ -11,12 +11,12 @@ import com.mygdx.game.model.pickups.Pickup;
 public class InvincibilityPowerUp extends Pickup{
 
 	public InvincibilityPowerUp(Vector2 position, Room home) {
-		super(position, home, 0.5f);
+		super(position, home, 0.6f);
 	}
 
 	@Override
 	public int getCurrentAnimationId() {
-		return AnimationConstants.SPEED_POWERUP_ANIMATION;
+		return AnimationConstants.INVINCIBILITY_POWERUP_ANIMATION;
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import com.mygdx.game.constants.Settings;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.model.GameModel;
+import com.mygdx.game.view.ConfirmQuitScreen;
 import com.mygdx.game.view.DeathScreen;
 import com.mygdx.game.view.OptionsScreen;
 import com.mygdx.game.view.PauseScreen;
