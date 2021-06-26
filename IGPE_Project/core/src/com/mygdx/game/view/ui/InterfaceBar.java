@@ -9,7 +9,7 @@ public class InterfaceBar {
 	
 	private TextureRegion barFilled;
 	private Vector2 position,barPosition;
-	private int maxWidth = 0;
+	private int maxWidth;
 	
 	InterfaceBar(String bg,String fg, String icon, Vector2 position)
 	{
@@ -21,12 +21,13 @@ public class InterfaceBar {
 		barFilled = new TextureRegion(foreground,0,0,foreground.getWidth(),foreground.getHeight());
 		
 		this.position = position;
-		barPosition = new Vector2(position.x+12,position.y+10);
+		barPosition = new Vector2(position.x+12,position.y+10);	 
 
 	}
 	
 	public void setPercentage(float percentage)
 	{
+		//setta la larghezza della barra in base alla percentuale fornita
 		barFilled.setRegionWidth((int)(maxWidth * percentage));
 	}
 

@@ -4,15 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.constants.PowerUpsConstants;
 import com.mygdx.game.model.collisions.CollisionHandler;
 import com.mygdx.game.model.entities.Character;
-import com.mygdx.game.model.entities.EnemiesHandler;
-import com.mygdx.game.model.level.RandomRoomGenerator;
 import com.mygdx.game.model.level.RoomHandler;
-import com.mygdx.game.model.weapons.BulletHandler;
-import com.mygdx.game.model.weapons.Magic;
-import com.mygdx.game.view.audio.SoundHandler;
 
 public class GameModel {
 	
@@ -62,11 +56,13 @@ public class GameModel {
 	
 	public void reset() {
 		currentFloor = 1;
-		BulletHandler.getInstance().removeAllBullets();
-		if(GameModel.getInstance().getCharacter() != null)
-			GameModel.getInstance().getWorld().destroyBody(GameModel.getInstance().getCharacter().getBody()); 
+		if(character != null)
+			world.destroyBody(GameModel.getInstance().getCharacter().getBody()); 
 		character = new Character(new Vector2(initialSpawnPosition));
 		RoomHandler.getInstance().createRooms();
+		
+		switchAngle = 0f;
+		coins = 0;
 	}
 	
 	
@@ -126,7 +122,6 @@ public class GameModel {
 		
 		if(newFloor) 
 			createNewFloor();
-			
 		enableBodies();
 		disableBodies();
 		disposeBodies();

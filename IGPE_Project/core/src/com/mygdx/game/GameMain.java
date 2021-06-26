@@ -2,12 +2,11 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.constants.ScreenConstants;
+import com.mygdx.game.constants.Settings;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.model.GameModel;
@@ -21,6 +20,8 @@ import com.mygdx.game.view.audio.SoundHandler;
 import com.mygdx.game.view.audio.Sounds;
 
 public class GameMain extends Game{
+	
+	//eredita Game, entry point per l'applicazione. Permette di gestire diversi screen
 	
 	private static GameMain instance = null;
 	private GameController controller;
@@ -51,16 +52,22 @@ public class GameMain extends Game{
 		confirmQuitScreen = new ConfirmQuitScreen();
 		magicChangeScreen = new MagicChangeScreen(controller.getView());
 		
+		//crea e setta cursore per i menu
 		Pixmap pm = new Pixmap(Gdx.files.internal("menu_cursor.png"));
 		cursor = Gdx.graphics.newCursor(pm, 0, 0);
 		Gdx.graphics.setCursor(cursor);
 		pm.dispose();
+		
+		//appena l'applicazione parte setta lo screen corrente al menu principale
 		setScreen(titleScreen);
 	}
 
 	@Override
 	public void render() {
+		// delta time è limitato a 1/30 secondi per evitare errori nella simulazione di box2d
 		float deltaTime = Math.min(1 / 30f, Gdx.graphics.getDeltaTime());
+		
+		Sounds.getInstance().update();
 		
 		switch(state) {
 		case ScreenConstants.TITLE_SCREEN:
@@ -110,6 +117,7 @@ public class GameMain extends Game{
 	}
 
 	public void start() {
+		//setta lo state a RUNNING e mette lo schermo corrente quello della view del gioco
 		state = ScreenConstants.RUNNING;
 		setScreen(controller.getView());
 		Gdx.input.setInputProcessor(controller);

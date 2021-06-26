@@ -1,7 +1,10 @@
 package com.mygdx.game.view;
 
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -23,32 +26,36 @@ public class ConfirmQuitScreen extends DefaultScreen{
         
         yesButton = new TextButton("YES", skin);
         noButton = new TextButton("NO", skin);
-	}
-
-	@Override
-	protected void initMainTable() {
-		
-		yesButton.addListener(new ClickListener() {
+        yesButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
 				GameMain.getInstance().restart();
 			}
 		});
-		
 		noButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
-				System.out.println("quit:" + SoundHandler.getInstance().getQueue().size); 
 				GameMain.getInstance().pauseScreen();
 			}
 		});
-		
+        stage = new Stage(viewport, batch); 
+	}
+	
+	@Override
+	protected void initMainTable() {
 		mainTable.add(confirmQuit).colspan(2).top();
 		mainTable.row();
 		mainTable.add(yesButton);
 		mainTable.add(noButton);
+	}
+	
+	@Override
+	public void resize(int width, int height) {
+		viewport.update(width, height);
+		viewport.apply();
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
@@ -68,5 +75,12 @@ public class ConfirmQuitScreen extends DefaultScreen{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void dispose() {
+		
+	}
+
+	
 	
 }

@@ -4,15 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.view.audio.Sounds;
@@ -45,17 +43,14 @@ public abstract class DefaultScreen implements Screen {
 		
         viewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         viewport.apply();
-        
-        stage = new Stage(viewport, batch);
-        
+                
         this.r = r;
         this.g = g;
         this.b = b;
 	}
 	
-	public final void show() {
-		if(mainTable != null)
-			mainTable.clear();
+	public void show() {
+		stage = new Stage(viewport,batch);
 		mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();
@@ -75,13 +70,19 @@ public abstract class DefaultScreen implements Screen {
     	
     	draw(delta);
 
-		Sounds.getInstance().update();
         stage.act();
         stage.draw();	
 	}
 	
 	protected void draw(float delta) {
 		
+	}
+	
+	@Override
+	public void hide() {
+		mainTable.clear();
+		stage.clear();
+		stage.dispose();
 	}
 
 	@Override
@@ -91,11 +92,12 @@ public abstract class DefaultScreen implements Screen {
 	}
 	
 	@Override
-	public final void dispose() {
+	public void dispose() {
 		skin.dispose();
 		atlas.dispose();
 		batch.dispose();
-		stage.dispose();
+		if(stage != null)
+			stage.dispose();
 		titleFont.dispose();
 	}
 }

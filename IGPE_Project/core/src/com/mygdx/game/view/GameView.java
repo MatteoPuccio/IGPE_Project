@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -39,7 +40,6 @@ import com.mygdx.game.view.animations.ParticleEffect;
 import com.mygdx.game.view.audio.Sounds;
 import com.mygdx.game.view.ui.InterfaceBar;
 import com.mygdx.game.view.ui.UserInterface;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class GameView implements Screen{
 
@@ -71,7 +71,7 @@ public class GameView implements Screen{
 		batch = new SpriteBatch();
 		batchUI = new SpriteBatch();
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
-
+//		weaponAnimation = new WeaponSlashAnimation();
 		
 		Pixmap pm = new Pixmap(Gdx.files.internal("game_cursor.png"));
 		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
@@ -79,7 +79,6 @@ public class GameView implements Screen{
 		pm.dispose();
 		
 		shapeRenderer = new ShapeRenderer();
-
 	}
 	
 	public void render(float deltaTime, boolean updateAnimations) {
@@ -93,8 +92,6 @@ public class GameView implements Screen{
         
         UserInterface.getInstance().update();
         
-        Sounds.getInstance().update();
-
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);
 		if(updateAnimations)
@@ -104,8 +101,8 @@ public class GameView implements Screen{
 		batch.end();
 		
 		batchUI.begin();
-        drawInterfaceBar(UserInterface.getInstance().manaBar);
-        drawInterfaceBar(UserInterface.getInstance().healthBar);
+        drawInterfaceBar(UserInterface.getInstance().getManaBar());
+        drawInterfaceBar(UserInterface.getInstance().getHealthBar());
         batchUI.end();
         
         
@@ -314,6 +311,7 @@ public class GameView implements Screen{
 		return gamePort;
 	}
 	
+
 	public Texture getAnimationFrame(int animationId) {
 		return animations.get(animationId).getFrame().getTexture();
 	}
@@ -330,13 +328,11 @@ public class GameView implements Screen{
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -346,16 +342,14 @@ public class GameView implements Screen{
 	}
 
 	public void setBlackScreen(float elapsedTeleportTime) {
+		//opacità del rettangolo disegnato per fare effetto di fade in
 		blackScreenAlpha = RoomHandler.getInstance().getCurrentRoom().getTeleportTime() - elapsedTeleportTime;
 		if(blackScreenAlpha <= 0f)
 			blackScreenAlpha = 0f;
 	}
 
 	@Override
-	public void render(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void render(float delta) {}
 }
 
 

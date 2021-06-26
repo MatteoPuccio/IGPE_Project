@@ -194,7 +194,6 @@ public class TiledMapObjectsUtil {
 		f.isSensor = isSensor; 
 		
 		body.createFixture(f);
-		
 		shape.dispose();
 		body.setActive(false);
 		return body;
