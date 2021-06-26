@@ -12,10 +12,10 @@ public class RandomRoomGenerator {
 	
 	private Array<Room> rooms;
 
-	private Array<Room> intermediateRooms;
-	private Array<Room> starterRooms;
-	private Array<Room> terminalRooms;
-	private Array<Room> finalRooms;
+	private Array<String> intermediateRoomsPaths;
+	private Array<String> starterRoomsPaths;
+	private Array<String> terminalRoomsPaths;
+	private Array<String> finalRoomsPaths;
 	
 	private Room startingRoom;
 	private static Random r;
@@ -33,34 +33,34 @@ public class RandomRoomGenerator {
 
 	private void initRoomTypes() {
 		
-		intermediateRooms = new Array<Room>();
+		intermediateRoomsPaths = new Array<String>();
 		
 		for(int i = 0; i < 12; ++i)
-			intermediateRooms.add(new Room("rooms/r" + (i+1) + ".tmx"));
+			intermediateRoomsPaths.add("rooms/r" + (i+1) + ".tmx");
 	}
 	
 	private void initStarterTypes() {
 		
-		starterRooms = new Array<Room>();
+		starterRoomsPaths = new Array<String>();
 		
 		for(int i = 0; i < 4; ++i)
-			starterRooms.add(new Room("rooms/rs" + (i+1) + ".tmx"));
+			starterRoomsPaths.add("rooms/rs" + (i+1) + ".tmx");
 	}
 
 	private void initTerminalTypes() {
 		
-		terminalRooms = new Array<Room>();
+		terminalRoomsPaths = new Array<String>();
 		
 		for(int i = 0; i < 4; ++i)
-			terminalRooms.add(new Room("rooms/rt" + (i+1) + ".tmx"));
+			terminalRoomsPaths.add("rooms/rt" + (i+1) + ".tmx");
 	}
 	
 	private void initFinalTypes() {
 		
-		finalRooms = new Array<Room>();
+		finalRoomsPaths = new Array<String>();
 		
 		for(int i = 0; i < 1; ++i)
-			finalRooms.add(new Room("rooms/rf" + (i+1) + ".tmx"));
+			finalRoomsPaths.add("rooms/rf" + (i+1) + ".tmx");
 	}
 	
 	public static RandomRoomGenerator getInstance() {
@@ -103,26 +103,26 @@ public class RandomRoomGenerator {
 	}
 	
 	private Room createStarterRoom() {
-		int index = r.nextInt(starterRooms.size);
-		return new Room(starterRooms.get(index));
+		int index = r.nextInt(starterRoomsPaths.size);
+		return new Room(starterRoomsPaths.get(index));
 	}
 
 	public Room createRoom(Connection connection, boolean deadend) {
 		int index;
 		
 		if(deadend) {
-			index = r.nextInt(terminalRooms.size);
-			return new Room(terminalRooms.get(index), connection);
+			index = r.nextInt(terminalRoomsPaths.size);
+			return new Room(terminalRoomsPaths.get(index), connection);
 		}
 		
-		index = r.nextInt(intermediateRooms.size);
-		return new Room(intermediateRooms.get(index), connection);
+		index = r.nextInt(intermediateRoomsPaths.size);
+		return new Room(intermediateRoomsPaths.get(index), connection);
 	}
 	
 	public Room createFinalRoom(Room room) {
 		Connection connection = room.getFreeConnection();
-		int index = r.nextInt(finalRooms.size);
-		return new Room(finalRooms.get(index), connection);
+		int index = r.nextInt(finalRoomsPaths.size);
+		return new Room(finalRoomsPaths.get(index), connection);
 	}
 	
 	public int roomsNumber(int floorDepth) {

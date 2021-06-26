@@ -55,8 +55,6 @@ public class Room {
 	private float teleportTime;
 	private float elapsedTeleportTime;
 	
-	private String tileMapPath;
-	
 	private boolean generatePowerup;
 	private Vector2 powerupSpawnPosition;
 	
@@ -66,12 +64,8 @@ public class Room {
 		init(tileMapPath);
 	}
 	
-	public Room(Room old) {
-		init(old.tileMapPath);
-	}
-	
-	public Room(Room old, Connection connection) {
-		init(old.tileMapPath);
+	public Room(String tileMapPath, Connection connection) {
+		init(tileMapPath);
 		
 		connection.generateEndingPoint(this, endingPoint);
 		connections[endingPoint] = connection;
@@ -79,7 +73,6 @@ public class Room {
 	
 	private void init(String tileMapPath) {
 		
-		this.tileMapPath = tileMapPath;
 		tileMap = new NavTmxMapLoader().load(tileMapPath);
 		connections = new Connection[4];
 		
@@ -311,7 +304,7 @@ public class Room {
 		
 		int index = r.nextInt(powerupTypes.size);
 		try {
-			powerups.add(powerupTypes.get(5).getDeclaredConstructor(Vector2.class, Room.class).newInstance(powerupSpawnPosition, this));
+			powerups.add(powerupTypes.get(index).getDeclaredConstructor(Vector2.class, Room.class).newInstance(powerupSpawnPosition, this));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
