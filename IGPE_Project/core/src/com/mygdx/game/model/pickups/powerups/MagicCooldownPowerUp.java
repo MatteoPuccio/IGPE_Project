@@ -3,10 +3,12 @@ package com.mygdx.game.model.pickups.powerups;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.PowerUpsConstants;
+import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.level.Room;
 import com.mygdx.game.model.pickups.Pickup;
+import com.mygdx.game.view.audio.SoundHandler;
 
 public class MagicCooldownPowerUp extends Pickup {
 	public MagicCooldownPowerUp(Vector2 position, Room home) {
@@ -20,6 +22,7 @@ public class MagicCooldownPowerUp extends Pickup {
 
 	@Override
 	protected void collisionResponse(Character character) {
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.POWERUP);
 		character.enablePowerUp(PowerUpsConstants.MAGIC_COOLDOWN_POWERUP);
 	}
 }
