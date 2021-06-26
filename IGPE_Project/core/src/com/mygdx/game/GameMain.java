@@ -123,7 +123,6 @@ public class GameMain extends Game{
 	
 	public void backToTitle() {
 		state = ScreenConstants.TITLE_SCREEN;
-		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
 		setScreen(titleScreen);
 	}
 

@@ -78,6 +78,7 @@ public class TitleScreen extends DefaultScreen{
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+            		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
                 Gdx.app.exit();
             }
         });

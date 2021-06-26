@@ -63,6 +63,7 @@ public class OptionsScreen extends DefaultScreen{
         backButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
         		GameMain.getInstance().backToTitle();
         	}
         });
@@ -91,6 +92,7 @@ public class OptionsScreen extends DefaultScreen{
         difficultyBox.addListener(new ChangeListener() {
         	@Override
         	public void changed(ChangeEvent event, Actor actor) {
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
         		Settings.setDifficulty(difficultyBox.getSelectedIndex());
         	}
         });
