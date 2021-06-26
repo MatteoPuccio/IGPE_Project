@@ -157,5 +157,7 @@ public abstract class Magic {
 	}
 	
 	public abstract int getBulletAnimationId();
+	
+	public abstract int getRespectivePickupAnimationId();
 
 }

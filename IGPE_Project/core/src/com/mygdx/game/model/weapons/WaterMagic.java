@@ -14,4 +14,9 @@ public class WaterMagic extends Magic {
 		return AnimationConstants.DROPLET_ANIMATION;
 	}
 
+	@Override
+	public int getRespectivePickupAnimationId() {
+		return AnimationConstants.WATER_MAGIC_ANIMATION;
+	}
+
 }

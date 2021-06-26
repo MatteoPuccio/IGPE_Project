@@ -23,41 +23,20 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.Settings;
+import com.mygdx.game.constants.SoundConstants;
+import com.mygdx.game.view.audio.SoundHandler;
 import com.mygdx.game.view.audio.Sounds;
 
-public class PauseScreen implements Screen{
-	
-	private SpriteBatch batch;
-    protected Stage stage;
-    private Viewport viewport;
-    private OrthographicCamera camera;
-    private TextureAtlas atlas;
-    protected Skin skin;
-    private BitmapFont titleFont;
-    private LabelStyle titleStyle;
-	private Table mainTable;
-	
+public class PauseScreen extends DefaultScreen{
+
 	private Label optionsLabel,volumeLabel;
 	private final Slider volumeSlider;
 	private TextButton backButton, menuButton;
 	
 	public PauseScreen() {
 		
-		atlas = new TextureAtlas("skin/skin.atlas");
-	    skin = new Skin(Gdx.files.internal("skin/skin.json"), atlas);
-	    skin.getFont("boldFont").getData().setScale(2f,2f);
+		super(0.259f, 0.157f, 0.208f);
 		
-	    titleFont = new BitmapFont(Gdx.files.internal("skin/AncientModernTales.fnt"));
-	    titleFont.getData().scale(0.7f);
-	    titleStyle = new Label.LabelStyle(titleFont, Color.BLACK);
-	    
-		batch = new SpriteBatch();
-		camera = new OrthographicCamera();
-        viewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), camera);
-        viewport.apply();
-        camera.position.set(0, 0, 0);
-        camera.update();
-
         optionsLabel = new Label("Pause", titleStyle);
         volumeLabel = new Label("Volume",skin);
         
@@ -67,11 +46,11 @@ public class PauseScreen implements Screen{
         volumeSlider = new Slider(0f, 1f, 0.01f, false, skin);
         backButton = new TextButton("BACK", skin);
         menuButton = new TextButton("MENU", skin);
-        stage = new Stage(viewport, batch); 
         
         backButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
         		GameMain.getInstance().unpause();
         	}
         });
@@ -79,6 +58,7 @@ public class PauseScreen implements Screen{
         menuButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
         		GameMain.getInstance().confirmQuitScreen();
         	}
         });
@@ -89,20 +69,24 @@ public class PauseScreen implements Screen{
 				Settings.setVolume(volumeSlider.getValue());
 			}
         });
-        
+        volumeSlider.addListener(new ClickListener() {
+        	
+        	@Override
+        	public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
+        	}
+        	
+        	@Override
+        	public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        		return true;
+        	}
+        	
+        });
 	}
-	
+
 	@Override
-	public void show() {
-		if(mainTable != null)
-			mainTable.clear();
-		mainTable = new Table();
-        mainTable.setFillParent(true);
-        mainTable.center();
-        
+	protected void initMainTable() {
         volumeSlider.setVisualPercent(Settings.getVolume());
-        
-        
         mainTable.add(optionsLabel).colspan(2).center();
         mainTable.row();
         mainTable.add(volumeLabel).colspan(1).left().padRight(100);
@@ -111,26 +95,10 @@ public class PauseScreen implements Screen{
         mainTable.add(backButton).colspan(2).center();
         mainTable.row();
         mainTable.add(menuButton).colspan(2).center();
-//        mainTable.debugAll();
-        stage.addActor(mainTable);
 	}
-
-	@Override
-	public void render(float delta) {
-		Gdx.gl.glClearColor(0.259f, 0.157f, 0.208f, 1f);
-    	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		Sounds.getInstance().update();
-        stage.act();
-        stage.draw();		
-	}
-
-	@Override
-	public void resize(int width, int height) {
-		viewport.update(width, height);
-		viewport.apply();
-		Gdx.input.setInputProcessor(stage);
-	}
+	
+	
+	
 
 	@Override
 	public void pause() {
@@ -147,13 +115,6 @@ public class PauseScreen implements Screen{
 	@Override
 	public void hide() {
 		stage.clear();
-	}
-
-	@Override
-	public void dispose() {
-		atlas.dispose();
-		batch.dispose();
-		stage.dispose();
 	}
 	
 }

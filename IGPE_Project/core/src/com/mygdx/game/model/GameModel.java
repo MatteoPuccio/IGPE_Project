@@ -2,21 +2,11 @@ package com.mygdx.game.model;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.constants.PowerUpsConstants;
 import com.mygdx.game.model.collisions.CollisionHandler;
 import com.mygdx.game.model.entities.Character;
-import com.mygdx.game.model.entities.EnemiesHandler;
-import com.mygdx.game.model.level.RandomRoomGenerator;
 import com.mygdx.game.model.level.RoomHandler;
-import com.mygdx.game.model.weapons.BulletHandler;
-import com.mygdx.game.model.weapons.Magic;
-import com.mygdx.game.view.audio.SoundHandler;
 
 public class GameModel {
 	
@@ -29,11 +19,9 @@ public class GameModel {
 	private Array<Body> bodiesToDisable;
 	
 	private boolean characterTransform;
-	private boolean settingMagicChangeScreen;
 	private boolean newFloor;
 	
 	private int coins;
-	private Magic pickedUpMagic;
 	
 	private Vector2 switchPosition;
 	private final Vector2 initialSpawnPosition;
@@ -49,7 +37,6 @@ public class GameModel {
 		
 		characterTransform = false;
 		newFloor = false;
-		settingMagicChangeScreen = false;
 		
 		switchPosition = new Vector2();
 		switchAngle = 0f;
@@ -85,15 +72,6 @@ public class GameModel {
 	
 	public World getWorld() {
 		return world;
-	}
-	
-	public boolean isSettingMagicChangeScreen() {
-		return settingMagicChangeScreen;
-	}
-	
-	public void setSettingMagicChangeScreen(boolean settingMagicChangeScreen, Magic pickedUpMagic) {
-		this.settingMagicChangeScreen = settingMagicChangeScreen;
-		this.pickedUpMagic = pickedUpMagic;
 	}
 	
 	public void dispose() {
@@ -144,7 +122,6 @@ public class GameModel {
 		
 		if(newFloor) 
 			createNewFloor();
-		
 		enableBodies();
 		disableBodies();
 		disposeBodies();
@@ -177,4 +154,5 @@ public class GameModel {
 		currentFloor++;
 		newFloor = false;
 	}
+
 }

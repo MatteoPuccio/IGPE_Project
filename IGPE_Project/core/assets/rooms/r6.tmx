@@ -277,8 +277,8 @@
   <object id="10" gid="516" x="352" y="128" width="16" height="16"/>
   <object id="11" gid="516" x="112" y="240" width="16" height="16"/>
   <object id="12" gid="516" x="336" y="368" width="16" height="16"/>
-  <object id="13" gid="515" x="320" y="288" width="16" height="16"/>
-  <object id="14" gid="515" x="128" y="320" width="16" height="16"/>
+  <object id="13" gid="515" x="304" y="304" width="16" height="16"/>
+  <object id="14" gid="515" x="144" y="320" width="16" height="16"/>
   <object id="15" gid="517" x="224" y="160" width="16" height="16"/>
   <object id="16" gid="517" x="192" y="176" width="16" height="16"/>
  </objectgroup>

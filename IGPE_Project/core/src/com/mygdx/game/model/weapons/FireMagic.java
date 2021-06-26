@@ -37,4 +37,9 @@ public class FireMagic extends Magic {
 		return AnimationConstants.FIREBALL_ANIMATION;
 	}
 
+	@Override
+	public int getRespectivePickupAnimationId() {
+		return AnimationConstants.FIRE_MAGIC_ANIMATION;
+	}
+
 }

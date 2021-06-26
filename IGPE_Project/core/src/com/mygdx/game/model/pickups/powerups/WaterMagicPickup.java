@@ -1,13 +1,16 @@
 package com.mygdx.game.model.pickups.powerups;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.AnimationConstants;
+import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.level.Room;
 import com.mygdx.game.model.pickups.Pickup;
 import com.mygdx.game.model.weapons.WaterMagic;
+import com.mygdx.game.view.audio.SoundHandler;
 
 public class WaterMagicPickup extends Pickup {
 
@@ -22,7 +25,9 @@ public class WaterMagicPickup extends Pickup {
 	
 	@Override
 	protected void collisionResponse(Character character) {
-		GameModel.getInstance().setSettingMagicChangeScreen(true, new WaterMagic(character));		
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MAGIC_PICKUP);
+		character.setPickedUpMagic(new WaterMagic(character));
+		GameMain.getInstance().changeMagicPrompt();	
 	}
 
 }

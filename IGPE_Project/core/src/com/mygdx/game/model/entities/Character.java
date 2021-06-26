@@ -22,6 +22,7 @@ public class Character extends Entity{
 	
 	private Magic firstMagic;
 	private Magic secondMagic;
+	private Magic pickedUpMagic;
 	
 	private float speed = 4;
 	
@@ -46,7 +47,8 @@ public class Character extends Entity{
 		super(position, 0.4f, false, 100, 10, 3);
 		
 		firstMagic = new WaterMagic(this);
-		secondMagic = new LightningMagic(this);		
+		secondMagic = new ExplosionMagic(this);		
+		pickedUpMagic = null;
 		
 		leftMove = false;
 		rightMove = false;
@@ -215,6 +217,26 @@ public class Character extends Entity{
 		else
 			currentMana += manaRecovered;
 		
+	}
+	
+	public void swapFirstMagic() {
+		if(pickedUpMagic != null)
+			firstMagic = pickedUpMagic;
+		pickedUpMagic = null;
+	}
+	
+	public void swapSecondMagic() {
+		if(pickedUpMagic != null)
+			secondMagic = pickedUpMagic;
+		pickedUpMagic = null;
+	}
+	
+	public void setPickedUpMagic(Magic pickedUpMagic) {
+		this.pickedUpMagic = pickedUpMagic;
+	}
+	
+	public Magic getPickedUpMagic() {
+		return pickedUpMagic;
 	}
 
 	public void setFirstMagicAttacking(boolean attacking) {

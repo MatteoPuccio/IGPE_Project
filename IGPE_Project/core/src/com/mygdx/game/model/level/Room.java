@@ -55,8 +55,6 @@ public class Room {
 	private float teleportTime;
 	private float elapsedTeleportTime;
 	
-	private String tileMapPath;
-	
 	private boolean generatePowerup;
 	private Vector2 powerupSpawnPosition;
 	
@@ -66,12 +64,8 @@ public class Room {
 		init(tileMapPath);
 	}
 	
-	public Room(Room old) {
-		init(old.tileMapPath);
-	}
-	
-	public Room(Room old, Connection connection) {
-		init(old.tileMapPath);
+	public Room(String tileMapPath, Connection connection) {
+		init(tileMapPath);
 		
 		connection.generateEndingPoint(this, endingPoint);
 		connections[endingPoint] = connection;
@@ -79,7 +73,6 @@ public class Room {
 	
 	private void init(String tileMapPath) {
 		
-		this.tileMapPath = tileMapPath;
 		tileMap = new NavTmxMapLoader().load(tileMapPath);
 		connections = new Connection[4];
 		
@@ -105,10 +98,11 @@ public class Room {
 			}
 		}
 		
-		endingPoint = gates.get(0).getDirection();
+		Random r = new Random();
+		endingPoint = gates.get(r.nextInt(gates.size)).getDirection();
 		
-		for(int i = 1; i < gates.size; ++i) {
-			if(gates.get(i).getDirection() < connections.length) {
+		for(int i = 0; i < gates.size; ++i) {
+			if(gates.get(i).getDirection() < connections.length && gates.get(i).getDirection() != endingPoint) {
 				connections[gates.get(i).getDirection()] = new Connection(this, gates.get(i).getDirection());
 			}
 		}
@@ -309,7 +303,7 @@ public class Room {
 		
 		Random r = new Random();
 		
-		int index = r.nextInt(pickupTypes.size);
+		int index = r.nextInt(powerupTypes.size);
 		try {
 			powerups.add(powerupTypes.get(index).getDeclaredConstructor(Vector2.class, Room.class).newInstance(powerupSpawnPosition, this));
 		} catch (Exception e) {
@@ -320,7 +314,7 @@ public class Room {
 	
 	public void setPowerupSpawnPosition(Vector2 powerupSpawnPosition) {
 		generatePowerup = true;
-		this.powerupSpawnPosition = powerupSpawnPosition;
+		this.powerupSpawnPosition = new Vector2(powerupSpawnPosition);
 	}
 	
 	public void removePickup(Pickup pickupToRemove) {
