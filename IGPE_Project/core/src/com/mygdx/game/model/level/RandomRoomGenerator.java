@@ -96,7 +96,6 @@ public class RandomRoomGenerator {
 					deadends.addAll(r.createAdjacentRooms(true));
 			}
 		}
-		
 		rooms.addAll(deadends); //aggiungi le stanze chiuse
 		return rooms;
 	}

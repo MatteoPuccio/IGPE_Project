@@ -29,16 +29,19 @@ public class Gate implements Collidable {
 
 	@Override
 	public void collidesWith(Collidable coll) {
+		//se il player collide con un Gate
 		if(coll instanceof Character) {
+			//se la direzione del gate è END (scala nella tilemap) crea un nuovo floor
 			if(direction == END) {
 				GameModel.getInstance().setNewFloor();
 			}
-			else if(RoomHandler.getInstance().canTeleport()) {
+			else if(RoomHandler.getInstance().canTeleport()) {		
 				Connection [] connections = RoomHandler.getInstance().getCurrentRoom().getConnections();
-				Room otherRoom = RoomHandler.getInstance().switchRoom(direction);
+				Room otherRoom = RoomHandler.getInstance().switchRoom(direction);	//prendi la direzione e la stanza dalla quale si è appena entrati
 				int otherDirection = connections[direction].getOtherPoint(direction);
 				Gate otherGate = otherRoom.getGate(otherDirection);		//prendi il gate dal quale si è appena entrati
 				float angle = GameModel.getInstance().getCharacter().getBody().getAngle();
+				//sposta il personaggio allo spawnpoint del rispettivo gate
 				GameModel.getInstance().setCharacterTransform(otherGate.getSpawnPoint(), angle);
 			}
 		}

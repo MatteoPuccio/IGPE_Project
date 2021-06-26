@@ -69,9 +69,5 @@ public class ParticleHandler {
 	public boolean isCleared() {
 		return cleared;
 	}
-	
-	public void setNull() {
-		instance = null;
-	}
-	
+
 }

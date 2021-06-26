@@ -9,17 +9,16 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.constants.Settings;
@@ -39,7 +38,6 @@ import com.mygdx.game.view.animations.ParticleEffect;
 import com.mygdx.game.view.audio.Sounds;
 import com.mygdx.game.view.ui.InterfaceBar;
 import com.mygdx.game.view.ui.UserInterface;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class GameView implements Screen{
 
@@ -50,7 +48,6 @@ public class GameView implements Screen{
 	private SpriteBatch batch,batchUI;
 	private TiledMapRenderer tiledMapRenderer;
 
-	private Sounds sounds;
 	private ObjectMap<Integer, Animation> animations;
 	private ObjectMap<Integer, ParticleEffect> particleEffects;
 	private Array<ParticleEffect> activeParticleEffects;
@@ -67,21 +64,19 @@ public class GameView implements Screen{
 		
 		debugRenderer = new Box2DDebugRenderer();
 		blackScreenAlpha = 1f;
-		sounds = new Sounds();
 		
 		initAnimations();
 		batch = new SpriteBatch();
 		batchUI = new SpriteBatch();
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
 //		weaponAnimation = new WeaponSlashAnimation();
-		
+
 		Pixmap pm = new Pixmap(Gdx.files.internal("game_cursor.png"));
 		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
 		Gdx.graphics.setCursor(cursor);
 		pm.dispose();
 		
 		shapeRenderer = new ShapeRenderer();
-
 	}
 	
 	@Override
@@ -96,8 +91,6 @@ public class GameView implements Screen{
         
         UserInterface.getInstance().update();
         
-        sounds.update();
-
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);		
 		updateAnimations(deltaTime);
@@ -105,8 +98,8 @@ public class GameView implements Screen{
 		batch.end();
 		
 		batchUI.begin();
-        drawInterfaceBar(UserInterface.getInstance().manaBar);
-        drawInterfaceBar(UserInterface.getInstance().healthBar);
+        drawInterfaceBar(UserInterface.getInstance().getManaBar());
+        drawInterfaceBar(UserInterface.getInstance().getHealthBar());
         batchUI.end();
         
         
@@ -119,7 +112,7 @@ public class GameView implements Screen{
 			shapeRenderer.end();
 			Gdx.gl.glDisable(GL20.GL_BLEND);
         }
-//        debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+        debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawInterfaceBar(InterfaceBar bar) {
@@ -157,7 +150,6 @@ public class GameView implements Screen{
 		shapeRenderer.dispose();
 		UserInterface.getInstance().dispose();
 		batchUI.dispose();
-		
 		for(Integer i : animations.keys())
 			animations.get(i).dispose();
 		
@@ -305,20 +297,6 @@ public class GameView implements Screen{
 		return gamePort;
 	}
 	
-//	public void swingAnimation(float deltaTime) {
-//		weaponAnimation.playSwingAnimation(deltaTime);
-//		float x = weaponAnimation.getPosition().x;
-//		float y = weaponAnimation.getPosition().y;
-//		float w =  weaponAnimation.getTexture().getRegionWidth() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
-//		float h = weaponAnimation.getTexture().getRegionHeight() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
-//
-//		batch.draw(weaponAnimation.getTexture(), x, y,0,0, w, h, 1, 1, weaponAnimation.getAngle() - 90f);
-//	}
-//	
-//	public WeaponSlashAnimation getWeaponAnimation() {
-//		return weaponAnimation;
-//	}
-	
 	public void changeMap(TiledMap map) {
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Settings.PPM);
 	}
@@ -331,13 +309,11 @@ public class GameView implements Screen{
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -347,6 +323,7 @@ public class GameView implements Screen{
 	}
 
 	public void setBlackScreen(float elapsedTeleportTime) {
+		//opacità del rettangolo disegnato per fare effetto di fade in
 		blackScreenAlpha = RoomHandler.getInstance().getCurrentRoom().getTeleportTime() - elapsedTeleportTime;
 		if(blackScreenAlpha <= 0f)
 			blackScreenAlpha = 0f;

@@ -2,6 +2,10 @@ package com.mygdx.game.model;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.constants.PowerUpsConstants;
@@ -65,11 +69,13 @@ public class GameModel {
 	
 	public void reset() {
 		currentFloor = 1;
-		BulletHandler.getInstance().removeAllBullets();
-		if(GameModel.getInstance().getCharacter() != null)
-			GameModel.getInstance().getWorld().destroyBody(GameModel.getInstance().getCharacter().getBody()); 
+		if(character != null)
+			world.destroyBody(GameModel.getInstance().getCharacter().getBody()); 
 		character = new Character(new Vector2(initialSpawnPosition));
 		RoomHandler.getInstance().createRooms();
+		
+		switchAngle = 0f;
+		coins = 0;
 	}
 	
 	
@@ -139,9 +145,9 @@ public class GameModel {
 		if(newFloor) 
 			createNewFloor();
 		
-		disposeBodies();
 		enableBodies();
 		disableBodies();
+		disposeBodies();
 	}
 	public void addCoins(int coinsToAdd) {
 		coins += coinsToAdd;

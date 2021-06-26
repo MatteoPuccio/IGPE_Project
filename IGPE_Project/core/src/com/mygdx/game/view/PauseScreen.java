@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -69,17 +68,7 @@ public class PauseScreen implements Screen{
         backButton = new TextButton("BACK", skin);
         menuButton = new TextButton("MENU", skin);
         stage = new Stage(viewport, batch); 
-	}
-	
-	@Override
-	public void show() {
-		if(mainTable != null)
-			mainTable.clear();
-		mainTable = new Table();
-        mainTable.setFillParent(true);
-        mainTable.center();
         
-        volumeSlider.setVisualPercent(Settings.getVolume());
         backButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
@@ -100,6 +89,18 @@ public class PauseScreen implements Screen{
 				Settings.setVolume(volumeSlider.getValue());
 			}
         });
+        
+	}
+	
+	@Override
+	public void show() {
+		if(mainTable != null)
+			mainTable.clear();
+		mainTable = new Table();
+        mainTable.setFillParent(true);
+        mainTable.center();
+        
+        volumeSlider.setVisualPercent(Settings.getVolume());
         
         
         mainTable.add(optionsLabel).colspan(2).center();
@@ -145,8 +146,7 @@ public class PauseScreen implements Screen{
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-		
+		stage.clear();
 	}
 
 	@Override

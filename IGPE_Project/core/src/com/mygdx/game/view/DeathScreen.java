@@ -42,7 +42,7 @@ public class DeathScreen implements Screen{
 		
 	    titleFont = new BitmapFont(Gdx.files.internal("skin/AncientModernTales.fnt"));
 	    titleFont.getData().scale(0.7f);
-	    titleStyle = new Label.LabelStyle(titleFont, Color.BLACK);
+	    titleStyle = new LabelStyle(titleFont, Color.BLACK);
 	    
 	    batch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -55,17 +55,6 @@ public class DeathScreen implements Screen{
                 
         backButton = new TextButton("TITLE SCREEN", skin);
         quitButton = new TextButton("QUIT", skin);
-        
-        stage = new Stage(viewport, batch);
-	}
-	
-	@Override
-	public void show() {
-		if(mainTable != null)
-			mainTable.clear();
-		mainTable = new Table();
-        mainTable.setFillParent(true);
-        mainTable.center();
         
         backButton.addListener(new ClickListener() {
         	@Override
@@ -80,6 +69,14 @@ public class DeathScreen implements Screen{
         		Gdx.app.exit();
         	}
         });
+        stage = new Stage(viewport, batch);
+	}
+	
+	@Override
+	public void show() {
+		mainTable = new Table();
+        mainTable.setFillParent(true);
+        mainTable.center();
         
         mainTable.add(deathLabel).colspan(2);
         mainTable.row();
@@ -119,8 +116,8 @@ public class DeathScreen implements Screen{
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-		
+		mainTable.clear();
+		stage.dispose();
 	}
 
 	@Override

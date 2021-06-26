@@ -53,18 +53,7 @@ public class ConfirmQuitScreen implements Screen{
         
         yesButton = new TextButton("YES", skin);
         noButton = new TextButton("NO", skin);
-        
-        stage = new Stage(viewport, batch); 
-	}
-	
-	@Override
-	public void show() {
-		if(mainTable != null)
-			mainTable.clear();
-		mainTable = new Table();
-		mainTable.setFillParent(true);
-		mainTable.center();
-		yesButton.addListener(new ClickListener() {
+        yesButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				GameMain.getInstance().restart();

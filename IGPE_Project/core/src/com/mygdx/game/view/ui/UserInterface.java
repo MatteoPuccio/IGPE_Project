@@ -7,7 +7,7 @@ public class UserInterface
 {	
 	private static UserInterface instance = null;
 	
-	public InterfaceBar manaBar,healthBar;
+	private InterfaceBar manaBar,healthBar;
 	
 	private UserInterface()
 	{
@@ -26,7 +26,7 @@ public class UserInterface
 	
 	public void update()
 	{
-		healthBar.update(GameModel.getInstance().getCharacter().getCurrentHealth() / GameModel.getInstance().getCharacter().getMaxHealth());
+		healthBar.update(GameModel.getInstance().getCharacter().getHealthPercentage());
 		manaBar.update(GameModel.getInstance().getCharacter().getManaPercentage());
 	}
 	
@@ -34,5 +34,13 @@ public class UserInterface
 	{
 		healthBar.dispose();
 		manaBar.dispose();
+	}
+	
+	public InterfaceBar getManaBar() {
+		return manaBar;
+	}
+	
+	public InterfaceBar getHealthBar() {
+		return healthBar;
 	}
 }

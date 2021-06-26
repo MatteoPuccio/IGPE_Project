@@ -141,7 +141,11 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 	}
 	
 	public float getManaPercentage() {
-		return (float)(currentMana/manaPool);
+		return (float)(currentMana / manaPool);
+	}
+	
+	public float getHealthPercentage() {
+		return (float) (currentHealth / maxHealth);
 	}
 	
 	public void setManaRechargeMultiplier(float manaRechargeMultiplier) {

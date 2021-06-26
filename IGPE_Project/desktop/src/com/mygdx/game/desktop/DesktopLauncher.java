@@ -11,6 +11,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 1024;
 		config.height = 768;
+		config.title = "No Way To Go But Down";
 		config.addIcon("icon/game-icon-mac.png", Files.FileType.Internal);
 		config.addIcon("icon/game-icon-linux.png", Files.FileType.Internal);
 		config.addIcon("icon/game-icon-windows.png", Files.FileType.Internal);

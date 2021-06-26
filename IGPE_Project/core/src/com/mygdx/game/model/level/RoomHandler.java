@@ -56,6 +56,7 @@ public class RoomHandler {
 	}
 
 	public boolean changeMap() {
+		//indica se cambiare room o meno
 		if(changeMap) {
 			changeMap = false;
 			return true;
@@ -64,12 +65,14 @@ public class RoomHandler {
 	}
 		
 	private void reset() {
+		//passando da una stanza all'altra fa clear di bullets, particles e suoni 
 		BulletHandler.getInstance().removeAllBullets();
 		ParticleHandler.getInstance().clear();
 		SoundHandler.getInstance().clear();
 	}
 
 	public boolean canTeleport() {
+		//se il tempo passato dall'ultimo teleport è maggiore del teleportTime allora si può passare alla prossima stanza
 		 return RoomHandler.getInstance().getCurrentRoom().getElapsedTeleportTime() >= RoomHandler.getInstance().getCurrentRoom().getTeleportTime();
 	}
 }

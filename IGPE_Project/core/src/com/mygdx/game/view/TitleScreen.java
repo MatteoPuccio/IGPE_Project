@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -39,7 +40,10 @@ public class TitleScreen implements Screen {
     private BitmapFont titleFont;
     private LabelStyle titleStyle;
 	private Table mainTable;
-	
+	private Window tutorialWindow;
+	private TextButton playButton, optionButton, exitButton;
+	private TextButton tutorialButton, exitTutorialButton;
+	private Label title;
 	public TitleScreen() {
 		atlas = new TextureAtlas("skin/skin.atlas");
 	    skin = new Skin(Gdx.files.internal("skin/skin.json"), atlas);
@@ -51,8 +55,9 @@ public class TitleScreen implements Screen {
 	    
 	    //crea animazione per il title screen 
 	    titleScreenFrames = new Array<TextureRegion>();
-	    for(int i = 0; i < 6; ++i) 
+	    for(int i = 0; i < 6; ++i) {
 	    	titleScreenFrames.add(new TextureRegion(new Texture("title_screen/title-screen" + i + ".png")));
+	    }
 	    titleScreenAnimation = new Animation(titleScreenFrames, 6, 0.5f);
 	    
 		batch = new SpriteBatch();
@@ -60,27 +65,11 @@ public class TitleScreen implements Screen {
         viewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), camera);
         viewport.apply();
 
-        camera.position.set(0, 0, 0);
-        camera.update();
-
-        stage = new Stage(viewport, batch);
-        
-	}
-
-	@Override
-	public void show() {
-		if(mainTable != null)
-			mainTable.clear();
-		mainTable = new Table();
-        mainTable.setFillParent(true);
-        mainTable.center();
-
-        Label title = new Label("No Way To Go But Down",titleStyle);
-//        title.setWrap(true);
-        title.setColor(new Color(Color.BLACK));
-        TextButton playButton = new TextButton("PLAY", skin);
-        TextButton exitButton = new TextButton("EXIT", skin);
-        TextButton optionButton = new TextButton("OPTIONS", skin);
+        playButton = new TextButton("PLAY", skin);
+        exitButton = new TextButton("EXIT", skin);
+        optionButton = new TextButton("OPTIONS", skin);
+        tutorialButton = new TextButton("HOW TO PLAY", skin);
+        exitTutorialButton = new TextButton("CLOSE", skin);
         
         playButton.addListener(new ClickListener(){
             @Override
@@ -103,16 +92,60 @@ public class TitleScreen implements Screen {
             }
         });
         
+        tutorialButton.addListener(new ClickListener() {
+        	@Override
+        	public void clicked(InputEvent event, float x, float y) {
+        		mainTable.setVisible(false);
+        		tutorialWindow.setVisible(true);
+        	}
+        });
+        
+        exitTutorialButton.addListener(new ClickListener() {
+        	@Override
+        	public void clicked(InputEvent event, float x, float y) {
+        		mainTable.setVisible(true);
+        		tutorialWindow.setVisible(false);
+        	}
+        });
+        
+        camera.position.set(0, 0, 0);
+        camera.update();
+
+        stage = new Stage(viewport, batch);
+        
+	}
+
+	@Override
+	public void show() {
+		stage = new Stage(viewport, batch);
+		tutorialWindow = new Window("How To Play", skin);
+		
+		mainTable = new Table();
+        mainTable.setFillParent(true);
+        mainTable.center();
+
+        tutorialWindow.setFillParent(true);
+        tutorialWindow.setVisible(false);
+        tutorialWindow.setResizable(false);
+        tutorialWindow.setMovable(false);
+        
+        title = new Label("No Way To Go But Down",titleStyle);
+        title.setColor(new Color(Color.BLACK));
+        
+        tutorialWindow.add(exitTutorialButton).padTop(500);
+        
         mainTable.add(title).pad(0,0,100,0);
         mainTable.row();
         mainTable.add(playButton).growX().pad(20, 300, 20, 300);
         mainTable.row();
         mainTable.add(optionButton).growX().pad(20, 300, 20, 300);
         mainTable.row();
+        mainTable.add(tutorialButton).growX().pad(20, 300, 20, 300);
+        mainTable.row();
         mainTable.add(exitButton).growX().pad(20, 300, 20, 300);
         mainTable.row();
         
-		
+        stage.addActor(tutorialWindow);
         stage.addActor(mainTable);
 	}
 
@@ -153,8 +186,9 @@ public class TitleScreen implements Screen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-		
+		mainTable.clear();
+		tutorialWindow.clear();
+		stage.clear();
 	}
 
 	@Override
@@ -164,5 +198,9 @@ public class TitleScreen implements Screen {
 		stage.dispose();
 		batch.dispose();
 		titleFont.dispose();
+		for(int i = 0; i < titleScreenFrames.size;++i) {
+			titleScreenFrames.get(i).getTexture().dispose();
+		}
+		titleScreenFrames.clear();
 	}
 }

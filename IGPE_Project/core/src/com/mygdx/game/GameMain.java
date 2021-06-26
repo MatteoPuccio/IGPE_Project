@@ -19,6 +19,8 @@ import com.mygdx.game.view.audio.Sounds;
 
 public class GameMain extends Game{
 	
+	//eredita Game, entry point per l'applicazione. Permette di gestire diversi screen
+	
 	private static GameMain instance = null;
 	private GameController controller;
 	private TitleScreen titleScreen;
@@ -46,15 +48,19 @@ public class GameMain extends Game{
 		pauseScreen = new PauseScreen();
 		confirmQuitScreen = new ConfirmQuitScreen();
 		
+		//crea e setta cursore per i menu
 		Pixmap pm = new Pixmap(Gdx.files.internal("menu_cursor.png"));
 		cursor = Gdx.graphics.newCursor(pm, 0, 0);
 		Gdx.graphics.setCursor(cursor);
 		pm.dispose();
+		
+		//appena l'applicazione parte setta lo screen corrente al menu principale
 		setScreen(titleScreen);
 	}
 
 	@Override
 	public void render() {
+		// delta time è limitato a 1/30 secondi per evitare errori nella simulazione di box2d
 		float deltaTime = Math.min(1 / 30f, Gdx.graphics.getDeltaTime());
 		
 		switch(state) {
@@ -102,6 +108,7 @@ public class GameMain extends Game{
 	}
 
 	public void start() {
+		//setta lo state a RUNNING e mette lo schermo corrente quello della view del gioco
 		state = Settings.RUNNING;
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
 		setScreen(controller.getView());
@@ -128,11 +135,13 @@ public class GameMain extends Game{
 	}
 	
 	public void restart() {
-		state = Settings.TITLE_SCREEN;
-		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
-		controller.reset();
 		setScreen(titleScreen);
+		state = Settings.TITLE_SCREEN;
+		controller.reset();
+		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
+		//reset del gioco
 		
+		System.out.println(GameModel.getInstance().getWorld().getBodyCount());
 	}
 
 	public void unpause() {
@@ -154,4 +163,5 @@ public class GameMain extends Game{
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
 		setScreen(confirmQuitScreen);
 	}
+	
 }

@@ -70,9 +70,10 @@ public class OptionsScreen implements Screen{
         
         volumeSlider = new Slider(0f, 1f, 0.01f, false, skin);
         backButton = new TextButton("BACK", skin);
-        difficultyBox = new SelectBox<String>(skin);
+        
         
         String [] difficultyLevels = new String[] {"Easy","Normal","Hard"};
+        difficultyBox = new SelectBox<String>(skin);
         difficultyBox.setItems(difficultyLevels);
         difficultyBox.setSelectedIndex(1);
         stage = new Stage(viewport, batch); 
@@ -82,10 +83,12 @@ public class OptionsScreen implements Screen{
 	public void show() {
 		if(mainTable != null)
 			mainTable.clear();
+		
 		mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();
         volumeSlider.setVisualPercent(Settings.getVolume());
+        
         backButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
@@ -116,8 +119,7 @@ public class OptionsScreen implements Screen{
         mainTable.add(difficultyBox).colspan(1).right().padLeft(100);
         mainTable.row();
         mainTable.add(backButton).colspan(2).center();
-        
-        mainTable.debugAll();
+
         stage.addActor(mainTable);
 	}
 

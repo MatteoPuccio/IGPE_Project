@@ -82,5 +82,4 @@ public class NavTmxMapLoader extends TmxMapLoader {
 		}
 		map.getLayers().add(layer);
 	}
-	
 }
