@@ -50,7 +50,6 @@ public class GameView implements Screen{
 	private SpriteBatch batch,batchUI;
 	private TiledMapRenderer tiledMapRenderer;
 
-	private Sounds sounds;
 	private ObjectMap<Integer, Animation> animations;
 	private ObjectMap<Integer, ParticleEffect> particleEffects;
 	private Array<ParticleEffect> activeParticleEffects;
@@ -67,13 +66,12 @@ public class GameView implements Screen{
 		
 		debugRenderer = new Box2DDebugRenderer();
 		blackScreenAlpha = 1f;
-		sounds = new Sounds();
 		
 		initAnimations();
 		batch = new SpriteBatch();
 		batchUI = new SpriteBatch();
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
-//		weaponAnimation = new WeaponSlashAnimation();
+
 		
 		Pixmap pm = new Pixmap(Gdx.files.internal("game_cursor.png"));
 		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
@@ -84,8 +82,7 @@ public class GameView implements Screen{
 
 	}
 	
-	@Override
-	public void render(float deltaTime) {
+	public void render(float deltaTime, boolean updateAnimations) {
 		updateCamera();
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -96,11 +93,13 @@ public class GameView implements Screen{
         
         UserInterface.getInstance().update();
         
-        sounds.update();
+        Sounds.getInstance().update();
 
 		batch.begin();	
-		batch.setProjectionMatrix(camera.combined);		
-		updateAnimations(deltaTime);
+		batch.setProjectionMatrix(camera.combined);
+		if(updateAnimations)
+			updateAnimations(deltaTime);
+		renderAnimations(deltaTime);
 
 		batch.end();
 		
@@ -215,7 +214,7 @@ public class GameView implements Screen{
 		activeParticleEffects = new Array<ParticleEffect>(false, 40);
 	}
 	
-	private void updateAnimations(float deltaTime) {
+	private void renderAnimations(float deltaTime) {
 		
 		for(TreasureChest t : RoomHandler.getInstance().getCurrentRoom().getTreasureChests())
 		{
@@ -244,15 +243,10 @@ public class GameView implements Screen{
 		
 		animate(GameModel.getInstance().getCharacter(), deltaTime);
 		
-		updateParticleEffects(deltaTime);
-		
-		for(Integer i : animations.keys()) {
-			animations.get(i).update(deltaTime);
-		}
+		renderParticleEffects(deltaTime);
 	}
 	
-	private void updateParticleEffects(float deltaTime) {
-		
+	private void renderParticleEffects(float deltaTime) {
 		while(!ParticleHandler.getInstance().getParticles().isEmpty()) {
 			Particle temp = ParticleHandler.getInstance().getParticles().pop();
 			activeParticleEffects.add(new ParticleEffect(particleEffects.get(temp.getParticleId()), temp.getPosition(), temp.getWidth(), temp.getHeigth()));
@@ -270,6 +264,22 @@ public class GameView implements Screen{
 				animate(activeParticleEffects.get(i), deltaTime);
 			}
 		}
+	}
+	
+	private void updateAnimations(float deltaTime) {
+		
+		updateParticleEffects(deltaTime);
+		
+		for(Integer i : animations.keys()) {
+			animations.get(i).update(deltaTime);
+		}
+	}
+	
+	private void updateParticleEffects(float deltaTime) {
+		
+		for(ParticleEffect particleEffect : activeParticleEffects)
+			particleEffect.update(deltaTime);
+
 	}
 	
 	private void animate(Animated a, float deltaTime) {
@@ -294,7 +304,6 @@ public class GameView implements Screen{
 		float h = p.getHeigth();
 		
 		batch.draw(currentFrame, x - w / 2, y - h / 2, w, h);
-		p.update(deltaTime);
 	}
 	
 	public OrthographicCamera getCamera() {
@@ -305,19 +314,9 @@ public class GameView implements Screen{
 		return gamePort;
 	}
 	
-//	public void swingAnimation(float deltaTime) {
-//		weaponAnimation.playSwingAnimation(deltaTime);
-//		float x = weaponAnimation.getPosition().x;
-//		float y = weaponAnimation.getPosition().y;
-//		float w =  weaponAnimation.getTexture().getRegionWidth() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
-//		float h = weaponAnimation.getTexture().getRegionHeight() / Settings.PPM * GameModel.getInstance().getCharacter().getRadius() * 2;
-//
-//		batch.draw(weaponAnimation.getTexture(), x, y,0,0, w, h, 1, 1, weaponAnimation.getAngle() - 90f);
-//	}
-//	
-//	public WeaponSlashAnimation getWeaponAnimation() {
-//		return weaponAnimation;
-//	}
+	public Texture getAnimationFrame(int animationId) {
+		return animations.get(animationId).getFrame().getTexture();
+	}
 	
 	public void changeMap(TiledMap map) {
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / Settings.PPM);
@@ -350,6 +349,12 @@ public class GameView implements Screen{
 		blackScreenAlpha = RoomHandler.getInstance().getCurrentRoom().getTeleportTime() - elapsedTeleportTime;
 		if(blackScreenAlpha <= 0f)
 			blackScreenAlpha = 0f;
+	}
+
+	@Override
+	public void render(float delta) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

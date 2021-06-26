@@ -10,7 +10,7 @@ public class Sounds {
 	private static Sounds instance = null;
 	private ObjectMap<Integer, Sound> sounds;
 
-	public Sounds() {
+	private Sounds() {
 		sounds = new ObjectMap<Integer,Sound>();
 		
 		sounds.put(SoundConstants.MENU_CONFIRM, Gdx.audio.newSound(Gdx.files.internal("sounds/menu/confirm_style_2_001.ogg")));

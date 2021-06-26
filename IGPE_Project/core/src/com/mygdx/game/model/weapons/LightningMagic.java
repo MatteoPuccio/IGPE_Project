@@ -14,4 +14,9 @@ public class LightningMagic extends Magic {
 		return AnimationConstants.LIGHTNINGBOLT_ANIMATION;
 	}
 
+	@Override
+	public int getRespectivePickupAnimationId() {
+		return AnimationConstants.LIGHTNING_MAGIC_ANIMATION;
+	}
+
 }

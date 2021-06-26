@@ -105,10 +105,11 @@ public class Room {
 			}
 		}
 		
-		endingPoint = gates.get(0).getDirection();
+		Random r = new Random();
+		endingPoint = gates.get(r.nextInt(gates.size)).getDirection();
 		
-		for(int i = 1; i < gates.size; ++i) {
-			if(gates.get(i).getDirection() < connections.length) {
+		for(int i = 0; i < gates.size; ++i) {
+			if(gates.get(i).getDirection() < connections.length && gates.get(i).getDirection() != endingPoint) {
 				connections[gates.get(i).getDirection()] = new Connection(this, gates.get(i).getDirection());
 			}
 		}
@@ -310,7 +311,7 @@ public class Room {
 		
 		int index = r.nextInt(powerupTypes.size);
 		try {
-			powerups.add(powerupTypes.get(index).getDeclaredConstructor(Vector2.class, Room.class).newInstance(powerupSpawnPosition, this));
+			powerups.add(powerupTypes.get(5).getDeclaredConstructor(Vector2.class, Room.class).newInstance(powerupSpawnPosition, this));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -14,5 +14,9 @@ public class RockMagic extends Magic {
 		return AnimationConstants.ROCK_ANIMATION;
 	}
 
+	@Override
+	public int getRespectivePickupAnimationId() {
+		return AnimationConstants.ROCK_MAGIC_ANIMATION;
+	}
 
 }

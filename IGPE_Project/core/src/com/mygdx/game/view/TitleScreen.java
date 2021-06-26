@@ -22,29 +22,22 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.GameMain;
+import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.view.animations.Animation;
+import com.mygdx.game.view.audio.SoundHandler;
 import com.mygdx.game.view.audio.Sounds;
 
-public class TitleScreen implements Screen {
-	
-	private SpriteBatch batch;
-    protected Stage stage;
-    private Viewport viewport;
-    private OrthographicCamera camera;
-    private TextureAtlas atlas;
-    
+public class TitleScreen extends DefaultScreen{
+
     private Animation titleScreenAnimation;
     private Array<TextureRegion> titleScreenFrames;
-    private Skin skin;
     private BitmapFont titleFont;
     private LabelStyle titleStyle;
-	private Table mainTable;
 	
 	public TitleScreen() {
-		atlas = new TextureAtlas("skin/skin.atlas");
-	    skin = new Skin(Gdx.files.internal("skin/skin.json"), atlas);
-	    skin.getFont("boldFont").getData().setScale(2f,2f);
 	    
+		super(0, 0, 0);
+		
 	    titleFont = new BitmapFont(Gdx.files.internal("skin/AncientModernTales.fnt"));
 	    titleFont.getData().scale(0.8f);
 	    titleStyle = new LabelStyle(titleFont, Color.WHITE);
@@ -54,29 +47,13 @@ public class TitleScreen implements Screen {
 	    for(int i = 0; i < 6; ++i) 
 	    	titleScreenFrames.add(new TextureRegion(new Texture("title_screen/title-screen" + i + ".png")));
 	    titleScreenAnimation = new Animation(titleScreenFrames, 6, 0.5f);
-	    
-		batch = new SpriteBatch();
-		camera = new OrthographicCamera();
-        viewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), camera);
-        viewport.apply();
-
-        camera.position.set(0, 0, 0);
-        camera.update();
-
-        stage = new Stage(viewport, batch);
         
 	}
-
+	
 	@Override
-	public void show() {
-		if(mainTable != null)
-			mainTable.clear();
-		mainTable = new Table();
-        mainTable.setFillParent(true);
-        mainTable.center();
-
+	protected void initMainTable() {
+		
         Label title = new Label("No Way To Go But Down",titleStyle);
-//        title.setWrap(true);
         title.setColor(new Color(Color.BLACK));
         TextButton playButton = new TextButton("PLAY", skin);
         TextButton exitButton = new TextButton("EXIT", skin);
@@ -85,6 +62,7 @@ public class TitleScreen implements Screen {
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
             	GameMain.getInstance().start();
             }
         });
@@ -92,6 +70,7 @@ public class TitleScreen implements Screen {
         optionButton.addListener(new ClickListener(){
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
         		GameMain.getInstance().options();
         	}
         });
@@ -111,32 +90,14 @@ public class TitleScreen implements Screen {
         mainTable.row();
         mainTable.add(exitButton).growX().pad(20, 300, 20, 300);
         mainTable.row();
-        
-		
-        stage.addActor(mainTable);
 	}
-
+	
 	@Override
-	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0f, 0f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        Sounds.getInstance().update();
-        
-        batch.begin();
-        titleScreenAnimation.update(delta);
-		batch.draw(titleScreenAnimation.getFrame(), 0,0);
-		batch.end();
-        
-		stage.act();
-        stage.draw();
-	}
-
-	@Override
-	public void resize(int width, int height) {
-		viewport.update(width, height);
-		viewport.apply();
-		Gdx.input.setInputProcessor(stage);
+	protected void draw(float delta) {
+		 batch.begin();
+	        titleScreenAnimation.update(delta);
+			batch.draw(titleScreenAnimation.getFrame(), 0,0);
+			batch.end();
 	}
 	
 	@Override
@@ -155,14 +116,5 @@ public class TitleScreen implements Screen {
 	public void hide() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void dispose() {
-		skin.dispose();
-		atlas.dispose();
-		stage.dispose();
-		batch.dispose();
-		titleFont.dispose();
 	}
 }

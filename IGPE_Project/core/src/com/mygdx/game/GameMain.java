@@ -2,15 +2,18 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.mygdx.game.constants.Settings;
+import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.constants.ScreenConstants;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.view.ConfirmQuitScreen;
 import com.mygdx.game.view.DeathScreen;
+import com.mygdx.game.view.MagicChangeScreen;
 import com.mygdx.game.view.OptionsScreen;
 import com.mygdx.game.view.PauseScreen;
 import com.mygdx.game.view.TitleScreen;
@@ -26,6 +29,7 @@ public class GameMain extends Game{
 	private DeathScreen deathScreen;
 	private PauseScreen pauseScreen;
 	private ConfirmQuitScreen confirmQuitScreen;
+	private MagicChangeScreen magicChangeScreen;
 	private Cursor cursor;
 	private int state;
 	
@@ -37,7 +41,7 @@ public class GameMain extends Game{
 	
 	@Override
 	public void create() {
-		state = Settings.TITLE_SCREEN;
+		state = ScreenConstants.TITLE_SCREEN;
 		GameModel.getInstance().reset();
 		controller = new GameController();
 		titleScreen = new TitleScreen();
@@ -45,6 +49,7 @@ public class GameMain extends Game{
 		deathScreen = new DeathScreen();
 		pauseScreen = new PauseScreen();
 		confirmQuitScreen = new ConfirmQuitScreen();
+		magicChangeScreen = new MagicChangeScreen(controller.getView());
 		
 		Pixmap pm = new Pixmap(Gdx.files.internal("menu_cursor.png"));
 		cursor = Gdx.graphics.newCursor(pm, 0, 0);
@@ -58,23 +63,26 @@ public class GameMain extends Game{
 		float deltaTime = Math.min(1 / 30f, Gdx.graphics.getDeltaTime());
 		
 		switch(state) {
-		case Settings.TITLE_SCREEN:
+		case ScreenConstants.TITLE_SCREEN:
 			titleScreen.render(deltaTime);
 			break;
-		case Settings.RUNNING:
+		case ScreenConstants.RUNNING:
 			controller.update(deltaTime);
 			break;
-		case Settings.OPTIONS:
+		case ScreenConstants.OPTIONS:
 			optionsScreen.render(deltaTime);
 			break;
-		case Settings.PAUSE:
+		case ScreenConstants.PAUSE:
 			pauseScreen.render(deltaTime);
 			break;
-		case Settings.DEAD:
+		case ScreenConstants.DEAD:
 			deathScreen.render(deltaTime);
 			break;
-		case Settings.CONFIRM_QUIT:
+		case ScreenConstants.CONFIRM_QUIT:
 			confirmQuitScreen.render(deltaTime);
+			break;
+		case ScreenConstants.MAGIC_CHANGE:
+			magicChangeScreen.render(deltaTime);
 			break;
 		}
 	}
@@ -102,56 +110,57 @@ public class GameMain extends Game{
 	}
 
 	public void start() {
-		state = Settings.RUNNING;
-		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
+		state = ScreenConstants.RUNNING;
 		setScreen(controller.getView());
 		Gdx.input.setInputProcessor(controller);
 	}
 
 	public void options() {
 		Gdx.graphics.setCursor(cursor);
-		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
-		state = Settings.OPTIONS;
+		state = ScreenConstants.OPTIONS;
 		setScreen(optionsScreen);
 	}
 	
 	public void backToTitle() {
-		state = Settings.TITLE_SCREEN;
+		state = ScreenConstants.TITLE_SCREEN;
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
 		setScreen(titleScreen);
 	}
 
 	public void death() {
-		state = Settings.DEAD;
+		state = ScreenConstants.DEAD;
 		Gdx.graphics.setCursor(cursor);
 		setScreen(deathScreen);
 	}
 	
 	public void restart() {
-		state = Settings.TITLE_SCREEN;
+		state = ScreenConstants.TITLE_SCREEN;
 		controller.reset();
-		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
 		setScreen(titleScreen);
-		
 	}
 
 	public void unpause() {
-		state = Settings.RUNNING;
-		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
+		state = ScreenConstants.RUNNING;
 		Gdx.input.setInputProcessor(controller);
 		setScreen(controller.getView());
 	}
 
 	public void pauseScreen() {
-		state = Settings.PAUSE;
+		state = ScreenConstants.PAUSE;
 		Gdx.graphics.setCursor(cursor);
-		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
 		setScreen(pauseScreen);
 	}
 	
 	public void confirmQuitScreen() {
-		state = Settings.CONFIRM_QUIT;
-		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
+		state = ScreenConstants.CONFIRM_QUIT;
 		setScreen(confirmQuitScreen);
+	}
+	
+	public void changeMagicPrompt() {
+		state = ScreenConstants.MAGIC_CHANGE;
+		magicChangeScreen.setNewMagicId(GameModel.getInstance().getCharacter().getPickedUpMagic().getRespectivePickupAnimationId());
+		magicChangeScreen.setFirstMagicId(GameModel.getInstance().getCharacter().getFirstMagic().getRespectivePickupAnimationId());
+		magicChangeScreen.setSecondMagicId(GameModel.getInstance().getCharacter().getSecondMagic().getRespectivePickupAnimationId());
+		setScreen(magicChangeScreen);
 	}
 }

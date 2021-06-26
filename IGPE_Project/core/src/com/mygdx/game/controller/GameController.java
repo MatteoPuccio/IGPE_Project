@@ -12,8 +12,8 @@ import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.view.GameView;
 
-public class GameController implements InputProcessor 
-{
+public class GameController implements InputProcessor {
+	
 	private GameView view;
 	private boolean leftClickPressed;
 	private boolean rightClickPressed;
@@ -26,10 +26,7 @@ public class GameController implements InputProcessor
 	}
 	
 	public void update(float deltaTime) {
-		if(RoomHandler.getInstance().changeMap()) {
-			view.changeMap(RoomHandler.getInstance().getCurrentRoom().getTileMap());
-		}
-		view.render(deltaTime);
+		
 		RoomHandler.getInstance().getCurrentRoom().updateTeleportTime(deltaTime);
 		if(RoomHandler.getInstance().canTeleport()) {
 			GameModel.getInstance().update(deltaTime);
@@ -53,19 +50,22 @@ public class GameController implements InputProcessor
 		}
 		else
 			GameModel.getInstance().getCharacter().stopMoving();
+		
+		if(RoomHandler.getInstance().changeMap()) {
+			view.changeMap(RoomHandler.getInstance().getCurrentRoom().getTileMap());
+		}
+		
 		view.setBlackScreen(RoomHandler.getInstance().getCurrentRoom().getElapsedTeleportTime());
+		if(RoomHandler.getInstance().getCurrentRoom().getElapsedTeleportTime() < RoomHandler.getInstance().getCurrentRoom().getTeleportTime())
+			view.render(deltaTime, false);
+		else
+			view.render(deltaTime,true);
 	}
 	
 	public void dispose() {
 		GameModel.getInstance().dispose();
 		view.dispose();
 	}
-	
-//	private void setAttack() {
-//		Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-//		GameModel.getInstance().getCharacter().getCurrentMagic().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
-//		GameModel.getInstance().getCharacter().getCurrentMagic().setAttacking(true);
-//	}
 	
 	@Override
 	public boolean keyDown(int keycode) {

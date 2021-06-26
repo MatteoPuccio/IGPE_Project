@@ -25,11 +25,9 @@ public class GameModel {
 	private Array<Body> bodiesToDisable;
 	
 	private boolean characterTransform;
-	private boolean settingMagicChangeScreen;
 	private boolean newFloor;
 	
 	private int coins;
-	private Magic pickedUpMagic;
 	
 	private Vector2 switchPosition;
 	private final Vector2 initialSpawnPosition;
@@ -45,7 +43,6 @@ public class GameModel {
 		
 		characterTransform = false;
 		newFloor = false;
-		settingMagicChangeScreen = false;
 		
 		switchPosition = new Vector2();
 		switchAngle = 0f;
@@ -79,15 +76,6 @@ public class GameModel {
 	
 	public World getWorld() {
 		return world;
-	}
-	
-	public boolean isSettingMagicChangeScreen() {
-		return settingMagicChangeScreen;
-	}
-	
-	public void setSettingMagicChangeScreen(boolean settingMagicChangeScreen, Magic pickedUpMagic) {
-		this.settingMagicChangeScreen = settingMagicChangeScreen;
-		this.pickedUpMagic = pickedUpMagic;
 	}
 	
 	public void dispose() {
@@ -138,7 +126,7 @@ public class GameModel {
 		
 		if(newFloor) 
 			createNewFloor();
-		
+			
 		enableBodies();
 		disableBodies();
 		disposeBodies();
@@ -171,4 +159,5 @@ public class GameModel {
 		currentFloor++;
 		newFloor = false;
 	}
+
 }

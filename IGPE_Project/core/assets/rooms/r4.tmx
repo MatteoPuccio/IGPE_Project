@@ -237,12 +237,12 @@
   </object>
  </objectgroup>
  <objectgroup id="12" name="Enemies">
-  <object id="14" gid="516" x="160" y="160" width="16" height="16"/>
-  <object id="15" gid="516" x="272" y="160" width="16" height="16"/>
-  <object id="16" gid="517" x="352" y="80" width="16" height="16"/>
-  <object id="17" gid="517" x="64" y="80" width="16" height="16"/>
-  <object id="18" gid="517" x="160" y="112" width="16" height="16"/>
-  <object id="19" gid="517" x="272" y="112" width="16" height="16"/>
+  <object id="14" gid="516" x="64" y="208" width="16" height="16"/>
+  <object id="15" gid="516" x="368" y="208" width="16" height="16"/>
+  <object id="16" gid="517" x="416" y="304" width="16" height="16"/>
+  <object id="17" gid="517" x="16" y="288" width="16" height="16"/>
+  <object id="18" gid="517" x="144" y="192" width="16" height="16"/>
+  <object id="19" gid="517" x="272" y="192" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="13" name="SpawnPoints">
   <object id="22" gid="518" x="208" y="80" width="16" height="16"/>

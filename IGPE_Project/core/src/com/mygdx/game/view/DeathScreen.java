@@ -19,37 +19,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.GameMain;
+import com.mygdx.game.constants.SoundConstants;
+import com.mygdx.game.view.audio.SoundHandler;
+import com.mygdx.game.view.audio.Sounds;
 
-public class DeathScreen implements Screen{
-	
-	private SpriteBatch batch;
-    protected Stage stage;
-    private Viewport viewport;
-    private OrthographicCamera camera;
-    private TextureAtlas atlas;
-    protected Skin skin;
-    private BitmapFont titleFont;
-    private LabelStyle titleStyle;
-	private Table mainTable;
+public class DeathScreen extends DefaultScreen{
 	
 	private Label deathLabel;
 	private TextButton backButton, quitButton;
 	
 	public DeathScreen() {
-		atlas = new TextureAtlas("skin/skin.atlas");
-	    skin = new Skin(Gdx.files.internal("skin/skin.json"), atlas);
-	    skin.getFont("boldFont").getData().setScale(2f,2f);
 		
-	    titleFont = new BitmapFont(Gdx.files.internal("skin/AncientModernTales.fnt"));
-	    titleFont.getData().scale(0.7f);
-	    titleStyle = new Label.LabelStyle(titleFont, Color.BLACK);
-	    
-	    batch = new SpriteBatch();
-		camera = new OrthographicCamera();
-        viewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), camera);
-        viewport.apply();
-        camera.position.set(0, 0, 0);
-        camera.update();
+		super(0.259f, 0.157f, 0.208f);
 
         deathLabel = new Label("You Died", titleStyle);
                 
@@ -58,18 +39,14 @@ public class DeathScreen implements Screen{
         
         stage = new Stage(viewport, batch);
 	}
-	
+
 	@Override
-	public void show() {
-		if(mainTable != null)
-			mainTable.clear();
-		mainTable = new Table();
-        mainTable.setFillParent(true);
-        mainTable.center();
-        
+	protected void initMainTable() {
+		
         backButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
         		GameMain.getInstance().restart();
         	}
         });
@@ -86,23 +63,6 @@ public class DeathScreen implements Screen{
         mainTable.add(backButton).growX().pad(20, 300, 20, 300);
         mainTable.row();
         mainTable.add(quitButton).growX().pad(20, 300, 20, 300);
-        stage.addActor(mainTable); 
-	}
-
-	@Override
-	public void render(float delta) {
-		Gdx.gl.glClearColor(0.259f, 0.157f, 0.208f, 1f);
-    	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act();
-        stage.draw();
-	}
-
-	@Override
-	public void resize(int width, int height) {
-		viewport.update(width, height);
-		viewport.apply();
-		Gdx.input.setInputProcessor(stage);
-		
 	}
 
 	@Override
@@ -122,12 +82,4 @@ public class DeathScreen implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void dispose() {
-		atlas.dispose();
-		batch.dispose();
-		stage.dispose();
-	}
-
 }

@@ -57,4 +57,9 @@ public class ExplosionMagic extends Magic {
 		}
 	}
 
+	@Override
+	public int getRespectivePickupAnimationId() {
+		return AnimationConstants.EXPLOSION_MAGIC_ANIMATION;
+	}
+
 }
