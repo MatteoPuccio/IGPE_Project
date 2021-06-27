@@ -164,6 +164,7 @@ public class GameMain extends Game{
 	}
 	
 	public void changeMagicPrompt() {
+		controller.removeInputs();
 		state = ScreenConstants.MAGIC_CHANGE;
 		magicChangeScreen.setNewMagicId(GameModel.getInstance().getCharacter().getPickedUpMagic().getRespectivePickupAnimationId());
 		magicChangeScreen.setFirstMagicId(GameModel.getInstance().getCharacter().getFirstMagic().getRespectivePickupAnimationId());

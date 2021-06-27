@@ -54,6 +54,7 @@ public abstract class DefaultScreen implements Screen {
 		mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();
+        mainTable.setSize(stage.getWidth(), stage.getHeight());
         
         initMainTable();
         

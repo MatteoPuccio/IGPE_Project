@@ -34,7 +34,8 @@ public class OptionsScreen extends DefaultScreen{
 		
 		super(0.259f, 0.157f, 0.208f);
 		
-		state = FULLSCREEN;
+		//state è inizialmente windowed così che il change listener di displayModeBox rilevi il change e metta fullscreen
+		state = WINDOWED;
 
         pauseLabel = new Label("Options", titleStyle);
         volumeLabel = new Label("Volume",skin);
@@ -87,7 +88,6 @@ public class OptionsScreen extends DefaultScreen{
         difficultyBox.addListener(new ChangeListener() {
         	@Override
         	public void changed(ChangeEvent event, Actor actor) {
-        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
         		Settings.setDifficulty(difficultyBox.getSelectedIndex());
         	}
         });

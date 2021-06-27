@@ -15,7 +15,6 @@ public class DesktopLauncher {
 		config.addIcon("icon/game-icon-mac.png", Files.FileType.Internal);
 		config.addIcon("icon/game-icon-linux.png", Files.FileType.Internal);
 		config.addIcon("icon/game-icon-windows.png", Files.FileType.Internal);
-		config.fullscreen = true;
 		new LwjglApplication(GameMain.getInstance(), config);
 
 	}

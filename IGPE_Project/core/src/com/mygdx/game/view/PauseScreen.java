@@ -86,6 +86,10 @@ public class PauseScreen extends DefaultScreen{
 
 	@Override
 	protected void initMainTable() {
+		mainTable.setTransform(true);
+	    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
+	    mainTable.setScale(2);
+		
         volumeSlider.setVisualPercent(Settings.getVolume());
         mainTable.add(optionsLabel).colspan(2).center();
         mainTable.row();

@@ -171,4 +171,15 @@ public class GameController implements InputProcessor {
 		GameModel.getInstance().reset();
 	}
 	
+	//Simula key e touch up perchè questi non vengono rilevati se il controller non è l'input processor di Gdx.input
+	public void removeInputs() {
+		keyUp(Keys.A);
+		keyUp(Keys.D);
+		keyUp(Keys.W);
+		keyUp(Keys.S);
+		
+		touchUp(0, 0, 0, Buttons.LEFT);
+		touchUp(0, 0, 0, Buttons.RIGHT);
+	}
+	
 }
