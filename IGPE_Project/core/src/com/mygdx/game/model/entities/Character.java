@@ -12,10 +12,7 @@ import com.mygdx.game.controller.ParticleHandler;
 import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.weapons.ExplosionMagic;
-import com.mygdx.game.model.weapons.FireMagic;
-import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
-import com.mygdx.game.model.weapons.RockMagic;
 import com.mygdx.game.model.weapons.WaterMagic;
 
 public class Character extends Entity{

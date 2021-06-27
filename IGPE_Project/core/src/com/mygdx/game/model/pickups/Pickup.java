@@ -3,9 +3,10 @@ package com.mygdx.game.model.pickups;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+//github.com/MatteoPuccio/IGPE_Project.git
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.entities.Character;

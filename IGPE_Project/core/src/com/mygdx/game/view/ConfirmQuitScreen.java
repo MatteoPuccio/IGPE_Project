@@ -1,7 +1,6 @@
 package com.mygdx.game.view;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -55,12 +54,5 @@ public class ConfirmQuitScreen extends DefaultScreen{
 		mainTable.row();
 		mainTable.add(yesButton);
 		mainTable.add(noButton);
-	}
-	
-	@Override
-	public void resize(int width, int height) {
-		viewport.update(width, height);
-		viewport.apply();
-		Gdx.input.setInputProcessor(stage);
 	}
 }

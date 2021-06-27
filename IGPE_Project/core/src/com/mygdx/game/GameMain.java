@@ -2,12 +2,9 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.mygdx.game.constants.ScreenConstants;
-import com.mygdx.game.constants.Settings;
-import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.model.GameModel;

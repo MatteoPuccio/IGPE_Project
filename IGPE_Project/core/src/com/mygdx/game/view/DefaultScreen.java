@@ -99,7 +99,6 @@ public abstract class DefaultScreen implements Screen {
 			stage.dispose();
 		titleFont.dispose();
 	}
-	
 
 	@Override
 	public void pause() {}

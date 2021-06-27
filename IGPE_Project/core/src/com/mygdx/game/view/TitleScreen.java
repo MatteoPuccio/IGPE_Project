@@ -118,7 +118,6 @@ public class TitleScreen extends DefaultScreen{
 	    batch.end();
 	}
 
-
 	@Override
 	public void dispose() {
 		super.dispose();
