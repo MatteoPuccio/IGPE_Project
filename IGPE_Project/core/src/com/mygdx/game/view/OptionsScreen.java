@@ -24,19 +24,11 @@ public class OptionsScreen extends DefaultScreen{
 	private SelectBox<String> displayModeBox;
 	private SelectBox<String> difficultyBox;
 	
-	private final static int FULLSCREEN = 0;
-	private final static int WINDOWED = 1;
-	
-	private int state;
-	
 	private int previousWidth, previousHeigth;
 	
 	public OptionsScreen() {
 		
 		super(0.259f, 0.157f, 0.208f);
-
-		//state è inizialmente windowed così che il change listener di displayModeBox rilevi il change e metta fullscreen
-		state = WINDOWED;
 
         pauseLabel = new Label("Options", titleStyle);
         volumeLabel = new Label("Sound Effects Volume", new LabelStyle(generalFont, Color.BLACK));
@@ -53,6 +45,9 @@ public class OptionsScreen extends DefaultScreen{
         previousWidth = 1024;
         previousHeigth = 768;
         
+        String [] difficultyLevels = new String[] {"Easy","Normal","Hard"};
+        difficultyBox.setItems(difficultyLevels);
+        difficultyBox.setSelectedIndex(Settings.getDifficulty());
         
         backButton.addListener(new ClickListener() {
         	@Override
@@ -112,31 +107,35 @@ public class OptionsScreen extends DefaultScreen{
         	}
         });
         
+        
+        String [] displayModes = new String [] {"Fullscreen", "Windowed"};
+        displayModeBox.setItems(displayModes);
+        if(Settings.getDisplayState() == Settings.FULLSCREEN) {
+        	Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+        	 displayModeBox.setSelected("Fullscreen");
+        }
+        else {
+        	Gdx.graphics.setWindowedMode(previousWidth, previousHeigth);
+        	  displayModeBox.setSelected("Windowed");
+        }
+        
         displayModeBox.addListener(new ChangeListener() {
         	@Override
         	public void changed(ChangeEvent event, Actor actor) {
-        		if(displayModeBox.getSelected().equals("Fullscreen") && state != FULLSCREEN) {
+        		if(displayModeBox.getSelected().equals("Fullscreen") && Settings.getDisplayState() != Settings.FULLSCREEN) {
         			previousWidth = Gdx.graphics.getWidth();
         			previousHeigth = Gdx.graphics.getHeight();
         			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-        			state = FULLSCREEN;
+        			Settings.setDisplayState(Settings.FULLSCREEN);
         		}
         		
-        		else if(displayModeBox.getSelected().equals("Windowed") && state != WINDOWED) {
+        		else if(displayModeBox.getSelected().equals("Windowed") &&  Settings.getDisplayState() != Settings.WINDOWED) {
         			Gdx.graphics.setWindowedMode(previousWidth, previousHeigth);
-        			state = WINDOWED;
+        			Settings.setDisplayState(Settings.WINDOWED);
         		}
      
         	}
         });
-        
-        String [] difficultyLevels = new String[] {"Easy","Normal","Hard"};
-        difficultyBox.setItems(difficultyLevels);
-        difficultyBox.setSelectedIndex(1);
-        
-        String [] displayModes = new String [] {"Fullscreen", "Windowed"};
-        displayModeBox.setItems(displayModes);
-        displayModeBox.setSelected("Fullscreen");
 	}
 
 	@Override
