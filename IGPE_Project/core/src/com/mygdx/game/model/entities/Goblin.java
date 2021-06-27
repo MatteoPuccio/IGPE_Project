@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.xguzm.pathfinding.grid.GridCell;
-import org.xguzm.pathfinding.grid.finders.GridFinderOptions;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -38,9 +37,6 @@ public class Goblin extends Enemy {
 		currentPosition = new Vector2(getPosition());
 		nextPosition = new Vector2(currentPosition);
 		
-		GridFinderOptions opt = new GridFinderOptions();
-		opt.allowDiagonal = true;
-		
 		isRunning = false;
 		
 		timeForStep = 0.20f;
@@ -57,16 +53,19 @@ public class Goblin extends Enemy {
 		super.update(deltaTime);
 		
 		if(currentHealth <= 0) {
+			//Se il goblin muore gli altri goblin possono passare sulla cella dove si trovava
 			home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(true);
 			return;
 		}
 		
+		//Se il goblin è compleatamente passato in una nuova cella ricalcola il percorso per il giocatore
 		if(elapsedTimeForStep == 0) {
 		
 			Vector2 positionToCheck;
 			tempPath = AStarUtils.findPathNextToPlayer((int) Math.floor(getPosition().x),(int) Math.floor(getPosition().y));
 			
-			if(tempPath == null || tempPath.size() == 0 || nextToPlayer()) {
+			//In questo caso il goblin è bloccato oppure
+			if(tempPath == null || tempPath.size() >= 20 || nextToPlayer()) {
 				isRunning = false;
 				
 				if(nextToPlayer()) {
@@ -84,10 +83,11 @@ public class Goblin extends Enemy {
 				attackTimePassed = 0;
 			}
 			
+			//Implementa il detection range
 			if(Vector2.dst2(currentPosition.x, currentPosition.y, GameModel.getInstance().getCharacter().getPosition().x, GameModel.getInstance().getCharacter().getPosition().y) >= 10 * 10) {
 				home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(false);
 				return;
-			}	
+			}
 			
 			home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(true);
 			path = new LinkedList<GridCell>(tempPath);	
@@ -95,19 +95,22 @@ public class Goblin extends Enemy {
 			positionToCheck = new Vector2(path.get(0).getX() + 0.5f, path.get(0).getY() + 0.5f);
 			
 			Array<Vector2> cellsToMakeWalkable = new Array<Vector2>();
+			
+			//Finchè un goblin si sta dirigendo nella posizione in cui questo goblin vuole andare, ricalcola il percorso fino al giocatore
+			//impostando temporaneamente la suddetta cella come non navigabile
 			while(EnemiesHandler.isPositionOccupied(positionToCheck)) {
 				
 				home.getNavigationLayer().getCell((int) positionToCheck.x, (int) positionToCheck.y).setWalkable(false);
 				cellsToMakeWalkable.add(new Vector2(positionToCheck.x, positionToCheck.y));
 				tempPath = AStarUtils.findPathNextToPlayer((int) Math.floor(getPosition().x),(int) Math.floor(getPosition().y));
 				
-				if(tempPath == null || tempPath.size() == 0) {
+				//Se non trova nessun percorso, o se deve spostarsi troppo per aggirare gli altri goblin, rimane fermo
+				if(tempPath == null || tempPath.size() >= 3) {
 					
+					home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(false);
 					for(Vector2 cell : cellsToMakeWalkable) {
 						home.getNavigationLayer().getCell((int) cell.x, (int) cell.y).setWalkable(true);
 					}
-					
-					home.getNavigationLayer().getCell((int) currentPosition.x, (int) currentPosition.y).setWalkable(false);
 					
 					isRunning = false;				
 					return;
@@ -129,16 +132,19 @@ public class Goblin extends Enemy {
 		if(isRunning) {
 			elapsedTimeForStep += deltaTime;
 				
-			direction.x = nextPosition.x - currentPosition.x;
-			if(direction.x == -1)
+			getDirection().x = nextPosition.x - currentPosition.x;
+			if(getDirection().x == -1)
 				flippedX = true;
 			else
 				flippedX = false;
 			
 			float alpha = calculateAlpha();			
 			Vector2 tempPos = new Vector2(currentPosition);
+			
+			//Sposta ad ogni frame il goblin nella posizione calcolata con l'interpolazione
+			//fra currentPosition e nextPosition basandosi sul tempo che è passato da quando ha iniziato a muoversi
 			tempPos.lerp(nextPosition, alpha);
-			body.setTransform(tempPos, body.getAngle());
+			getBody().setTransform(tempPos, getBody().getAngle());
 			
 			if(alpha == 1) {
 				elapsedTimeForStep = 0;
@@ -148,6 +154,7 @@ public class Goblin extends Enemy {
 		}
 	}
 	
+	//Calcola l'alpha per l'interpolazione
 	private float calculateAlpha() {
 		if(elapsedTimeForStep >= timeForStep)
 			return 1;
@@ -182,9 +189,6 @@ public class Goblin extends Enemy {
 	}
 
 	@Override
-	public void collidesWith(Collidable coll) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void collidesWith(Collidable coll) {}
 	
 }

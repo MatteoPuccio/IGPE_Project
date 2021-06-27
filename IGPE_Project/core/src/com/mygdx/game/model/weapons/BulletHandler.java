@@ -7,6 +7,7 @@ public class BulletHandler {
 	
 	private static BulletHandler bulletHandler = null;
 	
+	//Contiene tutti i bullets presenti nel gioco
 	private Array<Bullet> bullets;
 	
 	private BulletHandler() {
@@ -24,14 +25,13 @@ public class BulletHandler {
 	}
 	
 	public void removeBullet(Bullet bullet) {
-		boolean bulletFound = false;
-		for(int i = 0; i < bullets.size && !bulletFound; ++i)
+		for(int i = 0; i < bullets.size; ++i)
 		{
 			if(bullets.get(i) == bullet)
 			{
 				bullets.removeIndex(i);
 				GameModel.getInstance().addBodyToDispose(bullet.getBody());
-				bulletFound = true;
+				return;
 			}
 		}
 	}

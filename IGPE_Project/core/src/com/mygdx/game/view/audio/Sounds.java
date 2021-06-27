@@ -14,7 +14,7 @@ import com.mygdx.game.controller.SoundHandler;
  */
 public class Sounds {
 	private static Sounds instance = null;
-//	I suoni sono conservati in una HashMap, le cui chiavi sono conservate in SoundsConstants
+//	I suoni sono conservati in una HashMap, le cui chiavi sono valori di SoundsConstants
 	private ObjectMap<Integer, Sound> sounds;
 	private Music caveAmbience;
 

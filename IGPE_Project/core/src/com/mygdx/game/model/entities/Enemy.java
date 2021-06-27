@@ -23,13 +23,13 @@ public abstract class Enemy extends Entity {
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.HIT);
 		currentHealth -= damage;
 		if(currentHealth > 0)
-			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
+			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, getAnimationWidth(), getAnimationHeigth());
 	}
 	
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		if(currentHealth <= 0) {
-			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.ENEMY_DEATH_EXPLOSION, radius, radius);
+			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.ENEMY_DEATH_EXPLOSION, getAnimationWidth(), getAnimationHeigth());
 			home.generateRandomPickup(getPosition());
 			EnemiesHandler.removeEnemy(this);
 		}
@@ -37,17 +37,17 @@ public abstract class Enemy extends Entity {
 	
 	@Override
 	public Vector2 getAnimationPosition() {
-		return body.getPosition();
+		return getBody().getPosition();
 	}
 
 	@Override
 	public float getAnimationWidth() {
-		return radius * 2;
+		return getRadius() * 2;
 	}
 
 	@Override
 	public float getAnimationHeigth() {
-		return radius * 2;
+		return getRadius() * 2;
 	}
 
 	@Override

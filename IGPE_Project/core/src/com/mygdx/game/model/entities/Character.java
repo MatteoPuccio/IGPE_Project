@@ -91,25 +91,25 @@ public class Character extends Entity{
 	}
 	
 	private void move(float deltaTime) {
-		direction.x = 0;
-		direction.y = 0;
+		getDirection().x = 0;
+		getDirection().y = 0;
 		
 		if(leftMove) {
-			direction.x = -1;
+			getDirection().x = -1;
 			flippedX = true;
 		}
 		if(rightMove) {
-			direction.x = 1;
+			getDirection().x = 1;
 			flippedX = false;
 		}
 		if(downMove) {
-			direction.y = -1;
+			getDirection().y = -1;
 		}
 		if(upMove) {
-			direction.y = 1;
+			getDirection().y = 1;
 		}
 		
-		body.setLinearVelocity(speed * direction.x * speedMultiplier, speed * direction.y * speedMultiplier);
+		getBody().setLinearVelocity(speed * getDirection().x * speedMultiplier, speed * getDirection().y * speedMultiplier);
 	}
 	
 	public void setMove(int direction, boolean moving) {
@@ -151,7 +151,7 @@ public class Character extends Entity{
 		}
 		
 		//suono dei passi
-		if(!body.getLinearVelocity().isZero()) {
+		if(!getBody().getLinearVelocity().isZero()) {
 			stepElapsed += deltaTime;
 			if (stepElapsed >= stepTimer) {
 				stepElapsed = 0;
@@ -181,7 +181,7 @@ public class Character extends Entity{
 			currentHealth -= (damage * getDamageMultiplier());
 			invincible = true;
 			SoundHandler.getInstance().addSoundToQueue(SoundConstants.PLAYER_HIT);
-			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, radius, radius);
+			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.HIT, getRadius() * 2, getRadius() * 2);
 		}
 	}
 	
@@ -200,8 +200,8 @@ public class Character extends Entity{
 
 	public void recoverHealth(float healthRecovered) {
 		
-		if(currentHealth + healthRecovered >= maxHealth)
-			currentHealth = maxHealth;
+		if(currentHealth + healthRecovered >= getMaxHealth())
+			currentHealth = getMaxHealth();
 		
 		else
 			currentHealth += healthRecovered;
@@ -210,8 +210,8 @@ public class Character extends Entity{
 	
 	public void recoverMana(float manaRecovered) {
 		
-		if(currentMana + manaRecovered >= manaPool)
-			currentMana = manaPool;
+		if(currentMana + manaRecovered >= getManaPool())
+			currentMana = getManaPool();
 		
 		else
 			currentMana += manaRecovered;
@@ -285,7 +285,8 @@ public class Character extends Entity{
 			case PowerUpsConstants.MAGIC_COOLDOWN_POWERUP:
 				magicCooldownMultiplier /= 2;
 				firstMagic.setCooldownMultiplier(magicCooldownMultiplier);
-				secondMagic.setCooldownMultiplier(magicCooldownMultiplier);
+				if(secondMagic != null)
+					secondMagic.setCooldownMultiplier(magicCooldownMultiplier);
 				break;
 					
 			case PowerUpsConstants.INVINCIBILITY_POWERUP:
@@ -316,7 +317,8 @@ public class Character extends Entity{
 		case PowerUpsConstants.MAGIC_COOLDOWN_POWERUP:
 			magicCooldownMultiplier *= 2;
 			firstMagic.setCooldownMultiplier(magicCooldownMultiplier);
-			secondMagic.setCooldownMultiplier(magicCooldownMultiplier);
+			if(secondMagic != null)
+				secondMagic.setCooldownMultiplier(magicCooldownMultiplier);
 			break;
 			
 		case PowerUpsConstants.INVINCIBILITY_POWERUP:
@@ -328,7 +330,7 @@ public class Character extends Entity{
 	}
 	
 	public int getCurrentAnimationId() {
-		if(body.getLinearVelocity().isZero()) {
+		if(getBody().getLinearVelocity().isZero()) {
 			if(invincible)
 				return AnimationConstants.KNIGHT_INVINCIBLE_IDLE_ANIMATION;
 			return AnimationConstants.KNIGHT_IDLE_ANIMATION;
@@ -346,17 +348,17 @@ public class Character extends Entity{
 
 	@Override
 	public Vector2 getAnimationPosition() {
-		return body.getPosition();
+		return getBody().getPosition();
 	}
 
 	@Override
 	public float getAnimationWidth() {
-		return radius * 2;
+		return getRadius() * 2;
 	}
 
 	@Override
 	public float getAnimationHeigth() {
-		return radius * 2;
+		return getRadius() * 2;
 	}
 
 	@Override
@@ -372,7 +374,7 @@ public class Character extends Entity{
 	public void collidesWith(Collidable coll) {}
 	
 	public void stopMoving() {
-		body.setLinearVelocity(0f, 0f);
+		getBody().setLinearVelocity(0f, 0f);
 	}
 	
 }

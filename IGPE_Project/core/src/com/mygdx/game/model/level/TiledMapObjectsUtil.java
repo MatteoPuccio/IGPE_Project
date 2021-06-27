@@ -36,35 +36,34 @@ import com.mygdx.game.model.entities.Slime;
 public class TiledMapObjectsUtil {
 /**
  * I layer presenti nella tilemap sono:
- * navigation: un insieme di tile di due tipi, usato per la generazione dei movimenti dell'intelligenza artificiale dei nemici
+ * navigation: un insieme di tile di due tipi, usato per il pathfinding dei nemici
  * Gates: oggetti che rappresentano le uscite delle varie stanze
  * SpawnPoints: oggetti che indicano la posizione in cui il personaggio si deve trovare quando entra nella stanza da un certo gate
  * Collisions: i confini della mappa di una stanza
  * Enemies: i punti di spawn per i nemici
- * Void: le aree vuote di una mappa dove gli Entity e i Pickup non dovrebbero passare
+ * Void: le aree vuote di una mappa dove gli le Entity (tranne le flying creatures) e i Pickup non dovrebbero passare
  * Treasure: oggetti che indicano la posizione delle casse che contengono i powerup del gioco
  */
 	
-//	Returna il layer di navigazione dal layer "navigation" di una tilemap
 	public static NavigationTiledMapLayer getNavigationTiledMapLayer(TiledMap tilemap) {
 		NavigationTiledMapLayer navigationLayer = (NavigationTiledMapLayer) tilemap.getLayers().get("navigation");
 		return navigationLayer;
 	}
 
-//	Trasforma gli oggetti del layer "Gates" e "SpawnPoints" in oggetti della classe Gate, così da poter essere utilizzati 
-//	per creare la classe Room relativa alla TiledMap
+//	Crea gli oggetti Gate da inserire all'interno di ciascuna stanza
 	public static Array<Gate> parseGates(TiledMap tilemap) {
 		MapObjects gatesObjects = tilemap.getLayers().get("Gates").getObjects();
 		Array<Gate> gates = new Array<Gate>();
 		MapLayer spawnLayers = tilemap.getLayers().get("SpawnPoints");
 		spawnLayers.setVisible(false);
 		MapObjects spawnPoints = spawnLayers.getObjects();
-		for(MapObject object : gatesObjects)
-		{
+		for(MapObject object : gatesObjects) {
 			Shape shape = null;
 			if(object instanceof PolygonMapObject)
 				shape = createPolygon((PolygonMapObject) object);
 			
+			
+			//In base al nome dato ai gates nella tile map si risale alla loro direzione
 			String objectName = object.getName();
 			int direction = 0;
 			switch (objectName) {
@@ -84,14 +83,17 @@ public class TiledMapObjectsUtil {
 				direction = Gate.END;
 				break;
 			}
+			
 			Vector2 spawnPosition = new Vector2();
-			for(MapObject spawn:spawnPoints) {
+			for(MapObject spawn : spawnPoints) {
 				if(spawn instanceof TiledMapTileMapObject) {
 					TiledMapTileMapObject spawnTile = (TiledMapTileMapObject) spawn;
 					TiledMapTile tile = spawnTile.getTile();
+					
+					//Nella tilemap gli spawnpoints hanno una custom property "spawnpoint" per capire a quale gate appartengono
 					if(((String) tile.getProperties().get("spawnpoint")).equals(objectName)) {
-						spawnPosition.x = spawnTile.getX()/Settings.PPM + 0.5f;
-						spawnPosition.y = spawnTile.getY()/Settings.PPM + 0.5f;
+						spawnPosition.x = spawnTile.getX() / Settings.PPM + 0.5f;	//+0.5f piazza gli spawnpoint al centro di una casella anzichè in basso a sinistra
+						spawnPosition.y = spawnTile.getY() / Settings.PPM + 0.5f;
 					}
 				}
 			}
@@ -100,7 +102,7 @@ public class TiledMapObjectsUtil {
 		return gates;
 	}
 
-//	Trasforma gli oggetti del layer "Collisions" in un Body di Box2D di tipo Static
+//	Crea gli oggetti Solid da inserire in ciascuna stanza
 	public static Array<Solid> parseSolid(TiledMap tilemap) {
 		MapObjects solidObjects = tilemap.getLayers().get("Collisions").getObjects();
 		Array<Solid> solids = new Array<Solid>();
@@ -116,23 +118,29 @@ public class TiledMapObjectsUtil {
 		return solids;
 	}
 
-//	Trasforma gli oggetti del layer "Enemies" in oggetti di tipo Enemy, categorizzandoli in base alla tile dell'oggetto usata
+//	Crea gli oggetti Enemy da inserire in ciascuna stanza
 	public static Array<Enemy> parseEnemies(TiledMap tilemap, Room home){
 		Array<Enemy> enemies = new Array<Enemy>();
 		
 		MapLayer enemiesLayer = tilemap.getLayers().get("Enemies");
+		
+		//Non tutte le stanze contengono nemici
 		if(enemiesLayer == null)
 			return enemies;
+		
 		enemiesLayer.setVisible(false);
+		
 		MapObjects enemiesObjects = enemiesLayer.getObjects();
 		
 		for(MapObject object : enemiesObjects) {
 			if(object instanceof TiledMapTileMapObject) {
 				TiledMapTileMapObject tileObject = (TiledMapTileMapObject) object;
 				TiledMapTile tile = tileObject.getTile();
+				
+				//Nella tilemap gli enemies hanno una custom property "type" per capire il tipo di nemico
 				switch ((String) tile.getProperties().get("type")) {
 				case "slime":
-					enemies.add(new Slime(new Vector2(tileObject.getX() / Settings.PPM + 0.5f, tileObject.getY() / Settings.PPM + 0.5f), home));
+					enemies.add(new Slime(new Vector2(tileObject.getX() / Settings.PPM + 0.5f, tileObject.getY() / Settings.PPM + 0.5f), home));	//+0.5f piazza i nemici al centro di una casella anzichè in basso a sinistra
 					break;
 				case "flying creature":
 					enemies.add(new FlyingCreature(new Vector2(tileObject.getX() / Settings.PPM + 0.5f, tileObject.getY() / Settings.PPM + 0.5f), home));
@@ -148,7 +156,7 @@ public class TiledMapObjectsUtil {
 		return enemies;
 	}
 	
-//	Trasforma gli oggetti del layer "Void" in oggetti di tipo Hole (dei Body che permettono ai Bullet di essere oltrepassati)
+//	Crea gli oggetti Hole da inserire in ciascuna stanza
 	public static Array<Hole> parseHoles(TiledMap tilemap) {
 		MapObjects holeObjects = tilemap.getLayers().get("Void").getObjects();
 		Array<Hole> holes = new Array<Hole>();
@@ -164,7 +172,7 @@ public class TiledMapObjectsUtil {
 		return holes;
 	}
 	
-//	Trasforma gli oggetti del layer "Treasure" in oggetti TreasureChest
+//	Crea gli oggetti TreasureChest da inserire in ciascuna stanza
 	public static Array<TreasureChest> parseTreasureChests(TiledMap tilemap){
 		
 		Array<TreasureChest> treasureChests = new Array<TreasureChest>();
@@ -178,7 +186,7 @@ public class TiledMapObjectsUtil {
 		for(MapObject object : treasureObjects) {
 			if(object instanceof TiledMapTileMapObject) {
 				TiledMapTileMapObject tileObject = (TiledMapTileMapObject) object;
-				treasureChests.add(new TreasureChest(new Vector2(tileObject.getX() / Settings.PPM + 0.5f, tileObject.getY() / Settings.PPM + 0.5f)));
+				treasureChests.add(new TreasureChest(new Vector2(tileObject.getX() / Settings.PPM + 0.5f, tileObject.getY() / Settings.PPM + 0.5f)));	//+0.5f piazza le treasure chests al centro di una casella anzichè in basso a sinistra
 				treasureChests.get(treasureChests.size - 1).getBody().setActive(false);
 			}
 		}
@@ -191,10 +199,13 @@ public class TiledMapObjectsUtil {
 //	della tilemap ma applicandole alle dimensioni del World
 	private static ChainShape createPolygon(PolygonMapObject polygon) {
 		
+		//Nella tilemap una coppia di vertici rappresenta una linea, perciò per ogni due linee continue il secondo vertice della prima appare un'altra volta
+		//come primo vertice della seconda.
+		//getTransformedVertices() restituisce i vertici eliminando questa proprietà
 		float[] vertices = polygon.getPolygon().getTransformedVertices();
+		
 		Vector2[] worldVertices = new Vector2[vertices.length / 2];
-		for(int i=0;i<worldVertices.length;++i)
-		{
+		for(int i=0;i<worldVertices.length;++i) {
 			worldVertices[i] = new Vector2(vertices[i * 2] / Settings.PPM, vertices[i * 2 + 1] / Settings.PPM);
 		}
 		ChainShape cs = new ChainShape();
@@ -204,7 +215,6 @@ public class TiledMapObjectsUtil {
 		
 	}
 
-//	Basandosi sulla ChainShape di createPolygon(), viene creato un Body statico per Box2D da aggiungere al World
 	private static Body createBody(Shape shape, boolean isSensor) {
 		Body body;
 		BodyDef bDef = new BodyDef();

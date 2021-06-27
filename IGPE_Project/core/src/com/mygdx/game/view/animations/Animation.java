@@ -6,12 +6,14 @@ import com.badlogic.gdx.utils.Array;
 
 public class Animation {
 	private Texture spriteSheet;
+	//Dove verranno inseriti i frame della spritesheet una volta tagliati
 	protected Array<TextureRegion> frames;
 	protected float maxFrameTime;
 	protected float currentFrameTime;
 	protected int frameCount;
 	protected int frame;
 	
+	//internalPath è il path ad una spritesheet monodimensionale
 	public Animation(String internalPath,int frameCount, float cycleTime) {
 		
 		spriteSheet = new Texture(internalPath);

@@ -20,6 +20,7 @@ public class PauseScreen extends DefaultScreen{
 	private Label optionsLabel,volumeLabel, musicLabel;
 	private final Slider volumeSlider, musicSlider;
 	private TextButton backButton, menuButton;
+	private boolean fullscreen;
 	
 	public PauseScreen() {
 		
@@ -29,14 +30,14 @@ public class PauseScreen extends DefaultScreen{
         volumeLabel = new Label("Sound Effects Volume", new LabelStyle(generalFont, Color.BLACK));
         musicLabel = new Label("Ambience Volume", new LabelStyle(generalFont, Color.BLACK));
         
-        optionsLabel.setColor(new Color(Color.BLACK));
-        volumeLabel.setColor(new Color(Color.BLACK));
-        musicLabel.setColor(new Color(Color.BLACK));
-        
         volumeSlider = new Slider(0f, 1f, 0.01f, false, skin);
         musicSlider = new Slider(0f, 1f, 0.01f, false, skin);
         backButton = new TextButton("BACK", skin);
         menuButton = new TextButton("MENU", skin);
+        
+        fullscreen = false;
+        if(Settings.getDisplayState() == Settings.FULLSCREEN)
+        	fullscreen = true;
         
         backButton.addListener(new ClickListener() {
         	@Override
@@ -87,9 +88,11 @@ public class PauseScreen extends DefaultScreen{
 
 	@Override
 	protected void initMainTable() {
-		mainTable.setTransform(true);
-	    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
-	    mainTable.setScale(2);
+		if(!fullscreen) {
+			mainTable.setTransform(true);
+		    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
+		    mainTable.setScale(1.5f);
+		}
 		
         volumeSlider.setVisualPercent(Settings.getVolume());
         musicSlider.setVisualPercent(Settings.getMusicVolume());

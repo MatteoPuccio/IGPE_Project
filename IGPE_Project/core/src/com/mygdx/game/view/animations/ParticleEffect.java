@@ -2,6 +2,7 @@ package com.mygdx.game.view.animations;
 
 import com.badlogic.gdx.math.Vector2;
 
+//Un'animazione particolare che deve essere riprodotta una sola volta
 public class ParticleEffect extends Animation {
 
 	private boolean donePlaying;
@@ -35,11 +36,13 @@ public class ParticleEffect extends Animation {
 				++frame;
 				currentFrameTime = 0;
 			}
+			//Non looppa
 			if(frame == frameCount)
 				donePlaying = true;
 		}
 	}
 	
+	//Permette alla view di capire quando smettere di riprodurre questo particle effect
 	public boolean isDonePlaying() {
 		return donePlaying;
 	}

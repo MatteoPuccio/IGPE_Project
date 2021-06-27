@@ -11,6 +11,7 @@ import com.mygdx.game.model.ai.SteeringUtils;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.view.animations.Animated;
 
+//Ogni Bullet cambia a seconda della Magic da cui è stato generato, perciò fa riferimento a molti metodi del parent
 public class Bullet implements Animated, Collidable {
 	
 	private Magic parent;
@@ -40,6 +41,7 @@ public class Bullet implements Animated, Collidable {
 		
 		body.setUserData(this);
 		
+		//Fa partire il proiettile
 		body.setLinearVelocity(this.direction.scl(parent.getSpeed()));
 		
 		circle.dispose();
@@ -88,6 +90,7 @@ public class Bullet implements Animated, Collidable {
 
 	@Override
 	public float getRotation() {
+		//Serve per alcuni proiettili la cui animazione ha un lato che deve puntare verso i nemici
 		return (float) Math.toDegrees(SteeringUtils.vectorToAngle(new Vector2(-direction.x, -direction.y)));
 	}
 	

@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GameMain;
+import com.mygdx.game.constants.Settings;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.SoundHandler;
 
@@ -14,6 +15,7 @@ public class DeathScreen extends DefaultScreen{
 	
 	private Label deathLabel;
 	private TextButton backButton, quitButton;
+	private boolean fullscreen;
 	
 	public DeathScreen() {
 		super(0.259f, 0.157f, 0.208f);
@@ -22,6 +24,10 @@ public class DeathScreen extends DefaultScreen{
                 
         backButton = new TextButton("TITLE SCREEN", skin);
         quitButton = new TextButton("QUIT", skin);
+       
+        fullscreen = false;
+        if(Settings.getDisplayState() == Settings.FULLSCREEN)
+        	fullscreen = true;
         
         backButton.addListener(new ClickListener() {
         	@Override
@@ -43,9 +49,11 @@ public class DeathScreen extends DefaultScreen{
 
 	@Override
 	protected void initMainTable() {
-		mainTable.setTransform(true);
-	    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
-	    mainTable.setScale(2);
+		if(!fullscreen) {
+			mainTable.setTransform(true);
+		    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
+		    mainTable.setScale(1.5f);
+		}
 		
 		mainTable.add(deathLabel);
         mainTable.row();

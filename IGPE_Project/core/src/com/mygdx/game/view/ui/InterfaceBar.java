@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+//Le barre di mana e di salute dell'interfaccia
 public class InterfaceBar {
 	private Texture background,foreground,icon;
 	
@@ -32,21 +33,19 @@ public class InterfaceBar {
 	     batchUI.draw(icon, position.x + background.getWidth()/2 - icon.getWidth() /2, (barPosition.y + position.y) / 2, icon.getWidth() ,icon.getHeight());
 	}
 	
-	public void setPercentage(float percentage)
-	{
-		//setta la larghezza della barra in base alla percentuale fornita
+	public void setPercentage(float percentage) {
+		//Setta la larghezza della barra in base alla percentuale fornita per creare l'illusione
+		//di una barra che si riempie
 		barFilled.setRegionWidth((int)(maxWidth * percentage));
 	}
 
-	public void dispose()
-	{
+	public void dispose() {
 		background.dispose();
 		foreground.dispose();
 		icon.dispose();
 	}
 
-	public void update(float percentage)
-	{
+	public void update(float percentage) {
 		setPercentage(percentage);
 	}
 

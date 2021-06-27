@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
+//Le box dell'interfaccia contenenti le immagini delle magie equipaggiate
 public class EquippedMagic {
 
 	private Texture background;

@@ -3,8 +3,7 @@ package com.mygdx.game.view.ui;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.model.GameModel;
 
-public class UserInterface 
-{	
+public class UserInterface {	
 	private InterfaceBar manaBar,healthBar;
 	private EquippedMagic firstEquippedMagic, secondEquippedMagic;
 	private ScoreLabel coinsLabel, floorLabel;

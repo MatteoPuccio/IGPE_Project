@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.GameMain;
+import com.mygdx.game.constants.Settings;
 import com.mygdx.game.model.GameModel;
 
 //prompt per quando si hanno due magie  che permette di scegliere quale tenere
@@ -34,6 +35,8 @@ public class MagicChangeScreen extends DefaultScreen {
 	private GameView gameView;
 	private Viewport gamePort;
 	
+	private boolean fullscreen;
+	
 	private Texture background;
 	
 	public MagicChangeScreen(GameView gameView) {
@@ -46,13 +49,19 @@ public class MagicChangeScreen extends DefaultScreen {
 		gamePort = gameView.getGamePort();
 		
 		background = new Texture("UI/magic_change_screen_background.png");
+		
+		fullscreen = false;
+		if(Settings.getDisplayState() == Settings.FULLSCREEN)
+			fullscreen = true;
 	}
 
 	@Override
 	protected void initMainTable() {
-		mainTable.setTransform(true);
-	    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
-	    mainTable.setScale(2);
+		if(!fullscreen) {
+			mainTable.setTransform(true);
+		    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
+		    mainTable.setScale(1.5f);
+		}
 		
 		newMagic = new Image(gameView.getAnimationFrame(newMagicId));
 		

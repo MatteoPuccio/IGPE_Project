@@ -12,6 +12,7 @@ public class FireMagic extends Magic {
 		super(1, 0.5f, 10, 0.1f, 4, owner);
 	}
 	
+	//Crea tre proiettili con angolazioni diverse contemporaneamente anziché uno solo
 	@Override
 	protected void createBullet() {
 		Vector2 position = new Vector2(owner.getPosition());

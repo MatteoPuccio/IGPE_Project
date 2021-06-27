@@ -24,6 +24,7 @@ public class AStarUtils {
 		Vector2 closestPossiblePosition = new Vector2(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
 		
 		for(Vector2 possiblePosition : possiblePositions) {
+
 			if(Vector2.dst2(playerX, playerY, possiblePosition.x, possiblePosition.y) < Vector2.dst2(playerX, playerY, closestPossiblePosition.x, closestPossiblePosition.y) && !EnemiesHandler.isPositionOccupied(possiblePosition))
 				closestPossiblePosition = possiblePosition;
 		}

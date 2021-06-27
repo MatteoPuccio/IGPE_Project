@@ -49,11 +49,11 @@ public class GameMain extends Game{
 		GameModel.getInstance().reset();
 		controller = new GameController();
 		titleScreen = new TitleScreen();
-		optionsScreen = new OptionsScreen();
 		deathScreen = new DeathScreen();
 		pauseScreen = new PauseScreen();
 		confirmQuitScreen = new ConfirmQuitScreen();
 		magicChangeScreen = new MagicChangeScreen(controller.getView());
+		optionsScreen = new OptionsScreen();
 		
 		//crea e setta cursore per i menu
 		Pixmap pm = new Pixmap(Gdx.files.internal("UI/menu_cursor.png"));
@@ -181,8 +181,8 @@ public class GameMain extends Game{
 	
 	public void restart() {
 		state = ScreenConstants.TITLE_SCREEN;
-		controller.reset();
 		setScreen(titleScreen);
+		controller.reset();
 	}
 
 	public void unpause() {

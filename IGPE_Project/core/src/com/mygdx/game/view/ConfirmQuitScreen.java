@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GameMain;
+import com.mygdx.game.constants.Settings;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.view.audio.Sounds;
@@ -17,6 +18,7 @@ public class ConfirmQuitScreen extends DefaultScreen{
 
 	private Label confirmQuit;
 	private TextButton yesButton, noButton;
+	private boolean fullscreen;
 	
 	public ConfirmQuitScreen() {
 		
@@ -26,6 +28,11 @@ public class ConfirmQuitScreen extends DefaultScreen{
         
         yesButton = new TextButton("YES", skin);
         noButton = new TextButton("NO", skin);
+        
+        fullscreen = false;
+        if(Settings.getDisplayState() == Settings.FULLSCREEN)
+        	fullscreen = true;
+        
         yesButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -47,9 +54,12 @@ public class ConfirmQuitScreen extends DefaultScreen{
 	@Override
 	protected void initMainTable() {
 		//raddoppia dimensione della table
-		mainTable.setTransform(true);
-	    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
-	    mainTable.setScale(2);
+		
+		if(!fullscreen) {
+			mainTable.setTransform(true);
+		    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
+		    mainTable.setScale(1.5f);
+		}
 	    
 		mainTable.add(confirmQuit).colspan(2).top();
 		mainTable.row();

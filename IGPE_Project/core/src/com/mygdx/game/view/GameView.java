@@ -130,6 +130,7 @@ public class GameView implements Screen{
 			ui.getSecondEquippedMagic().draw(batchUI);
 		else
 			ui.getSecondEquippedMagic().draw(animations.get(magic.getRespectivePickupAnimationId()).getFrame().getTexture(), batchUI);
+		
 		ui.getCoinsLabel().draw(batchUI, "" + GameModel.getInstance().getCoins());
 		String prefix;
 		if(GameModel.getInstance().getFloor() != 0)
@@ -206,6 +207,7 @@ public class GameView implements Screen{
 		initParticles();
 	}
 	
+	//a ogni particle effect è associato un id di ParticleEffectConstants
 	private void initParticles() {
 		particleEffects = new ObjectMap<Integer, ParticleEffect>();
 		
@@ -217,6 +219,7 @@ public class GameView implements Screen{
 		activeParticleEffects = new Array<ParticleEffect>(false, 40);
 	}
 	
+	//Anima ogni oggetto che implementa l'interfaccia Animated
 	private void renderAnimations(float deltaTime) {
 		
 		for(TreasureChest t : RoomHandler.getInstance().getCurrentRoom().getTreasureChests())

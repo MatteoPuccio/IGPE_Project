@@ -131,6 +131,20 @@ public class TitleScreen extends DefaultScreen{
 	
 	@Override
 	protected void initMainTable() {
+		
+		Preferences preferences = Gdx.app.getPreferences("Game preferences");
+		
+		if(!preferences.contains("Max Coins"))
+			preferences.putInteger("Max Coins", 0);
+		if(!preferences.contains("Max Floor"))
+			preferences.putInteger("Max Floor", 0);
+		
+		if(GameModel.getInstance().getFloor() > preferences.getInteger("Max Floor"))
+			preferences.putInteger("Max Floor", GameModel.getInstance().getFloor());
+		if(GameModel.getInstance().getCoins() > preferences.getInteger("Max Coins"))
+			preferences.putInteger("Max Coins", GameModel.getInstance().getCoins());
+		preferences.flush();
+		
 		tutorialWindow = new Window("How To Play", skin);
 		tutorialWindow.setVisible(false);
 		tutorialWindow.setMovable(false);
@@ -161,7 +175,6 @@ public class TitleScreen extends DefaultScreen{
         tutorialWindow.row();
         tutorialWindow.add(exitTutorialButton).colspan(2);
 
-        Preferences preferences = Gdx.app.getPreferences("Game preferences");
         maxCoinsLabel.setText("Most coins obtained: " + preferences.getInteger("Max Coins"));
         mainTable.add(maxCoinsLabel).colspan(1);
         mainTable.add(coinImage).colspan(1).size(50).padRight(200);
@@ -173,16 +186,9 @@ public class TitleScreen extends DefaultScreen{
         	prefix = "";
         maxFloorLabel.setText("Lowest floor reached: " + prefix + preferences.getInteger("Max Floor"));
         mainTable.add(floorImage).colspan(1).size(50).padLeft(200);
-        mainTable.add(maxFloorLabel).colspan(1);
+        mainTable.add(maxFloorLabel).colspan(1).padRight(20);
         
         stage.addActor(tutorialWindow);
-        
-		preferences = Gdx.app.getPreferences("Game preferences");
-		if(GameModel.getInstance().getFloor() > preferences.getInteger("Max Floor"))
-			preferences.putInteger("Max Floor", GameModel.getInstance().getFloor());
-		if(GameModel.getInstance().getCoins() > preferences.getInteger("Max Coins"))
-			preferences.putInteger("Max Coins", GameModel.getInstance().getCoins());
-		preferences.flush();
 		
 //		mainTable.debugAll();
 	}

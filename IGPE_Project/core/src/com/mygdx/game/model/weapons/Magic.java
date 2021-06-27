@@ -65,6 +65,7 @@ public abstract class Magic {
 	}
 	
 	protected void createBullet() {
+		//Calcola la direzione in cui si dirige il proiettile
 		Vector2 position = new Vector2(owner.getPosition());
 		Vector2 direction = new Vector2(attackPoint);
 		direction.sub(position);
@@ -81,14 +82,6 @@ public abstract class Magic {
 		return bulletSize;
 	}
 	
-	public float getDamage() {
-		return damage;
-	}
-	
-	public float getCooldown() {
-		return cooldown;
-	}
-	
 	public void setCooldownMultiplier(float multiplier) {
 		cooldownMultiplier = multiplier;
 	}
@@ -97,24 +90,19 @@ public abstract class Magic {
 		this.attackPoint = attackPoint;
 	}
 	
-	public Vector2 getAttackPoint() {
-		return attackPoint;
-	}
-	
 	public void setAttacking(boolean attacking) {
 		this.attacking = attacking;
-	}
-	
-	public boolean isAttacking() {
-		return attacking;
 	}
 	
 	public Entity getOwner() {
 		return owner;
 	}
 
+	//Il metodo chiamato da Bullet quando collide con qualcosa
+	//Permette di ridefinire il comportamento per ogni magia
 	public final void bulletCollidedWith(Collidable coll, Bullet bullet) {
-						
+		
+		
 		if(coll instanceof Enemy) {
 			if(owner instanceof Character) {
 				Enemy temp = (Enemy) coll;
@@ -134,7 +122,9 @@ public abstract class Magic {
 			}
 				
 		}
-			
+		
+		//I proiettili passano sopra agli Hole, Gate, Pickup e altri proiettili se sono stati sparati dallo stesso tipo di Entity
+		//Se due proiettili sparati da tipi di Entities diversi collidono vengono invece entrambi distrutti
 		else if(!(coll instanceof Hole) && !(coll instanceof Gate) && !sameOwner(coll) && !(coll instanceof Pickup)) {
 			BulletHandler.getInstance().removeBullet(bullet);
 			bulletDestroyedEffect(coll, bullet);
@@ -153,9 +143,8 @@ public abstract class Magic {
 		return false;
 	}
 	
-	protected void bulletDestroyedEffect(Collidable coll, Bullet bullet) {
-		
-	}
+	//Permette di definire un comportamento speciale che possono avere i Bullet quando generati da questa magia
+	protected void bulletDestroyedEffect(Collidable coll, Bullet bullet) {}
 	
 	public abstract int getBulletAnimationId();
 	

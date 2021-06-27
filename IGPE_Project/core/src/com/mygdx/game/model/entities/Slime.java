@@ -7,6 +7,7 @@ import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.level.Room;
 import com.mygdx.game.model.weapons.SlimeMagic;
 
+//Lo slime attacca il giocatore da lontano con dei proiettili
 public class Slime extends Enemy {
 
 	private SlimeMagic slimeMagic;
@@ -22,6 +23,7 @@ public class Slime extends Enemy {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		
+		//Lo slime attacca continuamente nella direzione del giocatore
 		slimeMagic.setAttackPoint(GameModel.getInstance().getCharacter().getPosition());
 		slimeMagic.update(deltaTime);
 	}
@@ -37,9 +39,6 @@ public class Slime extends Enemy {
 	}
 
 	@Override
-	public void collidesWith(Collidable coll) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void collidesWith(Collidable coll) {}
 
 }

@@ -18,26 +18,26 @@ import com.mygdx.game.view.animations.Animated;
 //Un entity è qualsiasi oggetto rappresenti un essere vivente
 public abstract class Entity implements Animated, Steerable<Vector2>, Collidable {
 
-	protected Vector2 direction;
+	private Vector2 direction;
 	
-	protected float maxHealth;
+	private float maxHealth;
 	protected float currentHealth;
 
-	protected Body body;
-	protected float radius;
+	private Body body;
+	private float radius;
 	
-	protected int manaPool;
+	private int manaPool;
 	protected float currentMana;
 	protected float manaRechargeMultiplier;
 	
 	protected boolean flippedX;
 	
-	protected float maxLinearSpeed, maxLinearAcceleration;
+	private float maxLinearSpeed, maxLinearAcceleration;
 	
 	protected SteeringBehavior<Vector2> behavior;
-	protected SteeringAcceleration<Vector2> steerOutput;
+	private SteeringAcceleration<Vector2> steerOutput;
 	
-	protected boolean tagged;
+	private boolean tagged;
 	
 	public Entity(Vector2 position, float radius, boolean isSensor, int manaPool, int maxHealth, float manaRechargeMultiplier) {
 		this.radius = radius;
@@ -84,26 +84,6 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 		return b;
 	}
 	
-	public Vector2 getPosition() {
-		return body.getPosition();
-	}
-	
-	public Body getBody() {
-		return body;
-	}
-	
-	public float getRadius() {
-		return radius;
-	}
-	
-	public float getCurrentMana() {
-		return currentMana;
-	}
-	
-	public void useMana(float usedMana) {
-		currentMana -= usedMana;
-	}
-	
 	public void update(float deltaTime) {
 		if(behavior != null) {
 			behavior.calculateSteering(steerOutput);
@@ -113,7 +93,7 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 		rechargeMana(deltaTime);
 	}
 	
-	protected void applySteering(float deltaTime) {
+	private void applySteering(float deltaTime) {
 		
 		if(!steerOutput.linear.isZero()) {
 			Vector2 force = steerOutput.linear.scl(deltaTime);
@@ -127,12 +107,45 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 		}
 	}
 	
+	public void useMana(float usedMana) {
+		currentMana -= usedMana;
+	}
+	
 	private void rechargeMana(float deltaTime) {
 		if(currentMana + deltaTime * manaRechargeMultiplier <= manaPool)
 			currentMana += deltaTime * manaRechargeMultiplier;
 		else
 			currentMana = manaPool;
 	}
+	
+	public Vector2 getDirection() {
+		return direction;
+	}
+	
+	public float getMaxHealth() {
+		return maxHealth;
+	}
+	
+	public Vector2 getPosition() {
+		return body.getPosition();
+	}
+	
+	public Body getBody() {
+		return body;
+	}
+	
+	public float getRadius() {
+		return radius;
+	}
+	
+	public int getManaPool() {
+		return manaPool;
+	}
+	
+	public float getCurrentMana() {
+		return currentMana;
+	}
+	
 	
 	public float getManaPercentage() {
 		return (float)(currentMana / manaPool);
@@ -199,61 +212,31 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 	}
 	
 	@Override
-	public float getOrientation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public float getOrientation() {return 0;}
 
 	@Override
-	public void setOrientation(float orientation) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setOrientation(float orientation) {}
 	
 	@Override
-	public float getAngularVelocity() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public float getAngularVelocity() {return 0;}
 	@Override
-	public float getMaxAngularSpeed() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public float getMaxAngularSpeed() {return 0;}
 
 	@Override
-	public void setMaxAngularSpeed(float maxAngularSpeed) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setMaxAngularSpeed(float maxAngularSpeed) {}
 
 	@Override
-	public float getMaxAngularAcceleration() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public float getMaxAngularAcceleration() {return 0;}
 
 	@Override
-	public void setMaxAngularAcceleration(float maxAngularAcceleration) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setMaxAngularAcceleration(float maxAngularAcceleration) {}
 	
 	@Override
-	public Location<Vector2> newLocation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Location<Vector2> newLocation() {return null;}
 
 	@Override
-	public float getZeroLinearSpeedThreshold() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public float getZeroLinearSpeedThreshold() {return 0;}
 
 	@Override
-	public void setZeroLinearSpeedThreshold(float value) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setZeroLinearSpeedThreshold(float value) {}
 }

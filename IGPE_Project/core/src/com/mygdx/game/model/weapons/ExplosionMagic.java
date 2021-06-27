@@ -39,6 +39,8 @@ public class ExplosionMagic extends Magic {
 		explode(bullet.getPosition());
 	}
 
+	//Crea un aoe che danneggia tutti i nemici all'interno quando il proiettile generato da questa magia viene distrutto
+	//Se il personaggio si trova all'interno di questa area subisce anche lui un danno, seppur ridotto
 	private void explode(Vector2 center) {
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.EXPLOSION);
 		Circle c1 = new Circle(center,explosionRadius);

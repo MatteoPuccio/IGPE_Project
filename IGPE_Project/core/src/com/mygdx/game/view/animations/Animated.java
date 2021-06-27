@@ -2,6 +2,7 @@ package com.mygdx.game.view.animations;
 
 import com.badlogic.gdx.math.Vector2;
 
+//Un'interfaccia che ogni oggetto che ha un'animazione deve implementare
 public interface Animated {
 	
 	public int getCurrentAnimationId();
