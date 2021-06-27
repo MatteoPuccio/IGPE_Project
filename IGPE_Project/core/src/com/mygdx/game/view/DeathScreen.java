@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GameMain;
+import com.mygdx.game.constants.SoundConstants;
+import com.mygdx.game.view.audio.SoundHandler;
 
 public class DeathScreen extends DefaultScreen{
 	
