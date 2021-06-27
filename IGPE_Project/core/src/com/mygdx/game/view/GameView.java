@@ -15,19 +15,16 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.constants.Settings;
-import com.mygdx.game.model.Animated;
+import com.mygdx.game.controller.ParticleHandler;
+import com.mygdx.game.controller.ParticleHandler.Particle;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.ParticleHandler;
-import com.mygdx.game.model.ParticleHandler.Particle;
 import com.mygdx.game.model.collisions.TreasureChest;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
@@ -35,9 +32,9 @@ import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.model.pickups.Pickup;
 import com.mygdx.game.model.weapons.Bullet;
 import com.mygdx.game.model.weapons.BulletHandler;
+import com.mygdx.game.view.animations.Animated;
 import com.mygdx.game.view.animations.Animation;
 import com.mygdx.game.view.animations.ParticleEffect;
-import com.mygdx.game.view.audio.Sounds;
 import com.mygdx.game.view.ui.InterfaceBar;
 import com.mygdx.game.view.ui.UserInterface;
 
@@ -180,21 +177,21 @@ public class GameView implements Screen{
 		animations.put(AnimationConstants.FLYING_CREATURE_FLYING_ANIMATION, new Animation("animations/fly_anim_spritesheet.png", 4, 0.5f));
 		animations.put(AnimationConstants.SLIME_IDLE_ANIMATION, new Animation("animations/slime_idle_spritesheet.png",6, 0.5f));
 		
-		animations.put(AnimationConstants.HEALTH_POTION_ANIMATION, new Animation("health_potion.png",1,1));
-		animations.put(AnimationConstants.COIN_ANIMATION, new Animation("coin.png",1,1));
-		animations.put(AnimationConstants.COIN_BAG_ANIMATION, new Animation("coin_bag.png",1,1));
-		animations.put(AnimationConstants.MANA_RECHARGE_POWERUP_ANIMATION,new Animation("mana_recharge_powerup.png",1,1));
-		animations.put(AnimationConstants.SPEED_POWERUP_ANIMATION, new Animation("speed_powerup.png",1,1));
-		animations.put(AnimationConstants.INVINCIBILITY_POWERUP_ANIMATION, new Animation("invincibility_powerup.png",1,1));
-		animations.put(AnimationConstants.MAGIC_COOLDOWN_POWERUP_ANIMATION, new Animation("magic_cooldown_powerup.png",1,1));
-		animations.put(AnimationConstants.FIRE_MAGIC_ANIMATION, new Animation("fire_magic.png",1,1));
-		animations.put(AnimationConstants.LIGHTNING_MAGIC_ANIMATION, new Animation("lightning_magic.png",1,1));
-		animations.put(AnimationConstants.ROCK_MAGIC_ANIMATION, new Animation("rock_magic.png", 1, 1));
-		animations.put(AnimationConstants.EXPLOSION_MAGIC_ANIMATION, new Animation("explosion_magic.png",1,1));
-		animations.put(AnimationConstants.WATER_MAGIC_ANIMATION, new Animation("water_magic.png",1,1));
+		animations.put(AnimationConstants.HEALTH_POTION_ANIMATION, new Animation("images/health_potion.png",1,1));
+		animations.put(AnimationConstants.COIN_ANIMATION, new Animation("images/coin.png",1,1));
+		animations.put(AnimationConstants.COIN_BAG_ANIMATION, new Animation("images/coin_bag.png",1,1));
+		animations.put(AnimationConstants.MANA_RECHARGE_POWERUP_ANIMATION,new Animation("images/mana_recharge_powerup.png",1,1));
+		animations.put(AnimationConstants.SPEED_POWERUP_ANIMATION, new Animation("images/speed_powerup.png",1,1));
+		animations.put(AnimationConstants.INVINCIBILITY_POWERUP_ANIMATION, new Animation("images/invincibility_powerup.png",1,1));
+		animations.put(AnimationConstants.MAGIC_COOLDOWN_POWERUP_ANIMATION, new Animation("images/magic_cooldown_powerup.png",1,1));
+		animations.put(AnimationConstants.FIRE_MAGIC_ANIMATION, new Animation("images/fire_magic.png",1,1));
+		animations.put(AnimationConstants.LIGHTNING_MAGIC_ANIMATION, new Animation("images/lightning_magic.png",1,1));
+		animations.put(AnimationConstants.ROCK_MAGIC_ANIMATION, new Animation("images/rock_magic.png", 1, 1));
+		animations.put(AnimationConstants.EXPLOSION_MAGIC_ANIMATION, new Animation("images/explosion_magic.png",1,1));
+		animations.put(AnimationConstants.WATER_MAGIC_ANIMATION, new Animation("images/water_magic.png",1,1));
 		
 		animations.put(AnimationConstants.CHEST_CLOSED_ANIMATION, new Animation("animations/chest_closed_spritesheet.png",8,1));
-		animations.put(AnimationConstants.CHEST_OPEN_ANIMATION, new Animation("chest_open.png",1,1));
+		animations.put(AnimationConstants.CHEST_OPEN_ANIMATION, new Animation("images/chest_open.png",1,1));
 		
 		
 		initParticles();

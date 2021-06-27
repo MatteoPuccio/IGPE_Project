@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.SoundConstants;
-import com.mygdx.game.view.audio.SoundHandler;
+import com.mygdx.game.controller.SoundHandler;
 
 public class DeathScreen extends DefaultScreen{
 	
@@ -38,31 +38,6 @@ public class DeathScreen extends DefaultScreen{
         	}
         });
         stage = new Stage(viewport, batch);
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void hide() {
-		mainTable.clear();
-		stage.dispose();
-	}
-
-	@Override
-	public void dispose() {
-		atlas.dispose();
-		batch.dispose();
-		stage.dispose();
 	}
 
 	@Override

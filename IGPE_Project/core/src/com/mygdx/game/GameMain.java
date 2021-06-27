@@ -2,12 +2,9 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.mygdx.game.constants.ScreenConstants;
-import com.mygdx.game.constants.Settings;
-import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.view.ConfirmQuitScreen;
@@ -16,7 +13,6 @@ import com.mygdx.game.view.MagicChangeScreen;
 import com.mygdx.game.view.OptionsScreen;
 import com.mygdx.game.view.PauseScreen;
 import com.mygdx.game.view.TitleScreen;
-import com.mygdx.game.view.audio.SoundHandler;
 import com.mygdx.game.view.audio.Sounds;
 
 public class GameMain extends Game{

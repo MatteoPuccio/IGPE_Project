@@ -7,13 +7,13 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.constants.SoundConstants;
+import com.mygdx.game.controller.ParticleHandler;
+import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
 import com.mygdx.game.model.entities.Entity;
-import com.mygdx.game.view.audio.SoundHandler;
 
 //Konosuba reference
 public class ExplosionMagic extends Magic {

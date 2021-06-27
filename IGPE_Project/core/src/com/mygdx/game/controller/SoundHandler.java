@@ -1,4 +1,4 @@
-package com.mygdx.game.view.audio;
+package com.mygdx.game.controller;
 
 import com.badlogic.gdx.utils.Array;
 

@@ -6,10 +6,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ai.SteeringUtils;
 import com.mygdx.game.model.collisions.Collidable;
+import com.mygdx.game.view.animations.Animated;
 
 public class Bullet implements Animated, Collidable {
 	

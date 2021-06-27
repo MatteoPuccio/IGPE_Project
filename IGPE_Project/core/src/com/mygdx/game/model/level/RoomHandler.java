@@ -1,9 +1,9 @@
 package com.mygdx.game.model.level;
 
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.model.ParticleHandler;
+import com.mygdx.game.controller.ParticleHandler;
+import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.model.weapons.BulletHandler;
-import com.mygdx.game.view.audio.SoundHandler;
 
 public class RoomHandler {
 

@@ -3,10 +3,10 @@ package com.mygdx.game.model.entities;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.constants.SoundConstants;
+import com.mygdx.game.controller.ParticleHandler;
+import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.ParticleHandler;
 import com.mygdx.game.model.level.Room;
-import com.mygdx.game.view.audio.SoundHandler;
 
 public abstract class Enemy extends Entity {
 	

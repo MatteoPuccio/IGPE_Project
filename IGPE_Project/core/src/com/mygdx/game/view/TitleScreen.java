@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.SoundConstants;
+import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.view.animations.Animation;
-import com.mygdx.game.view.audio.SoundHandler;
 
 public class TitleScreen extends DefaultScreen{
 
@@ -114,20 +114,6 @@ public class TitleScreen extends DefaultScreen{
 		titleScreenAnimation.update(delta);
 	    batch.draw(titleScreenAnimation.getFrame(), 0,0);
 	    batch.end();
-	}
-	
-	
-	
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

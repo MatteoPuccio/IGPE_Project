@@ -1,7 +1,6 @@
 package com.mygdx.game.view;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -10,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.SoundConstants;
-import com.mygdx.game.view.audio.SoundHandler;
+import com.mygdx.game.controller.SoundHandler;
 
 public class ConfirmQuitScreen extends DefaultScreen{
 
@@ -54,26 +53,6 @@ public class ConfirmQuitScreen extends DefaultScreen{
 		mainTable.add(yesButton);
 		mainTable.add(noButton);
 	}
-	
-	@Override
-	public void resize(int width, int height) {
-		viewport.update(width, height);
-		viewport.apply();
-		Gdx.input.setInputProcessor(stage);
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
 	
 }
