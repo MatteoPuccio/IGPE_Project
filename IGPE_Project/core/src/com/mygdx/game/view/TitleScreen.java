@@ -60,8 +60,6 @@ public class TitleScreen extends DefaultScreen{
 	    tutorialButton = new TextButton("HOW TO PLAY", skin);
 	    exitTutorialButton = new TextButton("CLOSE", skin);
 	    
-	    tutorialWindow = new Window("How To Play", skin);
-	    
 	    maxCoinsLabel = new Label("Highest coins obtained:", new LabelStyle(generalFont, Color.BLACK));
 	    maxFloorLabel = new Label("Lowest floor reached:", new LabelStyle(generalFont, Color.BLACK));
 	    maxFloorLabel.setColor(new Color(Color.BLACK));
@@ -114,15 +112,11 @@ public class TitleScreen extends DefaultScreen{
         });
         
         //inizializzazione tutorialWindow
-        leftClickLabel = new Label("Primary Fire", skin);
-        rightClickLabel = new Label("Secondary Fire", skin);
-        wasdLabel = new Label("Move", skin);
-        chestLabel = new Label("Move to chests to open them", skin);
-        
-        leftClickLabel.setColor(Color.BLACK);
-        rightClickLabel.setColor(Color.BLACK);
-        wasdLabel.setColor(Color.BLACK); 
-        chestLabel.setColor(Color.BLACK);
+        LabelStyle generalStyle = new LabelStyle(generalFont, Color.BLACK);
+        leftClickLabel = new Label("Primary Fire", generalStyle);
+        rightClickLabel = new Label("Secondary Fire", generalStyle);
+        wasdLabel = new Label("Move", generalStyle);
+        chestLabel = new Label("Move to chests to open them", generalStyle);
         
         leftClickTexture = new Texture("tutorial/mouse-left.png");
         rightClickTexture = new Texture("tutorial/mouse-right.png");
@@ -137,6 +131,7 @@ public class TitleScreen extends DefaultScreen{
 	
 	@Override
 	protected void initMainTable() {
+		tutorialWindow = new Window("How To Play", skin);
 		tutorialWindow.setVisible(false);
 		tutorialWindow.setMovable(false);
 		tutorialWindow.setFillParent(true);
@@ -206,6 +201,7 @@ public class TitleScreen extends DefaultScreen{
 		for(int i = 0; i < titleScreenFrames.size;++i) {
 			titleScreenFrames.get(i).getTexture().dispose();
 		}
+		tutorialWindow.clear();
 		titleScreenFrames.clear();
 		coinTexture.dispose();
 		floorTexture.dispose();
