@@ -42,8 +42,12 @@ public class GameMain extends Game{
 	
 	@Override
 	public void create() {
+		
 		Preferences preferences = Gdx.app.getPreferences("Game preferences");
-		Settings.setVolume(preferences.getFloat("Volume"));
+		if(preferences.contains("Volume"))
+			Settings.setVolume(preferences.getFloat("Volume"));
+		else
+			Settings.setVolume(0.5f);
 		
 		state = ScreenConstants.TITLE_SCREEN;
 		GameModel.getInstance().reset();

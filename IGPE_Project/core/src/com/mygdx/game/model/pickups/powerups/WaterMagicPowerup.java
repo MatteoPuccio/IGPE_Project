@@ -9,9 +9,9 @@ import com.mygdx.game.model.level.Room;
 import com.mygdx.game.model.pickups.Pickup;
 import com.mygdx.game.model.weapons.WaterMagic;
 
-public class WaterMagicPickup extends Pickup {
+public class WaterMagicPowerup extends Pickup {
 
-	public WaterMagicPickup(Vector2 position, Room home) {
+	public WaterMagicPowerup(Vector2 position, Room home) {
 		super(position, home, 0.6f);
 	}
 	

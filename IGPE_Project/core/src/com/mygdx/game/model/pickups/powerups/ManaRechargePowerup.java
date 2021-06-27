@@ -9,21 +9,21 @@ import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.level.Room;
 import com.mygdx.game.model.pickups.Pickup;
 
-public class SpeedPowerUp extends Pickup {
+public class ManaRechargePowerup extends Pickup {
 
-	public SpeedPowerUp(Vector2 position, Room home) {
+	public ManaRechargePowerup(Vector2 position, Room home) {
 		super(position, home, 0.6f);
 	}
 
 	@Override
 	public int getCurrentAnimationId() {
-		return AnimationConstants.SPEED_POWERUP_ANIMATION;
+		return AnimationConstants.MANA_RECHARGE_POWERUP_ANIMATION;
 	}
 	
 	@Override
 	protected void collisionResponse(Character character) {
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.POWERUP);
-		character.enablePowerUp(PowerUpsConstants.SPEED_POWERUP);		
+		character.enablePowerUp(PowerUpsConstants.MANA_RECHARGE_POWERUP);		
 	}
 
 }

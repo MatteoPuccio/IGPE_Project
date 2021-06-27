@@ -7,22 +7,22 @@ import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.level.Room;
 import com.mygdx.game.model.pickups.Pickup;
-import com.mygdx.game.model.weapons.LightningMagic;
+import com.mygdx.game.model.weapons.RockMagic;
 
-public class LightningMagicPickup extends Pickup {
+public class RockMagicPowerup extends Pickup {
 
-	public LightningMagicPickup(Vector2 position, Room home) {
+	public RockMagicPowerup(Vector2 position, Room home) {
 		super(position, home, 0.6f);
 	}
-
+	
 	@Override
 	public int getCurrentAnimationId() {
-		return AnimationConstants.LIGHTNING_MAGIC_ANIMATION;
+		return AnimationConstants.ROCK_MAGIC_ANIMATION;
 	}
-
+	
 	@Override
 	protected void collisionResponse(Character character) {
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MAGIC_PICKUP);
-		character.pickedUpMagic(new LightningMagic(character));
+		character.pickedUpMagic(new RockMagic(character));
 	}
 }

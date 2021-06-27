@@ -9,8 +9,8 @@ import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.level.Room;
 import com.mygdx.game.model.pickups.Pickup;
 
-public class MagicCooldownPowerUp extends Pickup {
-	public MagicCooldownPowerUp(Vector2 position, Room home) {
+public class MagicCooldownPowerup extends Pickup {
+	public MagicCooldownPowerup(Vector2 position, Room home) {
 		super(position, home, 0.6f);
 	}
 

@@ -42,11 +42,6 @@ public class OptionsScreen extends DefaultScreen{
         volumeLabel = new Label("Volume",new LabelStyle(generalFont, Color.BLACK));
         difficultyLabel = new Label("Difficulty",new LabelStyle(generalFont, Color.BLACK));
         displayModeLabel = new Label("Display mode", new LabelStyle(generalFont, Color.BLACK));
-        		
-        pauseLabel.setColor(new Color(Color.BLACK));
-        volumeLabel.setColor(new Color(Color.BLACK));
-        difficultyLabel.setColor(new Color(Color.BLACK));
-        displayModeLabel.setColor(new Color(Color.BLACK));
           
         volumeSlider = new Slider(0f, 1f, 0.01f, false, skin);
         backButton = new TextButton("BACK", skin);
