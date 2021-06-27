@@ -33,24 +33,24 @@ import com.mygdx.game.model.pickups.powerups.SpeedPowerup;
 import com.mygdx.game.model.pickups.powerups.WaterMagicPowerup;
 
 public class Room {
-	protected TiledMap tileMap;
-	protected NavigationTiledMapLayer navigationLayer;
+	private TiledMap tileMap;
+	private NavigationTiledMapLayer navigationLayer;
 	
 	private int roomIndex;
-	protected Connection [] connections;
+	private Connection [] connections;
 		
 	private Array<Enemy> enemies;
 	
-	protected Array<Gate> gates;
-	protected Array<Hole> holes;
-	protected Array<Solid> solids;
-	protected Array<TreasureChest> treasureChests;
+	private Array<Gate> gates;
+	private Array<Hole> holes;
+	private Array<Solid> solids;
+	private Array<TreasureChest> treasureChests;
 	
-	protected Array<Class<? extends Pickup>> pickupTypes;
-	protected Array<Pickup> pickups;
+	private Array<Class<? extends Pickup>> pickupTypes;
+	private Array<Pickup> pickups;
 	
-	protected Array<Class<? extends Pickup>> powerupTypes;
-	protected Array<Pickup> powerups;
+	private Array<Class<? extends Pickup>> powerupTypes;
+	private Array<Pickup> powerups;
 	
 	private float teleportTime;
 	private float elapsedTeleportTime;
@@ -72,7 +72,7 @@ public class Room {
 	}
 	
 	private void init(String tileMapPath) {
-		
+		//carica il pathfinding dei nemici
 		tileMap = new NavTmxMapLoader().load(tileMapPath);
 		connections = new Connection[4];
 		
@@ -99,9 +99,11 @@ public class Room {
 		}
 		
 		Random r = new Random();
+		//prendi un qualsiasi gate da cui chiudere la connessione e quindi da fare da entrata
 		endingPoint = gates.get(r.nextInt(gates.size)).getDirection();
 		
 		for(int i = 0; i < gates.size; ++i) {
+			//per tutti i gate (tranne l'ending point) crea una connessione aperta
 			if(gates.get(i).getDirection() < connections.length && gates.get(i).getDirection() != endingPoint) {
 				connections[gates.get(i).getDirection()] = new Connection(this, gates.get(i).getDirection());
 			}
@@ -158,6 +160,7 @@ public class Room {
 		generatePowerup = false;
 	}
 	
+	//una connessione è aperta se la ending room è null
 	public boolean hasFreeConnection() {
 		boolean freeConnection = false;
 		for(Connection connection:connections) {
@@ -168,6 +171,7 @@ public class Room {
 		return freeConnection;
 	}
 	
+	//restituisce la prima connessione libera
 	public Connection getFreeConnection() {
 		for(Connection connection:connections) {
 			if(connection != null)
@@ -177,12 +181,14 @@ public class Room {
 		return null;
 	}
 	
+	//crea room partendo chiudendo una connessione libera
 	public Room createAdjacentRoom() {
 		Connection roomConnection = getFreeConnection();
 		Room newRoom = RandomRoomGenerator.getInstance().createRoom(roomConnection, false);
 		return newRoom;
 	}
 	
+	//chiudi tutte le connessioni libere creando una nuova stanza
 	public Array<Room> createAdjacentRooms(boolean deadend) {
 		Array<Room> rooms = new Array<Room>();
 		Connection roomConnection;
@@ -235,6 +241,7 @@ public class Room {
 	}
 
 	public void enableBodies(boolean enabled) {
+		//abilita o disabilita tutti i bodies appartenenti alla room
 		Array<Body> bodies = new Array<Body>();
 		for(Gate gate:gates)
 			bodies.add(gate.getBody());
@@ -288,8 +295,9 @@ public class Room {
 	
 	public void generateRandomPickup(Vector2 position) {
 		Random r = new Random();
-		
+		//check per vedere se il pickup rientra in una cella non nulla e navigabile
 		if(navigationLayer.getCell((int) position.x, (int) position.y) != null && navigationLayer.getCell((int) position.x, (int) position.y).isWalkable()) {
+			//50% di possibilità che venga droppato qualcosa
 			if(r.nextInt(10) < 5) {
 				int index = r.nextInt(pickupTypes.size);
 				try {
@@ -302,7 +310,6 @@ public class Room {
 	}
 	
 	private void generateRandomPowerup() {
-		
 		Random r = new Random();
 		
 		int index = r.nextInt(powerupTypes.size);
@@ -312,7 +319,6 @@ public class Room {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public void setPowerupSpawnPosition(Vector2 powerupSpawnPosition) {
