@@ -40,7 +40,7 @@ public class OptionsScreen extends DefaultScreen{
 
         pauseLabel = new Label("Options", titleStyle);
         volumeLabel = new Label("Sound Effects Volume", new LabelStyle(generalFont, Color.BLACK));
-        musicLabel = new Label("Ambience Volume", new LabelStyle(generalFont, Color.BLACK);
+        musicLabel = new Label("Ambience Volume", new LabelStyle(generalFont, Color.BLACK));
         difficultyLabel = new Label("Difficulty", new LabelStyle(generalFont, Color.BLACK));
         displayModeLabel = new Label("Display mode", new LabelStyle(generalFont, Color.BLACK));
           

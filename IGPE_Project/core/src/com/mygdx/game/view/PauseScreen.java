@@ -13,6 +13,7 @@ import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.Settings;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.SoundHandler;
+import com.mygdx.game.view.audio.Sounds;
 
 public class PauseScreen extends DefaultScreen{
 
