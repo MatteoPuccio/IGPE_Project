@@ -1,4 +1,4 @@
-	package com.mygdx.game.desktop;
+package com.mygdx.game.desktop;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -15,6 +15,7 @@ public class DesktopLauncher {
 		config.addIcon("icon/game-icon-mac.png", Files.FileType.Internal);
 		config.addIcon("icon/game-icon-linux.png", Files.FileType.Internal);
 		config.addIcon("icon/game-icon-windows.png", Files.FileType.Internal);
+		config.fullscreen = true;
 		new LwjglApplication(GameMain.getInstance(), config);
 
 	}
