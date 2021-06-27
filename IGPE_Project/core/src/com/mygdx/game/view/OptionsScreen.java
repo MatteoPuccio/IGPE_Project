@@ -34,7 +34,7 @@ public class OptionsScreen extends DefaultScreen{
 	public OptionsScreen() {
 		
 		super(0.259f, 0.157f, 0.208f);
-		
+
 		//state è inizialmente windowed così che il change listener di displayModeBox rilevi il change e metta fullscreen
 		state = WINDOWED;
 
@@ -107,6 +107,7 @@ public class OptionsScreen extends DefaultScreen{
         			Gdx.graphics.setWindowedMode(previousWidth, previousHeigth);
         			state = WINDOWED;
         		}
+     
         	}
         });
         

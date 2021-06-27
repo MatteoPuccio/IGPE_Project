@@ -39,19 +39,6 @@ public class DeathScreen extends DefaultScreen{
         });
         stage = new Stage(viewport, batch);
 	}
-	
-	@Override
-	public void hide() {
-		mainTable.clear();
-		stage.dispose();
-	}
-
-	@Override
-	public void dispose() {
-		atlas.dispose();
-		batch.dispose();
-		stage.dispose();
-	}
 
 	@Override
 	protected void initMainTable() {

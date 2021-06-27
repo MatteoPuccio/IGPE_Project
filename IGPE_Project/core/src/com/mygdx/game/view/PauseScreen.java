@@ -86,6 +86,5 @@ public class PauseScreen extends DefaultScreen{
         mainTable.add(backButton).colspan(2).center();
         mainTable.row();
         mainTable.add(menuButton).colspan(2).center();
-	}
-	
+	}	
 }

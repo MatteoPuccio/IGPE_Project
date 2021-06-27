@@ -102,7 +102,6 @@ public abstract class DefaultScreen implements Screen {
 		titleFont.dispose();
 		generalFont.dispose();
 	}
-	
 
 	@Override
 	public void pause() {}
