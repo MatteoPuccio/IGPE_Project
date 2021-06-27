@@ -282,7 +282,8 @@ public class Character extends Entity{
 			case PowerUpsConstants.MAGIC_COOLDOWN_POWERUP:
 				magicCooldownMultiplier /= 2;
 				firstMagic.setCooldownMultiplier(magicCooldownMultiplier);
-				secondMagic.setCooldownMultiplier(magicCooldownMultiplier);
+				if(secondMagic != null)
+					secondMagic.setCooldownMultiplier(magicCooldownMultiplier);
 				break;
 					
 			case PowerUpsConstants.INVINCIBILITY_POWERUP:
@@ -313,7 +314,8 @@ public class Character extends Entity{
 		case PowerUpsConstants.MAGIC_COOLDOWN_POWERUP:
 			magicCooldownMultiplier *= 2;
 			firstMagic.setCooldownMultiplier(magicCooldownMultiplier);
-			secondMagic.setCooldownMultiplier(magicCooldownMultiplier);
+			if(secondMagic != null)
+				secondMagic.setCooldownMultiplier(magicCooldownMultiplier);
 			break;
 			
 		case PowerUpsConstants.INVINCIBILITY_POWERUP:

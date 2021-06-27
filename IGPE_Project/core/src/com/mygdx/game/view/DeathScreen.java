@@ -48,11 +48,9 @@ public class DeathScreen extends DefaultScreen{
 		
 		mainTable.add(deathLabel);
         mainTable.row();
-        mainTable.add(backButton).fillX();
+        mainTable.add(backButton).fillX().pad(20, 0, 20, 0);
         mainTable.row();
-        mainTable.add(quitButton).fillX();
-        
-        mainTable.debugAll();
+        mainTable.add(quitButton).fillX().pad(20, 0, 20, 0);
 	}
 
 }

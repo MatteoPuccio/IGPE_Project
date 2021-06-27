@@ -246,6 +246,8 @@ public class Room {
 			bodies.add(enemy.getBody());
 		for(Pickup pickup:pickups)
 			bodies.add(pickup.getBody());
+		for(Pickup powerup: powerups)
+			bodies.add(powerup.getBody());
 		for(TreasureChest treasureChest:treasureChests)
 			bodies.add(treasureChest.getBody());
 		GameModel.getInstance().addBodyToEnable(bodies, enabled);

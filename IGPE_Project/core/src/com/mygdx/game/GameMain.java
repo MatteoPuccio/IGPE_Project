@@ -147,6 +147,7 @@ public class GameMain extends Game{
 
 	public void death() {
 		state = ScreenConstants.DEAD;
+		Sounds.getInstance().stopMusic();
 		Gdx.graphics.setCursor(cursor);
 		setScreen(deathScreen);
 	}

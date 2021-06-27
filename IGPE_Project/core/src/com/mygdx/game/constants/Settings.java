@@ -14,14 +14,23 @@ public class Settings {
 	public final static int HARD = 2;
 	
 	private static float volume = 0.5f;
+	private static float musicVolume = 0.5f;
 	private static int difficulty = NORMAL;
 	
 	public static float getVolume() {
 		return volume;
 	}
+	
+	public static float getMusicVolume() {
+		return musicVolume;
+	}
 
 	public static void setVolume(float volume) {
 		Settings.volume = volume;
+	}
+	
+	public static void setMusicVolume(float volume) {
+		Settings.musicVolume = volume;
 	}
 
 	public static void setDifficulty(int selectedIndex) {
