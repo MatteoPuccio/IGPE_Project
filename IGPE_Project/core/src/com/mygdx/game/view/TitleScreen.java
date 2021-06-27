@@ -140,7 +140,6 @@ public class TitleScreen extends DefaultScreen{
         tutorialWindow.row();
         tutorialWindow.add(exitTutorialButton).colspan(2);
 
-        tutorialWindow.debugAll();
         stage.addActor(tutorialWindow);
 	}
 
