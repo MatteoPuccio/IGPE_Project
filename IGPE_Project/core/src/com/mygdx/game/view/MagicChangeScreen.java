@@ -2,6 +2,8 @@ package com.mygdx.game.view;
 
 import javax.sql.rowset.FilteredRowSet;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,24 +32,30 @@ public class MagicChangeScreen extends DefaultScreen {
 	private int secondMagicId;
 	
 	private TextButton keepMagic;
-	private TextButton test;
 	private GameView gameView;
 	private Viewport gamePort;
+	
+	private Texture background;
 	
 	public MagicChangeScreen(GameView gameView) {
 		super(0.259f, 0.157f, 0.208f);
 		this.gameView = gameView;
 		
-		changeMagicPromptLabel = new Label("Would you like to change one of your magics to this one?", skin);
+		changeMagicPromptLabel = new Label("Click on the magic you'd like to swap for this one", skin);
 		yourMagicsLabel = new Label("Your active magics", skin);
 		
 		keepMagic = new TextButton("I WOULD LIKE TO KEEP MY MAGICS", skin);
-		test = new TextButton("Test",skin);
 		gamePort = gameView.getGamePort();
+		
+		background = new Texture("UI/magic_change_screen_background.png");
 	}
 
 	@Override
 	protected void initMainTable() {
+		mainTable.setTransform(true);
+	    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
+	    mainTable.setScale(2);
+//		mainTable.setBackground(new SpriteDrawable(new Sprite(new Texture("UI/magic_change_screen_background.png"))));
 		
 		newMagic = new Image(gameView.getAnimationFrame(newMagicId));
 		
@@ -99,16 +107,16 @@ public class MagicChangeScreen extends DefaultScreen {
 				return true;
 			}
 		});
-		mainTable.add(keepMagic).colspan(2);
-		
-		mainTable.setTransform(true);
-		mainTable.setOrigin(mainTable.getPrefWidth() / 1.5f, mainTable.getPrefHeight() / 1.5f);
-		mainTable.setScale(1.5f);
+		mainTable.add(keepMagic).colspan(2).padBottom(150);
 	}
 	
 	@Override
 	protected void draw(float delta) {
 		gameView.render(delta, false);
+		
+		batch.begin();
+		batch.draw(background, mainTable.getWidth() / 2 - background.getWidth(), mainTable.getHeight() / 2 - background.getHeight() / 2 * 1.5f, background.getWidth() * 2, background.getHeight() * 1.5f);
+		batch.end();
 	}
 	
 	@Override
@@ -128,23 +136,5 @@ public class MagicChangeScreen extends DefaultScreen {
 	}
 	public void setSecondMagicId(int secondMagicId) {
 		this.secondMagicId = secondMagicId;
-	}
-	
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
 	}
 }
