@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.model.GameModel;
 
+//prompt per quando si hanno due magie  che permette di scegliere quale tenere
 public class MagicChangeScreen extends DefaultScreen {
 	
 	private Label changeMagicPromptLabel;
@@ -55,6 +56,7 @@ public class MagicChangeScreen extends DefaultScreen {
 		
 		newMagic = new Image(gameView.getAnimationFrame(newMagicId));
 		
+		//prende le due magie di character e le mostra su schermo
 		firstMagic = new ImageButton(new SpriteDrawable(new Sprite(gameView.getAnimationFrame(firstMagicId))));
 		secondMagic = new ImageButton(new SpriteDrawable(new Sprite(gameView.getAnimationFrame(secondMagicId))));
 		
@@ -62,7 +64,6 @@ public class MagicChangeScreen extends DefaultScreen {
 		
 		mainTable.add(changeMagicPromptLabel).colspan(2).padTop(100);
 		mainTable.row();
-		mainTable.invalidateHierarchy();
 		
 		mainTable.add(newMagic).colspan(2);
 		mainTable.row();

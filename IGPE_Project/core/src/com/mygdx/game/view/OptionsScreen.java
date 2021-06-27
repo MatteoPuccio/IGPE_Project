@@ -35,7 +35,7 @@ public class OptionsScreen extends DefaultScreen{
 		
 		super(0.259f, 0.157f, 0.208f);
 
-		//state è inizialmente windowed così che il change listener di displayModeBox rilevi il change e metta fullscreen
+		//state è inizialmente windowed; il change listener di displayModeBox rileva il change e mette fullscreen
 		state = WINDOWED;
 
         pauseLabel = new Label("Options", titleStyle);

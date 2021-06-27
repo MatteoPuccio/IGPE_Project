@@ -37,6 +37,7 @@ public class DeathScreen extends DefaultScreen{
         		Gdx.app.exit();
         	}
         });
+        
         stage = new Stage(viewport, batch);
 	}
 

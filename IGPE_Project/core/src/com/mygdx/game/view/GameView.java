@@ -71,6 +71,7 @@ public class GameView implements Screen{
 		batchUI = new SpriteBatch();
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
 		
+		//cursore fuori dal menu
 		Pixmap pm = new Pixmap(Gdx.files.internal("UI/game_cursor.png"));
 		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
 		pm.dispose();
@@ -103,7 +104,7 @@ public class GameView implements Screen{
         drawUI();
         batchUI.end();
         
-        
+        //implementazione semplice di effetto fade-in (disegna un rettangolo nero sullo schermo)
         if(blackScreenAlpha > 0) {
         	shapeRenderer.setColor(0f,0f,0f,blackScreenAlpha);
 			Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -113,12 +114,16 @@ public class GameView implements Screen{
 			shapeRenderer.end();
 			Gdx.gl.glDisable(GL20.GL_BLEND);
         }
-//        debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
+  
+        //il debugRenderer mostra l'outline dei bodies (attivi e non attivi)
+        //debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
 	private void drawUI() {
 		ui.getManaBar().draw(batchUI);
 		ui.getHealthBar().draw(batchUI);
+		
+		//disegna le magie equipaggiate nella HUD
 		ui.getFirstEquippedMagic().draw(animations.get(GameModel.getInstance().getCharacter().getFirstMagic().getRespectivePickupAnimationId()).getFrame().getTexture(), batchUI);
 		Magic magic = GameModel.getInstance().getCharacter().getSecondMagic();
 		if(magic == null)
@@ -160,6 +165,7 @@ public class GameView implements Screen{
 			particleEffects.get(i).dispose();
 	}
 	
+	//a ogni animazione è associato un id di AnimationConstants
 	private void initAnimations() {
 		animations = new ObjectMap<Integer, Animation>();
 
@@ -263,7 +269,6 @@ public class GameView implements Screen{
 	}
 	
 	private void updateAnimations(float deltaTime) {
-		
 		updateParticleEffects(deltaTime);
 		
 		for(Integer i : animations.keys()) {
@@ -326,7 +331,7 @@ public class GameView implements Screen{
 	}
 
 	public void setBlackScreen(float elapsedTeleportTime) {
-		//opacità del rettangolo disegnato per fare effetto di fade in
+		//opacità del rettangolo disegnato per fare effetto fade-in
 		blackScreenAlpha = RoomHandler.getInstance().getCurrentRoom().getTeleportTime() - elapsedTeleportTime;
 		if(blackScreenAlpha <= 0f)
 			blackScreenAlpha = 0f;

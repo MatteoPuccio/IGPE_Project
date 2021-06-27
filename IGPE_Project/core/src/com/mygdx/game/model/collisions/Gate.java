@@ -29,7 +29,6 @@ public class Gate implements Collidable {
 
 	@Override
 	public void collidesWith(Collidable coll) {
-		//se il player collide con un Gate
 		if(coll instanceof Character) {
 			//se la direzione del gate è END (scala nella tilemap) crea un nuovo floor
 			if(direction == END) {

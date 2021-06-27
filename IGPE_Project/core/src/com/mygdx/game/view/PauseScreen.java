@@ -61,6 +61,8 @@ public class PauseScreen extends DefaultScreen{
 				Settings.setVolume(volumeSlider.getValue());
 			}
         });
+        
+        //quando viene rilasciato lo slider fa play di un suono per indicare il volume corrente
         volumeSlider.addListener(new ClickListener() {
         	
         	@Override
