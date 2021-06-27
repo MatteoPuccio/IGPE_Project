@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.mygdx.game.constants.ScreenConstants;
 import com.mygdx.game.controller.GameController;
+import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.view.ConfirmQuitScreen;
 import com.mygdx.game.view.DeathScreen;
@@ -49,7 +50,7 @@ public class GameMain extends Game{
 		magicChangeScreen = new MagicChangeScreen(controller.getView());
 		
 		//crea e setta cursore per i menu
-		Pixmap pm = new Pixmap(Gdx.files.internal("menu_cursor.png"));
+		Pixmap pm = new Pixmap(Gdx.files.internal("UI/menu_cursor.png"));
 		cursor = Gdx.graphics.newCursor(pm, 0, 0);
 		Gdx.graphics.setCursor(cursor);
 		pm.dispose();

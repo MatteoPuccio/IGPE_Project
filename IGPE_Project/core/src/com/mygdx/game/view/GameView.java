@@ -32,10 +32,10 @@ import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.model.pickups.Pickup;
 import com.mygdx.game.model.weapons.Bullet;
 import com.mygdx.game.model.weapons.BulletHandler;
+import com.mygdx.game.model.weapons.Magic;
 import com.mygdx.game.view.animations.Animated;
 import com.mygdx.game.view.animations.Animation;
 import com.mygdx.game.view.animations.ParticleEffect;
-import com.mygdx.game.view.ui.InterfaceBar;
 import com.mygdx.game.view.ui.UserInterface;
 
 public class GameView implements Screen{
@@ -54,6 +54,8 @@ public class GameView implements Screen{
 	private ShapeRenderer shapeRenderer;
 	private float blackScreenAlpha;
 	
+	private UserInterface ui;
+	
 	public GameView() {	
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -68,13 +70,14 @@ public class GameView implements Screen{
 		batch = new SpriteBatch();
 		batchUI = new SpriteBatch();
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
-//		weaponAnimation = new WeaponSlashAnimation();
 		
-		Pixmap pm = new Pixmap(Gdx.files.internal("game_cursor.png"));
+		Pixmap pm = new Pixmap(Gdx.files.internal("UI/game_cursor.png"));
 		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
 		pm.dispose();
 		
 		shapeRenderer = new ShapeRenderer();
+		
+		ui = new UserInterface();
 	}
 	
 	public void render(float deltaTime, boolean updateAnimations) {
@@ -86,7 +89,7 @@ public class GameView implements Screen{
 		tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
         
-        UserInterface.getInstance().update();
+        ui.update();
         
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);
@@ -97,8 +100,7 @@ public class GameView implements Screen{
 		batch.end();
 		
 		batchUI.begin();
-        drawInterfaceBar(UserInterface.getInstance().getManaBar());
-        drawInterfaceBar(UserInterface.getInstance().getHealthBar());
+        drawUI();
         batchUI.end();
         
         
@@ -114,21 +116,17 @@ public class GameView implements Screen{
 //        debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
-	private void drawInterfaceBar(InterfaceBar bar) {
-		Texture background = bar.getBackground();
-		Texture icon = bar.getIcon();
-		
-		TextureRegion barFilled = bar.getBarFilled();
-		
-		Vector2 position = bar.getPosition();
-		Vector2 barPosition = bar.getBarPosition();
-		
-		int iconWidth = icon.getWidth();
-		int iconHeight = icon.getHeight();
-		
-		batchUI.draw(background, position.x,position.y,background.getWidth(),background.getHeight());
-		batchUI.draw(barFilled,barPosition.x,barPosition.y,barFilled.getRegionWidth(),barFilled.getRegionHeight());
-		batchUI.draw(icon, position.x + background.getWidth()/2 - iconWidth/2, (barPosition.y + position.y) / 2, iconWidth,iconHeight);
+	private void drawUI() {
+		ui.getManaBar().draw(batchUI);
+		ui.getHealthBar().draw(batchUI);
+		ui.getFirstEquippedMagic().draw(animations.get(GameModel.getInstance().getCharacter().getFirstMagic().getRespectivePickupAnimationId()).getFrame().getTexture(), batchUI);
+		Magic magic = GameModel.getInstance().getCharacter().getSecondMagic();
+		if(magic == null)
+			ui.getSecondEquippedMagic().draw(batchUI);
+		else
+			ui.getSecondEquippedMagic().draw(animations.get(magic.getRespectivePickupAnimationId()).getFrame().getTexture(), batchUI);
+		ui.getCoinsLabel().draw(batchUI, "" + GameModel.getInstance().getCoins());
+		ui.getFloorLabel().draw(batchUI, "" + GameModel.getInstance().getFloor());
 	}
 
 	private void updateCamera() {
@@ -147,7 +145,7 @@ public class GameView implements Screen{
 		cursor.dispose();
 		batch.dispose();
 		shapeRenderer.dispose();
-		UserInterface.getInstance().dispose();
+		ui.dispose();
 		batchUI.dispose();
 		
 		for(Integer i : animations.keys())
@@ -322,21 +320,6 @@ public class GameView implements Screen{
 		blackScreenAlpha = 1f;
 	}
 
-	@Override
-	public void pause() {
-		
-	}
-
-	@Override
-	public void resume() {
-		
-	}
-
-	@Override
-	public void hide() {
-		
-	}
-
 	public void setBlackScreen(float elapsedTeleportTime) {
 		//opacità del rettangolo disegnato per fare effetto di fade in
 		blackScreenAlpha = RoomHandler.getInstance().getCurrentRoom().getTeleportTime() - elapsedTeleportTime;
@@ -346,6 +329,15 @@ public class GameView implements Screen{
 
 	@Override
 	public void render(float delta) {}
+
+	@Override
+	public void pause() {}
+
+	@Override
+	public void resume() {}
+
+	@Override
+	public void hide() {}
 }
 
 

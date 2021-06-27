@@ -53,6 +53,4 @@ public class ConfirmQuitScreen extends DefaultScreen{
 		mainTable.add(yesButton);
 		mainTable.add(noButton);
 	}
-	
-	
 }

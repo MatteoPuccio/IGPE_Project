@@ -113,7 +113,6 @@ public class GameModel {
 		world.step(deltaTime, 6, 2);
 		
 		character.update(deltaTime);
-		RoomHandler.getInstance().getCurrentRoom().update(deltaTime);
 		
 		if(characterTransform) {
 			characterTransform = false;
@@ -122,6 +121,9 @@ public class GameModel {
 		
 		if(newFloor) 
 			createNewFloor();
+		
+		RoomHandler.getInstance().getCurrentRoom().update(deltaTime);
+		
 		enableBodies();
 		disableBodies();
 		disposeBodies();
@@ -146,6 +148,10 @@ public class GameModel {
 	
 	public int getFloor() {
 		return currentFloor;
+	}
+	
+	public int getCoins() {
+		return coins;
 	}
 	
 	private void createNewFloor() {
