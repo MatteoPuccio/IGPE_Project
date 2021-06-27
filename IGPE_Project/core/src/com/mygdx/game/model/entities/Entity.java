@@ -15,6 +15,7 @@ import com.mygdx.game.model.ai.SteeringUtils;
 import com.mygdx.game.model.collisions.Collidable;
 import com.mygdx.game.view.animations.Animated;
 
+//Un entity è qualsiasi oggetto rappresenti un essere vivente
 public abstract class Entity implements Animated, Steerable<Vector2>, Collidable {
 
 	protected Vector2 direction;
@@ -87,14 +88,6 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 		return body.getPosition();
 	}
 	
-	public float getMaxHealth() {
-		return maxHealth;
-	}
-	
-	public float getCurrentHealth() {
-		return currentHealth;
-	}
-	
 	public Body getBody() {
 		return body;
 	}
@@ -126,6 +119,7 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 			Vector2 force = steerOutput.linear.scl(deltaTime);
 			body.applyForceToCenter(force, true);
 	
+			//Impone il cap sulla velocità
 			Vector2 velocity = body.getLinearVelocity();
 			float currentSpeedSquare = velocity.len2();
 			if(currentSpeedSquare > maxLinearSpeed * maxLinearSpeed)
@@ -148,9 +142,9 @@ public abstract class Entity implements Animated, Steerable<Vector2>, Collidable
 		return (float) (currentHealth / maxHealth);
 	}
 	
-	public void setManaRechargeMultiplier(float manaRechargeMultiplier) {
-		this.manaRechargeMultiplier = manaRechargeMultiplier;
-	}
+//	public void setManaRechargeMultiplier(float manaRechargeMultiplier) {
+//		this.manaRechargeMultiplier = manaRechargeMultiplier;
+//	}
 	
 	public abstract void takeDamage(float damage);
 

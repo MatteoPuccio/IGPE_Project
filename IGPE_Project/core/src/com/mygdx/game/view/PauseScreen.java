@@ -61,6 +61,7 @@ public class PauseScreen extends DefaultScreen{
 				Settings.setVolume(volumeSlider.getValue());
 			}
         });
+        
         volumeSlider.addListener(new ClickListener() {
         	
         	@Override
@@ -80,19 +81,6 @@ public class PauseScreen extends DefaultScreen{
 			public void changed(ChangeEvent event, Actor actor) {
 				Settings.setMusicVolume(musicSlider.getValue());
 			}
-        });
-        musicSlider.addListener(new ClickListener() {
-        	
-        	@Override
-        	public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
-        	}
-        	
-        	@Override
-        	public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        		return true;
-        	}
-        	
         });
 	}
 

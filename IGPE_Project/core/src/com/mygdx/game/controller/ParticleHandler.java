@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.Array;
 public class ParticleHandler {
 
 	private static ParticleHandler instance = null;
+	
+	//Una coda di particelle la cui animazione viene gestita in GameView
 	private Array<Particle> particles;
 	private boolean cleared;
 	

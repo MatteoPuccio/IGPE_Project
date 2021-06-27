@@ -85,21 +85,6 @@ public class OptionsScreen extends DefaultScreen{
 			}
         });
         
-        musicSlider.addListener(new ClickListener() {
-        	
-        	@Override
-        	public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
-        	}
-        	
-        	@Override
-        	public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        		return true;
-        	}
-        	
-        });
-        
-        
         difficultyBox.addListener(new ChangeListener() {
         	@Override
         	public void changed(ChangeEvent event, Actor actor) {

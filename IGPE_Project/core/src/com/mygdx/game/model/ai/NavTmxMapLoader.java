@@ -13,6 +13,10 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
+//Questa classe è una copia della classe in gdxbridge https://github.com/xaguzman/pathfinding/tree/master/gdx-bridge
+//E' stato necessario copiarla nel progetto in quanto il metodo loadTileLayer era apparentemente deprecato e non aveva il parametro
+//MapLayers parentLayers, perciò non veniva chiamato dalla superclasse e non funzionava correttamente
+
 public class NavTmxMapLoader extends TmxMapLoader {
 
 	public String navigationLayerName;

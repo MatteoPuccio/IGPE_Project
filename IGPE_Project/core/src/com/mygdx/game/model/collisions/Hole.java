@@ -2,6 +2,7 @@ package com.mygdx.game.model.collisions;
 
 import com.badlogic.gdx.physics.box2d.Body;
 
+//Rappresenta i buchi della tilemap
 public class Hole implements Collidable {
 
 	private Body body;
@@ -10,14 +11,11 @@ public class Hole implements Collidable {
 		this.body = body;
 		body.setUserData(this);
 	}
-
-	@Override
-	public void collidesWith(Collidable coll) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public Body getBody() {
 		return body;
 	}
+	
+	@Override
+	public void collidesWith(Collidable coll) {}
 }

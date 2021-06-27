@@ -1,11 +1,11 @@
 package com.mygdx.game.model.entities;
 
 import com.badlogic.gdx.math.Vector2;
+
 import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.ParticleHandler;
 import com.mygdx.game.controller.SoundHandler;
-import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.level.Room;
 
 public abstract class Enemy extends Entity {
@@ -31,7 +31,6 @@ public abstract class Enemy extends Entity {
 		if(currentHealth <= 0) {
 			ParticleHandler.getInstance().addParticle(getPosition(), ParticleEffectConstants.ENEMY_DEATH_EXPLOSION, radius, radius);
 			home.generateRandomPickup(getPosition());
-			GameModel.getInstance().addBodyToDispose(body);
 			EnemiesHandler.removeEnemy(this);
 		}
 	}

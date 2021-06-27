@@ -83,6 +83,10 @@ public class GameMain extends Game{
 		else
 			Settings.setDisplayState(Settings.FULLSCREEN);
 		
+		if(preferences.contains("Ambiance volume"))
+			Settings.setMusicVolume(preferences.getFloat("Ambiance volume"));
+		else
+			Settings.setMusicVolume(0.5f);
 	}
 	
 	private void savePreferences() {
@@ -90,6 +94,7 @@ public class GameMain extends Game{
 		preferences.putFloat("Volume", Settings.getVolume());
 		preferences.putInteger("Difficulty", Settings.getDifficulty());
 		preferences.putInteger("Display state", Settings.getDisplayState());
+		preferences.putFloat("Ambiance volume", Settings.getMusicVolume());
 		preferences.flush();
 	}
 

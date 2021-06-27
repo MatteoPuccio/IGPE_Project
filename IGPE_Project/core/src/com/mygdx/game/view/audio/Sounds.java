@@ -45,7 +45,7 @@ public class Sounds {
 	}
 	
 	public void playMusic() {
-		caveAmbience.setVolume(Settings.getMusicVolume() );
+		caveAmbience.setVolume(Settings.getMusicVolume());
 		caveAmbience.play();
 	}
 	

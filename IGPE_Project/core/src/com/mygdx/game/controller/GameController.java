@@ -28,11 +28,13 @@ public class GameController implements InputProcessor {
 	
 	public void update(float deltaTime) {
 		
+		//Prima di iniziare ad aggiornare la logica controlla se il fade in quando si entra in una stanza è terminato
 		RoomHandler.getInstance().getCurrentRoom().updateTeleportTime(deltaTime);
 		if(RoomHandler.getInstance().canTeleport()) {
 			GameModel.getInstance().update(deltaTime);
 		
 			if(leftClickPressed) {
+				//trasforma le coordinate di schermo in coordinate del mondo
 				Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 				GameModel.getInstance().getCharacter().setFirstMagicAttacking(true);
 				GameModel.getInstance().getCharacter().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
@@ -41,7 +43,9 @@ public class GameController implements InputProcessor {
 			else	
 				GameModel.getInstance().getCharacter().setFirstMagicAttacking(false);
 		
+			//Si può usare solo una magia alla volta
 			if(rightClickPressed && !leftClickPressed) {
+				//trasforma le coordinate di schermo in coordinate del mondo
 				Vector3 pointClicked = view.getGamePort().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 				GameModel.getInstance().getCharacter().setSecondMagicAttacking(true);
 				GameModel.getInstance().getCharacter().setAttackPoint(new Vector2(pointClicked.x,pointClicked.y));
@@ -55,7 +59,10 @@ public class GameController implements InputProcessor {
 		if(RoomHandler.getInstance().changeMap()) 
 			view.changeMap(RoomHandler.getInstance().getCurrentRoom().getTileMap());
 		
+		//Chiama il fade in quando si entra in una nuova stanza
 		view.setBlackScreen(RoomHandler.getInstance().getCurrentRoom().getElapsedTeleportTime());
+		
+		//Se il fade in è ancora in corso non vengono aggiornate le animazioni
 		if(!RoomHandler.getInstance().canTeleport())
 			view.render(deltaTime, false);
 		else
@@ -72,8 +79,8 @@ public class GameController implements InputProcessor {
 		
 		int direction = -1;
 		
-		switch (keycode)
-	    {
+		switch (keycode) {
+		
 		case Keys.A:
 			direction = Settings.LEFT;
 			break;
@@ -102,8 +109,7 @@ public class GameController implements InputProcessor {
 		
 		int direction = -1;
 		
-		switch (keycode)
-	    {
+		switch (keycode) {
 		case Keys.A:
 			direction = Settings.LEFT;
 			break;
@@ -123,12 +129,6 @@ public class GameController implements InputProcessor {
 	
 	public GameView getView(){
 		return view;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -152,21 +152,6 @@ public class GameController implements InputProcessor {
 		
 		return false;
 	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(float amountX, float amountY) {
-		return false;
-	}
 	
 	public void reset() {
 		leftClickPressed = false;
@@ -184,5 +169,17 @@ public class GameController implements InputProcessor {
 		touchUp(0, 0, 0, Buttons.LEFT);
 		touchUp(0, 0, 0, Buttons.RIGHT);
 	}
+	
+	@Override
+	public boolean keyTyped(char character) {return false;}
+	
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {return false;}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {return false;}
+
+	@Override
+	public boolean scrolled(float amountX, float amountY) {return false;}
 	
 }

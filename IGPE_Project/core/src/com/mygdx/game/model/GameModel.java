@@ -30,6 +30,7 @@ public class GameModel {
 	private int currentFloor;
 	
 	private GameModel() {
+		
 		initialSpawnPosition = new Vector2(10f,10f);
 		bodiesToDispose = new Array<Body>();
 		bodiesToEnable = new Array<Body>();
@@ -78,6 +79,8 @@ public class GameModel {
 		world.dispose();
 	}
 	
+	//Questi metodi sono necessari poichè box2d non permette la modifica del world mentre esegue lo step
+	
 	public void addBodyToDispose(Body b) {
 		bodiesToDispose.add(b);
 	}
@@ -108,6 +111,24 @@ public class GameModel {
 		bodiesToDisable.clear();
 	}
 	
+	public void setCharacterTransform(Vector2 position, float angle) {
+		characterTransform = true;
+		switchPosition = position;
+		switchAngle = angle;
+	}
+	
+	public void setNewFloor() {
+		newFloor = true;
+	}
+	
+	private void createNewFloor() {
+		character.getBody().setTransform(initialSpawnPosition, character.getBody().getAngle());
+		RoomHandler.getInstance().createRooms();
+		currentFloor++;
+		newFloor = false;
+	}
+	/*******************************************************************************************************/
+	
 	
 	public void update(float deltaTime) {
 		world.step(deltaTime, 6, 2);
@@ -131,20 +152,6 @@ public class GameModel {
 	public void addCoins(int coinsToAdd) {
 		coins += coinsToAdd;
 	}
-
-	public void setCharacterTransform(Vector2 position, float angle) {
-		characterTransform = true;
-		switchPosition = position;
-		switchAngle = angle;
-	}
-	
-	public Vector2 getInitialSpawnPosition() {
-		return initialSpawnPosition;
-	}
-
-	public void setNewFloor() {
-		newFloor = true;
-	}
 	
 	public int getFloor() {
 		return currentFloor;
@@ -152,13 +159,6 @@ public class GameModel {
 	
 	public int getCoins() {
 		return coins;
-	}
-	
-	private void createNewFloor() {
-		character.getBody().setTransform(initialSpawnPosition, character.getBody().getAngle());
-		RoomHandler.getInstance().createRooms();
-		currentFloor++;
-		newFloor = false;
 	}
 
 }

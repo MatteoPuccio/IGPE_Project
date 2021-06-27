@@ -34,6 +34,8 @@ public class AStarUtils {
 		return finder.findPath(startX, startY, (int) closestPossiblePosition.x, (int) closestPossiblePosition.y, RoomHandler.getInstance().getCurrentRoom().getNavigationLayer());
 	}
 	
+	//Restituisce tutte le celle immediatamente vicine al giocatore
+	//Se checkWalkable = true le celle devono essere navigabili dal pathfinding (la navigabilità è stabilita dal navigation layer delle stanze)
 	public static Array<Vector2> getPossibleCellsNextToPlayer(float playerX, float playerY, boolean checkWalkable){
 		int adjacentX;
 		int adjacentY;
@@ -43,9 +45,12 @@ public class AStarUtils {
 		for(int i = 0; i < 8; ++i)
 		{
 			Vector2 direction = new Vector2();
+			
+			//Trova i vettori corrispondenti agli angoli tra la cella del giocatore e le 8 vicine e li salva in direction
 			SteeringUtils.angleToVector(direction, i * (float) Math.PI / 4);
 			adjacentX = (int) (playerX + Math.round(direction.x));
 			adjacentY =  (int) (playerY + Math.round(direction.y));
+			
 			if(checkWalkable) {
 				if(RoomHandler.getInstance().getCurrentRoom().getNavigationLayer().getCell(adjacentX, adjacentY) != null && RoomHandler.getInstance().getCurrentRoom().getNavigationLayer().getCell(adjacentX, adjacentY).isWalkable())
 					possiblePositions.add(new Vector2(adjacentX,adjacentY));
