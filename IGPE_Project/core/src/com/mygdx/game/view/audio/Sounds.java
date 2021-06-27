@@ -1,6 +1,7 @@
 package com.mygdx.game.view.audio;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.mygdx.game.constants.Settings;
@@ -15,6 +16,7 @@ public class Sounds {
 	private static Sounds instance = null;
 //	I suoni sono conservati in una HashMap, le cui chiavi sono conservate in SoundsConstants
 	private ObjectMap<Integer, Sound> sounds;
+	private Music caveAmbience;
 
 	private Sounds() {
 		sounds = new ObjectMap<Integer,Sound>();
@@ -31,12 +33,28 @@ public class Sounds {
 		sounds.put(SoundConstants.HEALTH_POTION, Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/health_potion.ogg")));
 		sounds.put(SoundConstants.POWERUP, Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/powerup.wav")));
 		sounds.put(SoundConstants.MAGIC_PICKUP, Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/magic_pickup.wav")));
+		
+		caveAmbience = Gdx.audio.newMusic(Gdx.files.internal("sounds/sfx/cave_ambience.mp3"));
+		caveAmbience.setLooping(true);
 	}
 	
 	public static Sounds getInstance() {
 		if (instance == null)
 			instance = new Sounds();
 		return instance;
+	}
+	
+	public void playMusic() {
+		caveAmbience.setVolume(Settings.getMusicVolume() );
+		caveAmbience.play();
+	}
+	
+	public void pauseMusic() {
+		caveAmbience.pause();
+	}
+	
+	public void stopMusic() {
+		caveAmbience.stop();
 	}
 	
 //	Riproduce i suoni corrispondenti alle chiavi ricevute dalla queue di SoundHandler
@@ -50,5 +68,6 @@ public class Sounds {
 		for (Integer i: sounds.keys()) {
 			sounds.get(i).dispose();
 		}
+		caveAmbience.dispose();
 	}
 }

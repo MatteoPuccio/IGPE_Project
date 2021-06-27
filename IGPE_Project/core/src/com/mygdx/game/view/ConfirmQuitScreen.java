@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.SoundHandler;
+import com.mygdx.game.view.audio.Sounds;
 
 public class ConfirmQuitScreen extends DefaultScreen{
 
@@ -30,6 +31,7 @@ public class ConfirmQuitScreen extends DefaultScreen{
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
+				Sounds.getInstance().stopMusic();
 				GameMain.getInstance().restart();
 			}
 		});

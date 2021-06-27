@@ -11,6 +11,7 @@ import com.mygdx.game.constants.Settings;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.view.GameView;
+import com.mygdx.game.view.audio.Sounds;
 
 public class GameController implements InputProcessor {
 	
@@ -86,6 +87,7 @@ public class GameController implements InputProcessor {
 			direction = Settings.DOWN;
 			break;
 		case Keys.ESCAPE:
+			Sounds.getInstance().pauseMusic();
 			GameMain.getInstance().pauseScreen();
 			break;
 	    }
