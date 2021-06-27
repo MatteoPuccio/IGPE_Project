@@ -31,6 +31,7 @@ public class RoomHandler {
 		}
 		rooms.clear();
 		rooms = RandomRoomGenerator.getInstance().createRooms();
+		//setta la starter room come stanza iniziale
 		setCurrentRoom(rooms.first());
 		changeMap = true;
 	}
@@ -40,10 +41,12 @@ public class RoomHandler {
 	}
 	
 	public Room setCurrentRoom(Room currentRoom) {
+		//disabilita i bodi della stanza appena lasciata e abilita quelli della stanza appena entrata
 		if(this.currentRoom != null) 
 			this.currentRoom.enableBodies(false);
 		this.currentRoom = currentRoom;
-		currentRoom.setElapsedTeleportTime(0);
+		//metodo per non far teletrasportare il giocatore subito dopo essere entrato in un'altra stanza
+		this.currentRoom.setElapsedTeleportTime(0);
 		this.currentRoom.enableBodies(true);
 		changeMap = true;
 		return this.currentRoom;
@@ -56,7 +59,7 @@ public class RoomHandler {
 	}
 
 	public boolean changeMap() {
-		//indica se cambiare room o meno
+		//indica se cambiare tileMap o meno
 		if(changeMap) {
 			changeMap = false;
 			return true;

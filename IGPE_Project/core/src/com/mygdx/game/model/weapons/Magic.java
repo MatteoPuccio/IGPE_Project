@@ -116,7 +116,6 @@ public abstract class Magic {
 	public final void bulletCollidedWith(Collidable coll, Bullet bullet) {
 						
 		if(coll instanceof Enemy) {
-			
 			if(owner instanceof Character) {
 				Enemy temp = (Enemy) coll;
 				EnemiesHandler.hitEnemy(temp, damage);
@@ -127,7 +126,6 @@ public abstract class Magic {
 		}
 		
 		else if(coll instanceof Character) {
-			
 			if(owner instanceof Enemy) {
 				Character temp = (Character) coll;
 				temp.takeDamage(damage);

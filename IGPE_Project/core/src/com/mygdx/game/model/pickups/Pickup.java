@@ -13,6 +13,10 @@ import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.level.Room;
 import com.mygdx.game.view.animations.Animated;
 
+/**
+ * Pickup rappresenta tutti gli oggetti che vengono spawnati dalle TreasureChests oppure dagli Enemy quando vengono sconfitti
+ * e che devono essere raccolti solo dal Character
+ */
 public abstract class Pickup implements Animated, Collidable {
 
 	private Vector2 position;
@@ -20,6 +24,7 @@ public abstract class Pickup implements Animated, Collidable {
 	private float radius;
 	private Room home;
 	
+//	delay utili al giocatore per capire cosa sta raccogliendo
 	private float timeBeforePickup;
 	private float timeSinceCreation;
 	
@@ -95,6 +100,8 @@ public abstract class Pickup implements Animated, Collidable {
 		return 0;
 	}
 	
+//	Permette al giocatore di raccogliere i Pickup a terra, e 
+//	l'effetto della raccolta è descritto da collisionResponse()
 	@Override
 	public final void collidesWith(Collidable coll) {
 		if(timeSinceCreation >= timeBeforePickup && coll instanceof Character) {

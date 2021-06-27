@@ -28,13 +28,31 @@ import com.mygdx.game.model.entities.FlyingCreature;
 import com.mygdx.game.model.entities.Goblin;
 import com.mygdx.game.model.entities.Slime;
 
+/**
+ *  Una classe di supporto per trasformare i vari oggetti presenti in una Tilemap in oggetti
+ *  utili per il funzionamento del gioco. Ogni oggetto di una tilemap è contenuto in un layer, e la classe
+ *  trasforma gli oggetti in base al layer in cui si trovano
+ */
 public class TiledMapObjectsUtil {
+/**
+ * I layer presenti nella tilemap sono:
+ * navigation: un insieme di tile di due tipi, usato per la generazione dei movimenti dell'intelligenza artificiale dei nemici
+ * Gates: oggetti che rappresentano le uscite delle varie stanze
+ * SpawnPoints: oggetti che indicano la posizione in cui il personaggio si deve trovare quando entra nella stanza da un certo gate
+ * Collisions: i confini della mappa di una stanza
+ * Enemies: i punti di spawn per i nemici
+ * Void: le aree vuote di una mappa dove gli Entity e i Pickup non dovrebbero passare
+ * Treasure: oggetti che indicano la posizione delle casse che contengono i powerup del gioco
+ */
 	
+//	Returna il layer di navigazione dal layer "navigation" di una tilemap
 	public static NavigationTiledMapLayer getNavigationTiledMapLayer(TiledMap tilemap) {
 		NavigationTiledMapLayer navigationLayer = (NavigationTiledMapLayer) tilemap.getLayers().get("navigation");
 		return navigationLayer;
 	}
-	
+
+//	Trasforma gli oggetti del layer "Gates" e "SpawnPoints" in oggetti della classe Gate, così da poter essere utilizzati 
+//	per creare la classe Room relativa alla TiledMap
 	public static Array<Gate> parseGates(TiledMap tilemap) {
 		MapObjects gatesObjects = tilemap.getLayers().get("Gates").getObjects();
 		Array<Gate> gates = new Array<Gate>();
@@ -81,7 +99,8 @@ public class TiledMapObjectsUtil {
 		}
 		return gates;
 	}
-	
+
+//	Trasforma gli oggetti del layer "Collisions" in un Body di Box2D di tipo Static
 	public static Array<Solid> parseSolid(TiledMap tilemap) {
 		MapObjects solidObjects = tilemap.getLayers().get("Collisions").getObjects();
 		Array<Solid> solids = new Array<Solid>();
@@ -96,7 +115,8 @@ public class TiledMapObjectsUtil {
 		}
 		return solids;
 	}
-	
+
+//	Trasforma gli oggetti del layer "Enemies" in oggetti di tipo Enemy, categorizzandoli in base alla tile dell'oggetto usata
 	public static Array<Enemy> parseEnemies(TiledMap tilemap, Room home){
 		Array<Enemy> enemies = new Array<Enemy>();
 		
@@ -128,6 +148,7 @@ public class TiledMapObjectsUtil {
 		return enemies;
 	}
 	
+//	Trasforma gli oggetti del layer "Void" in oggetti di tipo Hole (dei Body che permettono ai Bullet di essere oltrepassati)
 	public static Array<Hole> parseHoles(TiledMap tilemap) {
 		MapObjects holeObjects = tilemap.getLayers().get("Void").getObjects();
 		Array<Hole> holes = new Array<Hole>();
@@ -143,6 +164,7 @@ public class TiledMapObjectsUtil {
 		return holes;
 	}
 	
+//	Trasforma gli oggetti del layer "Treasure" in oggetti TreasureChest
 	public static Array<TreasureChest> parseTreasureChests(TiledMap tilemap){
 		
 		Array<TreasureChest> treasureChests = new Array<TreasureChest>();
@@ -165,6 +187,8 @@ public class TiledMapObjectsUtil {
 		
 	}
 	
+//	Trasforma le coordinate dei punti di un poligono di una tilemap in una ChainShape, mantenendo le proporzioni 
+//	della tilemap ma applicandole alle dimensioni del World
 	private static ChainShape createPolygon(PolygonMapObject polygon) {
 		
 		float[] vertices = polygon.getPolygon().getTransformedVertices();
@@ -179,7 +203,8 @@ public class TiledMapObjectsUtil {
 		return cs;
 		
 	}
-	
+
+//	Basandosi sulla ChainShape di createPolygon(), viene creato un Body statico per Box2D da aggiungere al World
 	private static Body createBody(Shape shape, boolean isSensor) {
 		Body body;
 		BodyDef bDef = new BodyDef();

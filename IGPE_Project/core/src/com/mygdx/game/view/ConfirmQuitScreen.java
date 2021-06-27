@@ -46,6 +46,7 @@ public class ConfirmQuitScreen extends DefaultScreen{
 	
 	@Override
 	protected void initMainTable() {
+		//raddoppia dimensione della table
 		mainTable.setTransform(true);
 	    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
 	    mainTable.setScale(2);

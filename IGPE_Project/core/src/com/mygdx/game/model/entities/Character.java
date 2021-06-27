@@ -42,8 +42,10 @@ public class Character extends Entity{
 	public Character(Vector2 position) {
 		super(position, 0.4f, false, 100, 10, 3);
 		
+		//parte con una sola magia
 		firstMagic = new RockMagic(this);
 		secondMagic = null;
+		
 		pickedUpMagic = null;
 		
 		leftMove = false;
@@ -148,6 +150,7 @@ public class Character extends Entity{
 			}
 		}
 		
+		//suono dei passi
 		if(!body.getLinearVelocity().isZero()) {
 			stepElapsed += deltaTime;
 			if (stepElapsed >= stepTimer) {
@@ -189,7 +192,7 @@ public class Character extends Entity{
 		case Settings.NORMAL:
 			return 1.0f;
 		case Settings.HARD:
-			return 2.0f;
+			return 1.5f;
 		default:
 			return 1.0f;
 		}
@@ -234,7 +237,7 @@ public class Character extends Entity{
 			pickedUpMagic = null;
 		}
 		else
-			GameMain.getInstance().changeMagicPrompt();
+			GameMain.getInstance().changeMagicPrompt();		//se si hanno due magie cambia schermo per scegliere quali tenere
 	}
 	
 	public Magic getPickedUpMagic() {
@@ -366,10 +369,7 @@ public class Character extends Entity{
 	}
 
 	@Override
-	public void collidesWith(Collidable coll) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void collidesWith(Collidable coll) {}
 	
 	public void stopMoving() {
 		body.setLinearVelocity(0f, 0f);
