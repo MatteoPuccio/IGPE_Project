@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.SoundHandler;
-import com.mygdx.game.view.audio.Sounds;
 
 public class DeathScreen extends DefaultScreen{
 	
@@ -49,9 +48,9 @@ public class DeathScreen extends DefaultScreen{
 		
 		mainTable.add(deathLabel).colspan(2);
         mainTable.row();
-        mainTable.add(backButton).growX().pad(20, 1000, 20, 1000);
+        mainTable.add(backButton).fillX().pad(20, 0, 20, 0);
         mainTable.row();
-        mainTable.add(quitButton).growX().pad(20, 1000, 20, 1000);
+        mainTable.add(quitButton).fillX().pad(20, 0, 20, 0);
 	}
 
 }
