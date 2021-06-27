@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.view.audio.Sounds;
 
 public abstract class DefaultScreen implements Screen {
 
@@ -25,6 +24,7 @@ public abstract class DefaultScreen implements Screen {
 	protected BitmapFont titleFont;
 	protected LabelStyle titleStyle;
 	protected Table mainTable;
+	protected BitmapFont generalFont;
 	
 	private float r;
 	private float g;
@@ -37,6 +37,8 @@ public abstract class DefaultScreen implements Screen {
 		
 	    titleFont = new BitmapFont(Gdx.files.internal("skin/AncientModernTales.fnt"));
 	    titleFont.getData().scale(0.7f);
+	    generalFont = new BitmapFont(Gdx.files.internal("UI/a_goblin_appears.fnt"), Gdx.files.internal("UI/a_goblin_appears.png"), false);
+	    generalFont.getData().setScale(0.35f, 0.35f);
 	    titleStyle = new LabelStyle(titleFont, Color.BLACK);
 	    
 		batch = new SpriteBatch();
@@ -98,6 +100,7 @@ public abstract class DefaultScreen implements Screen {
 		if(stage != null)
 			stage.dispose();
 		titleFont.dispose();
+		generalFont.dispose();
 	}
 
 	@Override

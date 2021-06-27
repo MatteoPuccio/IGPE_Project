@@ -24,8 +24,8 @@ public class FireMagic extends Magic {
 		Vector2 leftDirection = new Vector2(direction);
 		Vector2 rightDirection = new Vector2(direction);
 		
-		leftDirection.rotateDeg(10);
-		rightDirection.rotateDeg(-10);
+		leftDirection.rotateDeg(bulletSpreadAngle);
+		rightDirection.rotateDeg(-bulletSpreadAngle);
 		
 		BulletHandler.getInstance().addBullet(new Bullet(this, position, leftDirection));
 		BulletHandler.getInstance().addBullet(new Bullet(this, position, rightDirection));

@@ -126,7 +126,12 @@ public class GameView implements Screen{
 		else
 			ui.getSecondEquippedMagic().draw(animations.get(magic.getRespectivePickupAnimationId()).getFrame().getTexture(), batchUI);
 		ui.getCoinsLabel().draw(batchUI, "" + GameModel.getInstance().getCoins());
-		ui.getFloorLabel().draw(batchUI, "" + GameModel.getInstance().getFloor());
+		String prefix;
+		if(GameModel.getInstance().getFloor() != 0)
+			prefix = "-";
+		else
+			prefix = "";
+		ui.getFloorLabel().draw(batchUI, prefix + GameModel.getInstance().getFloor());
 	}
 
 	private void updateCamera() {

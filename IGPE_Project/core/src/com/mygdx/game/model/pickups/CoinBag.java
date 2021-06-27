@@ -1,5 +1,7 @@
 package com.mygdx.game.model.pickups;
 
+import java.util.Random;
+
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.SoundConstants;
@@ -21,8 +23,9 @@ public class CoinBag extends Pickup {
 	
 	@Override
 	protected void collisionResponse(Character character) {
+		Random r = new Random();
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.COINS);
-		GameModel.getInstance().addCoins(5);
+		GameModel.getInstance().addCoins(r.nextInt(5) + 3);
 	}
 
 }

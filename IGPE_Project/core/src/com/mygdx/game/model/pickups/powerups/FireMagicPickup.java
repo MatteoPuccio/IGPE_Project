@@ -1,7 +1,6 @@
 package com.mygdx.game.model.pickups.powerups;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.SoundHandler;
@@ -24,8 +23,7 @@ public class FireMagicPickup extends Pickup {
 	@Override
 	protected void collisionResponse(Character character) {
 		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MAGIC_PICKUP);
-		character.setPickedUpMagic(new FireMagic(character));
-		GameMain.getInstance().changeMagicPrompt();
+		character.pickedUpMagic(new FireMagic(character));
 	}
 	
 }

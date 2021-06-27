@@ -2,11 +2,12 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.mygdx.game.constants.ScreenConstants;
+import com.mygdx.game.constants.Settings;
 import com.mygdx.game.controller.GameController;
-import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.view.ConfirmQuitScreen;
 import com.mygdx.game.view.DeathScreen;
@@ -37,8 +38,13 @@ public class GameMain extends Game{
 		return instance;
 	}
 	
+	private GameMain() {}
+	
 	@Override
 	public void create() {
+		Preferences preferences = Gdx.app.getPreferences("Game preferences");
+		Settings.setVolume(preferences.getFloat("Volume"));
+		
 		state = ScreenConstants.TITLE_SCREEN;
 		GameModel.getInstance().reset();
 		controller = new GameController();
@@ -101,6 +107,10 @@ public class GameMain extends Game{
 		pauseScreen.dispose();
 		confirmQuitScreen.dispose();
 		cursor.dispose();
+		
+		Preferences preferences = Gdx.app.getPreferences("Game preferences");
+		preferences.putFloat("Volume", Settings.getVolume());
+		preferences.flush();
 	}
 	
 	@Override
@@ -150,6 +160,7 @@ public class GameMain extends Game{
 	}
 
 	public void pauseScreen() {
+		controller.removeInputs();
 		state = ScreenConstants.PAUSE;
 		Gdx.graphics.setCursor(cursor);
 		setScreen(pauseScreen);

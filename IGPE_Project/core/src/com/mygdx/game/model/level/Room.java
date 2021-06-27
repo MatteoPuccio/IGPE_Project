@@ -1,8 +1,6 @@
 package com.mygdx.game.model.level;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
-import java.util.prefs.Preferences;
 
 import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer;
 
@@ -10,7 +8,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.constants.PowerUpsConstants;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ai.NavTmxMapLoader;
 import com.mygdx.game.model.collisions.Gate;
