@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GameMain;
@@ -38,9 +39,9 @@ public class OptionsScreen extends DefaultScreen{
 		state = WINDOWED;
 
         pauseLabel = new Label("Options", titleStyle);
-        volumeLabel = new Label("Volume",skin);
-        difficultyLabel = new Label("Difficulty",skin);
-        displayModeLabel = new Label("Display mode", skin);
+        volumeLabel = new Label("Volume",new LabelStyle(generalFont, Color.BLACK));
+        difficultyLabel = new Label("Difficulty",new LabelStyle(generalFont, Color.BLACK));
+        displayModeLabel = new Label("Display mode", new LabelStyle(generalFont, Color.BLACK));
         		
         pauseLabel.setColor(new Color(Color.BLACK));
         volumeLabel.setColor(new Color(Color.BLACK));

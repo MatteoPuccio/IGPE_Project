@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader.AtlasTiledMapLoaderParameters;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -157,7 +156,6 @@ public class TiledMapObjectsUtil {
 		for(MapObject object : treasureObjects) {
 			if(object instanceof TiledMapTileMapObject) {
 				TiledMapTileMapObject tileObject = (TiledMapTileMapObject) object;
-				TiledMapTile tile = tileObject.getTile();
 				treasureChests.add(new TreasureChest(new Vector2(tileObject.getX() / Settings.PPM + 0.5f, tileObject.getY() / Settings.PPM + 0.5f)));
 				treasureChests.get(treasureChests.size - 1).getBody().setActive(false);
 			}

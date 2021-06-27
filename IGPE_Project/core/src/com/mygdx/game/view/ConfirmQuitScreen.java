@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GameMain;
@@ -21,8 +22,7 @@ public class ConfirmQuitScreen extends DefaultScreen{
 		
 		super(0.259f, 0.157f, 0.208f);
 
-        confirmQuit = new Label("Do you want to go back to the main menu?", skin);
-        confirmQuit.setColor(new Color(Color.BLACK));
+        confirmQuit = new Label("Do you want to go back to the main menu?", new LabelStyle(generalFont, Color.BLACK));
         
         yesButton = new TextButton("YES", skin);
         noButton = new TextButton("NO", skin);
@@ -51,8 +51,8 @@ public class ConfirmQuitScreen extends DefaultScreen{
 	    
 		mainTable.add(confirmQuit).colspan(2).top();
 		mainTable.row();
-		mainTable.add(yesButton);
-		mainTable.add(noButton);
+		mainTable.add(yesButton).padTop(100);
+		mainTable.add(noButton).padTop(100);
 	}
 	
 	@Override

@@ -11,12 +11,8 @@ import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.ParticleHandler;
 import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.model.collisions.Collidable;
-import com.mygdx.game.model.weapons.ExplosionMagic;
-import com.mygdx.game.model.weapons.FireMagic;
-import com.mygdx.game.model.weapons.LightningMagic;
 import com.mygdx.game.model.weapons.Magic;
 import com.mygdx.game.model.weapons.RockMagic;
-import com.mygdx.game.model.weapons.WaterMagic;
 
 public class Character extends Entity{
 	
@@ -46,8 +42,8 @@ public class Character extends Entity{
 	public Character(Vector2 position) {
 		super(position, 0.4f, false, 100, 10, 3);
 		
-		firstMagic = new WaterMagic(this);
-		secondMagic = new ExplosionMagic(this);		
+		firstMagic = new RockMagic(this);
+		secondMagic = null;
 		pickedUpMagic = null;
 		
 		leftMove = false;
@@ -231,8 +227,14 @@ public class Character extends Entity{
 		pickedUpMagic = null;
 	}
 	
-	public void setPickedUpMagic(Magic pickedUpMagic) {
+	public void pickedUpMagic(Magic pickedUpMagic) {
 		this.pickedUpMagic = pickedUpMagic;
+		if(secondMagic == null) {
+			secondMagic = pickedUpMagic;
+			pickedUpMagic = null;
+		}
+		else
+			GameMain.getInstance().changeMagicPrompt();
 	}
 	
 	public Magic getPickedUpMagic() {
@@ -244,12 +246,14 @@ public class Character extends Entity{
 	}
 	
 	public void setSecondMagicAttacking(boolean attacking) {
-		secondMagic.setAttacking(attacking);
+		if(secondMagic != null)
+			secondMagic.setAttacking(attacking);
 	}
 	
 	public void setAttackPoint(Vector2 attackPoint) {
 		firstMagic.setAttackPoint(attackPoint);
-		secondMagic.setAttackPoint(attackPoint);
+		if(secondMagic != null)
+			secondMagic.setAttackPoint(attackPoint);
 	}
 
 	public Magic getFirstMagic() {

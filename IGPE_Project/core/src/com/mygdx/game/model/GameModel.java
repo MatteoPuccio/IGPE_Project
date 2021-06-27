@@ -55,7 +55,7 @@ public class GameModel {
 	}
 	
 	public void reset() {
-		currentFloor = 1;
+		currentFloor = 0;
 		if(character != null)
 			world.destroyBody(GameModel.getInstance().getCharacter().getBody()); 
 		character = new Character(new Vector2(initialSpawnPosition));

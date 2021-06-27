@@ -1,6 +1,5 @@
 package com.mygdx.game.model.level;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.controller.ParticleHandler;
 import com.mygdx.game.controller.SoundHandler;
@@ -33,7 +32,6 @@ public class RoomHandler {
 		rooms.clear();
 		rooms = RandomRoomGenerator.getInstance().createRooms();
 		setCurrentRoom(rooms.first());
-		rooms.get(0).setPowerupSpawnPosition(new Vector2(10, 10));
 		changeMap = true;
 	}
 	

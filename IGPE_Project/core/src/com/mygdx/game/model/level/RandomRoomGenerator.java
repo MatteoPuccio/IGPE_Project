@@ -2,7 +2,6 @@ package com.mygdx.game.model.level;
 
 import java.util.Random;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.model.GameModel;
 
@@ -125,7 +124,7 @@ public class RandomRoomGenerator {
 	}
 	
 	public int roomsNumber(int floorDepth) {
-		return Integer.min(r.nextInt(3*floorDepth) +  (2*floorDepth + 1), 24);
+		return Integer.min(r.nextInt(3 * (floorDepth + 1) + 3) +  (2 * (floorDepth + 1) + 1), 24);
 	}
 	
 }

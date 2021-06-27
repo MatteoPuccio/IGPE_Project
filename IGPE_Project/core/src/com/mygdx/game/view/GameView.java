@@ -15,12 +15,10 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.constants.Settings;
@@ -38,8 +36,6 @@ import com.mygdx.game.model.weapons.Magic;
 import com.mygdx.game.view.animations.Animated;
 import com.mygdx.game.view.animations.Animation;
 import com.mygdx.game.view.animations.ParticleEffect;
-import com.mygdx.game.view.audio.Sounds;
-import com.mygdx.game.view.ui.InterfaceBar;
 import com.mygdx.game.view.ui.UserInterface;
 
 public class GameView implements Screen{
@@ -130,7 +126,12 @@ public class GameView implements Screen{
 		else
 			ui.getSecondEquippedMagic().draw(animations.get(magic.getRespectivePickupAnimationId()).getFrame().getTexture(), batchUI);
 		ui.getCoinsLabel().draw(batchUI, "" + GameModel.getInstance().getCoins());
-		ui.getFloorLabel().draw(batchUI, "" + GameModel.getInstance().getFloor());
+		String prefix;
+		if(GameModel.getInstance().getFloor() != 0)
+			prefix = "-";
+		else
+			prefix = "";
+		ui.getFloorLabel().draw(batchUI, prefix + GameModel.getInstance().getFloor());
 	}
 
 	private void updateCamera() {
