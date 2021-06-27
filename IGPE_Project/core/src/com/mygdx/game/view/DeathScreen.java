@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.SoundHandler;
+import com.mygdx.game.view.audio.Sounds;
 
 public class DeathScreen extends DefaultScreen{
 	

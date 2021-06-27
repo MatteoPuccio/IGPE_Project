@@ -18,8 +18,8 @@ import com.mygdx.game.controller.SoundHandler;
 
 public class OptionsScreen extends DefaultScreen{
 
-	private Label pauseLabel,volumeLabel,difficultyLabel, displayModeLabel;
-	private final Slider volumeSlider;
+	private Label pauseLabel,volumeLabel, musicLabel, difficultyLabel, displayModeLabel;
+	private final Slider volumeSlider, musicSlider;
 	private TextButton backButton;
 	private SelectBox<String> displayModeBox;
 	private SelectBox<String> difficultyBox;
@@ -39,16 +39,13 @@ public class OptionsScreen extends DefaultScreen{
 		state = WINDOWED;
 
         pauseLabel = new Label("Options", titleStyle);
-        volumeLabel = new Label("Volume",new LabelStyle(generalFont, Color.BLACK));
-        difficultyLabel = new Label("Difficulty",new LabelStyle(generalFont, Color.BLACK));
+        volumeLabel = new Label("Sound Effects Volume", new LabelStyle(generalFont, Color.BLACK));
+        musicLabel = new Label("Ambience Volume", new LabelStyle(generalFont, Color.BLACK));
+        difficultyLabel = new Label("Difficulty", new LabelStyle(generalFont, Color.BLACK));
         displayModeLabel = new Label("Display mode", new LabelStyle(generalFont, Color.BLACK));
-        		
-        pauseLabel.setColor(new Color(Color.BLACK));
-        volumeLabel.setColor(new Color(Color.BLACK));
-        difficultyLabel.setColor(new Color(Color.BLACK));
-        displayModeLabel.setColor(new Color(Color.BLACK));
           
         volumeSlider = new Slider(0f, 1f, 0.01f, false, skin);
+        musicSlider = new Slider(0f, 1f, 0.01f, false, skin);
         backButton = new TextButton("BACK", skin);
         difficultyBox = new SelectBox<String>(skin);
         displayModeBox = new SelectBox<String>(skin);
@@ -85,6 +82,28 @@ public class OptionsScreen extends DefaultScreen{
         	}
         	
         });
+        
+        musicSlider.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				Settings.setMusicVolume(musicSlider.getValue());
+			}
+        });
+        
+        musicSlider.addListener(new ClickListener() {
+        	
+        	@Override
+        	public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_ERROR);
+        	}
+        	
+        	@Override
+        	public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        		return true;
+        	}
+        	
+        });
+        
         
         difficultyBox.addListener(new ChangeListener() {
         	@Override
@@ -124,11 +143,15 @@ public class OptionsScreen extends DefaultScreen{
 	protected void initMainTable() {
 		
         volumeSlider.setVisualPercent(Settings.getVolume());
+        musicSlider.setVisualPercent(Settings.getMusicVolume());
         
         mainTable.add(pauseLabel).colspan(2).center();
         mainTable.row();
         mainTable.add(volumeLabel).colspan(1).left().padRight(100);
         mainTable.add(volumeSlider).colspan(1).right().padLeft(100);
+        mainTable.row();
+        mainTable.add(musicLabel).colspan(1).left().padRight(100);
+        mainTable.add(musicSlider).colspan(1).right().padLeft(100);
         mainTable.row();
         mainTable.add(difficultyLabel).colspan(1).left().padRight(100);
         mainTable.add(difficultyBox).colspan(1).right().padLeft(100);

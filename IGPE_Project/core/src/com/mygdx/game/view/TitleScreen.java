@@ -18,6 +18,7 @@ import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.view.animations.Animation;
+import com.mygdx.game.view.audio.Sounds;
 
 public class TitleScreen extends DefaultScreen{
 
@@ -74,6 +75,7 @@ public class TitleScreen extends DefaultScreen{
             @Override
             public void clicked(InputEvent event, float x, float y) {
             	SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
+            	Sounds.getInstance().playMusic();
             	GameMain.getInstance().start();
             }
         });
