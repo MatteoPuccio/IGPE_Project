@@ -47,6 +47,7 @@ public class TitleScreen extends DefaultScreen{
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+            	SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
             	GameMain.getInstance().start();
             }
         });
@@ -54,6 +55,7 @@ public class TitleScreen extends DefaultScreen{
         optionButton.addListener(new ClickListener(){
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
         		GameMain.getInstance().options();
         	}
         });
@@ -61,7 +63,6 @@ public class TitleScreen extends DefaultScreen{
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
                 Gdx.app.exit();
             }
         });
@@ -69,6 +70,7 @@ public class TitleScreen extends DefaultScreen{
         tutorialButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
         		mainTable.setVisible(false);
         		tutorialWindow.setVisible(true);
         	}
@@ -77,6 +79,7 @@ public class TitleScreen extends DefaultScreen{
         exitTutorialButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
         		mainTable.setVisible(true);
         		tutorialWindow.setVisible(false);
         	}
@@ -125,11 +128,6 @@ public class TitleScreen extends DefaultScreen{
 	public void resume() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void hide() {
-		super.hide();
 	}
 
 	@Override

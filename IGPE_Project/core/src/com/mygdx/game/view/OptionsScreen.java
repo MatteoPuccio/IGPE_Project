@@ -33,8 +33,9 @@ public class OptionsScreen extends DefaultScreen{
 	public OptionsScreen() {
 		
 		super(0.259f, 0.157f, 0.208f);
-		
-		state = FULLSCREEN;
+
+		//state è inizialmente windowed così che il change listener di displayModeBox rilevi il change e metta fullscreen
+		state = WINDOWED;
 
         pauseLabel = new Label("Options", titleStyle);
         volumeLabel = new Label("Volume",skin);
@@ -120,6 +121,7 @@ public class OptionsScreen extends DefaultScreen{
 
 	@Override
 	protected void initMainTable() {
+		
         volumeSlider.setVisualPercent(Settings.getVolume());
         
         mainTable.add(pauseLabel).colspan(2).center();
@@ -149,10 +151,4 @@ public class OptionsScreen extends DefaultScreen{
 		
 	}
 
-	@Override
-	public void hide() {
-		mainTable.clear();
-		stage.clear();
-		stage.dispose();
-	}
 }

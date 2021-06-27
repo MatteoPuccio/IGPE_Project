@@ -142,9 +142,4 @@ public class MagicChangeScreen extends DefaultScreen {
 		
 	}
 
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
-	}
 }

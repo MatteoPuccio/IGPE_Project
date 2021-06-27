@@ -27,13 +27,13 @@ public class DeathScreen extends DefaultScreen{
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
         		GameMain.getInstance().restart();
+        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_CONFIRM);
         	}
         });
         
         quitButton.addListener(new ClickListener() {
         	@Override
         	public void clicked(InputEvent event, float x, float y) {
-        		SoundHandler.getInstance().addSoundToQueue(SoundConstants.MENU_BACK);
         		Gdx.app.exit();
         	}
         });
@@ -67,11 +67,15 @@ public class DeathScreen extends DefaultScreen{
 
 	@Override
 	protected void initMainTable() {
+		mainTable.setTransform(true);
+	    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
+	    mainTable.setScale(2);
+		
 		mainTable.add(deathLabel).colspan(2);
         mainTable.row();
-        mainTable.add(backButton).growX().pad(20, 300, 20, 300);
+        mainTable.add(backButton).growX().pad(20, 1000, 20, 1000);
         mainTable.row();
-        mainTable.add(quitButton).growX().pad(20, 300, 20, 300);		
+        mainTable.add(quitButton).growX().pad(20, 1000, 20, 1000);
 	}
 
 }

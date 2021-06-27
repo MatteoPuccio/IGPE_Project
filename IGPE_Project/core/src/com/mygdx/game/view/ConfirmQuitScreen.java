@@ -45,6 +45,10 @@ public class ConfirmQuitScreen extends DefaultScreen{
 	
 	@Override
 	protected void initMainTable() {
+		mainTable.setTransform(true);
+	    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
+	    mainTable.setScale(2);
+	    
 		mainTable.add(confirmQuit).colspan(2).top();
 		mainTable.row();
 		mainTable.add(yesButton);
@@ -67,17 +71,6 @@ public class ConfirmQuitScreen extends DefaultScreen{
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dispose() {
 		
 	}
 

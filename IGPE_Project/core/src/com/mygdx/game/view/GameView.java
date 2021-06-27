@@ -75,7 +75,6 @@ public class GameView implements Screen{
 		
 		Pixmap pm = new Pixmap(Gdx.files.internal("game_cursor.png"));
 		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
-		Gdx.graphics.setCursor(cursor);
 		pm.dispose();
 		
 		shapeRenderer = new ShapeRenderer();
