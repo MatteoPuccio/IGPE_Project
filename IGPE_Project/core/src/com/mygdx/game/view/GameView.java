@@ -212,6 +212,7 @@ public class GameView implements Screen{
 		particleEffects.put(ParticleEffectConstants.ENEMY_DEATH_EXPLOSION, new ParticleEffect("animations/particles/enemy_afterdead_explosion_anim_spritesheet.png", 4, 0.25f));
 		particleEffects.put(ParticleEffectConstants.HIT, new ParticleEffect("animations/particles/hit_effect_anim_spritesheet.png", 3, 0.15f));
 		particleEffects.put(ParticleEffectConstants.EXPLOSION, new ParticleEffect("animations/particles/explosion_anim_spritesheet.png", 7, 0.4f));
+		particleEffects.put(ParticleEffectConstants.POWERUP_SPAWN, new ParticleEffect("animations/particles/powerup_spawn_spritesheet.png", 4, 0.5f));
 		
 		activeParticleEffects = new Array<ParticleEffect>(false, 40);
 	}

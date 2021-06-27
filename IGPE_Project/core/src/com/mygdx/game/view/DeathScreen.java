@@ -47,7 +47,7 @@ public class DeathScreen extends DefaultScreen{
 	    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
 	    mainTable.setScale(2);
 		
-		mainTable.add(deathLabel).colspan(2);
+		mainTable.add(deathLabel);
         mainTable.row();
         mainTable.add(backButton).fillX().pad(20, 0, 20, 0);
         mainTable.row();

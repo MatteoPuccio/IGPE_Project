@@ -13,9 +13,15 @@ public class Settings {
 	public final static int NORMAL = 1;
 	public final static int HARD = 2;
 	
+	public final static int WINDOWED = 4;
+	public final static int FULLSCREEN = 5;
+	
 	private static float volume = 0.5f;
 	private static float musicVolume = 0.5f;
 	private static int difficulty = NORMAL;
+	
+	//state è inizialmente windowed così che il change listener di OptionScreen rilevi il change e metta fullscreen
+	private static int displayState = FULLSCREEN;
 	
 	public static float getVolume() {
 		return volume;
@@ -41,4 +47,11 @@ public class Settings {
 		return difficulty;
 	}
 	
+	public static int getDisplayState() {
+		return displayState;
+	}
+	
+	public static void setDisplayState(int displayState) {
+		Settings.displayState = displayState;
+	}
 }

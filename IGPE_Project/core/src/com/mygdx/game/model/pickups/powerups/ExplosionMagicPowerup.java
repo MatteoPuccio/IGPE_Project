@@ -9,9 +9,9 @@ import com.mygdx.game.model.level.Room;
 import com.mygdx.game.model.pickups.Pickup;
 import com.mygdx.game.model.weapons.ExplosionMagic;
 
-public class ExplosionMagicPickup extends Pickup {
+public class ExplosionMagicPowerup extends Pickup {
 
-	public ExplosionMagicPickup(Vector2 position, Room home) {
+	public ExplosionMagicPowerup(Vector2 position, Room home) {
 		super(position, home, 0.6f);
 	}
 

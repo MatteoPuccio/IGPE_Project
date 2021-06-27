@@ -42,8 +42,8 @@ public class GameMain extends Game{
 	
 	@Override
 	public void create() {
-		Preferences preferences = Gdx.app.getPreferences("Game preferences");
-		Settings.setVolume(preferences.getFloat("Volume"));
+		
+		loadPreferences();
 		
 		state = ScreenConstants.TITLE_SCREEN;
 		GameModel.getInstance().reset();
@@ -63,6 +63,34 @@ public class GameMain extends Game{
 		
 		//appena l'applicazione parte setta lo screen corrente al menu principale
 		setScreen(titleScreen);
+	}
+	
+	private void loadPreferences() {
+		Preferences preferences = Gdx.app.getPreferences("Game preferences");
+		
+		if(preferences.contains("Volume"))
+			Settings.setVolume(preferences.getFloat("Volume"));
+		else
+			Settings.setVolume(0.5f);
+		
+		if(preferences.contains("Difficulty"))
+			Settings.setDifficulty(preferences.getInteger("Difficulty"));
+		else
+			Settings.setDifficulty(Settings.NORMAL);
+		
+		if(preferences.contains("Display state"))
+			Settings.setDisplayState(preferences.getInteger("Display state"));
+		else
+			Settings.setDisplayState(Settings.FULLSCREEN);
+		
+	}
+	
+	private void savePreferences() {
+		Preferences preferences = Gdx.app.getPreferences("Game preferences");
+		preferences.putFloat("Volume", Settings.getVolume());
+		preferences.putInteger("Difficulty", Settings.getDifficulty());
+		preferences.putInteger("Display state", Settings.getDisplayState());
+		preferences.flush();
 	}
 
 	@Override
@@ -108,9 +136,7 @@ public class GameMain extends Game{
 		confirmQuitScreen.dispose();
 		cursor.dispose();
 		
-		Preferences preferences = Gdx.app.getPreferences("Game preferences");
-		preferences.putFloat("Volume", Settings.getVolume());
-		preferences.flush();
+		savePreferences();
 	}
 	
 	@Override

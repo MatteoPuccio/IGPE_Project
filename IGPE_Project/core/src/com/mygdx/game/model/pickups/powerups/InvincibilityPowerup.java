@@ -9,9 +9,9 @@ import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.level.Room;
 import com.mygdx.game.model.pickups.Pickup;
 
-public class InvincibilityPowerUp extends Pickup{
+public class InvincibilityPowerup extends Pickup{
 
-	public InvincibilityPowerUp(Vector2 position, Room home) {
+	public InvincibilityPowerup(Vector2 position, Room home) {
 		super(position, home, 0.6f);
 	}
 

@@ -8,6 +8,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.constants.AnimationConstants;
+import com.mygdx.game.constants.ParticleEffectConstants;
+import com.mygdx.game.controller.ParticleHandler;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.ai.NavTmxMapLoader;
 import com.mygdx.game.model.collisions.Gate;
@@ -19,15 +22,15 @@ import com.mygdx.game.model.pickups.Coin;
 import com.mygdx.game.model.pickups.CoinBag;
 import com.mygdx.game.model.pickups.HealthPotion;
 import com.mygdx.game.model.pickups.Pickup;
-import com.mygdx.game.model.pickups.powerups.ExplosionMagicPickup;
-import com.mygdx.game.model.pickups.powerups.FireMagicPickup;
-import com.mygdx.game.model.pickups.powerups.InvincibilityPowerUp;
-import com.mygdx.game.model.pickups.powerups.LightningMagicPickup;
-import com.mygdx.game.model.pickups.powerups.MagicCooldownPowerUp;
-import com.mygdx.game.model.pickups.powerups.ManaRechargePowerUp;
-import com.mygdx.game.model.pickups.powerups.RockMagicPickup;
-import com.mygdx.game.model.pickups.powerups.SpeedPowerUp;
-import com.mygdx.game.model.pickups.powerups.WaterMagicPickup;
+import com.mygdx.game.model.pickups.powerups.ExplosionMagicPowerup;
+import com.mygdx.game.model.pickups.powerups.FireMagicPowerup;
+import com.mygdx.game.model.pickups.powerups.InvincibilityPowerup;
+import com.mygdx.game.model.pickups.powerups.LightningMagicPowerup;
+import com.mygdx.game.model.pickups.powerups.MagicCooldownPowerup;
+import com.mygdx.game.model.pickups.powerups.ManaRechargePowerup;
+import com.mygdx.game.model.pickups.powerups.RockMagicPowerup;
+import com.mygdx.game.model.pickups.powerups.SpeedPowerup;
+import com.mygdx.game.model.pickups.powerups.WaterMagicPowerup;
 
 public class Room {
 	private TiledMap tileMap;
@@ -143,16 +146,16 @@ public class Room {
 		powerups = new Array<Pickup>(false,10);
 		powerupTypes = new Array<Class<? extends Pickup>>();
 		
-		powerupTypes.add(ManaRechargePowerUp.class);
-		powerupTypes.add(SpeedPowerUp.class);
-		powerupTypes.add(InvincibilityPowerUp.class);
-		powerupTypes.add(MagicCooldownPowerUp.class);
+		powerupTypes.add(ManaRechargePowerup.class);
+		powerupTypes.add(SpeedPowerup.class);
+		powerupTypes.add(InvincibilityPowerup.class);
+		powerupTypes.add(MagicCooldownPowerup.class);
 		
-		powerupTypes.add(FireMagicPickup.class);
-		powerupTypes.add(LightningMagicPickup.class);
-		powerupTypes.add(RockMagicPickup.class);
-		powerupTypes.add(ExplosionMagicPickup.class);
-		powerupTypes.add(WaterMagicPickup.class);
+		powerupTypes.add(FireMagicPowerup.class);
+		powerupTypes.add(LightningMagicPowerup.class);
+		powerupTypes.add(RockMagicPowerup.class);
+		powerupTypes.add(ExplosionMagicPowerup.class);
+		powerupTypes.add(WaterMagicPowerup.class);
 		
 		generatePowerup = false;
 	}
@@ -312,6 +315,7 @@ public class Room {
 		int index = r.nextInt(powerupTypes.size);
 		try {
 			powerups.add(powerupTypes.get(index).getDeclaredConstructor(Vector2.class, Room.class).newInstance(powerupSpawnPosition, this));
+			ParticleHandler.getInstance().addParticle(powerupSpawnPosition, ParticleEffectConstants.POWERUP_SPAWN, 0.6f * 2, 0.6f * 2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
