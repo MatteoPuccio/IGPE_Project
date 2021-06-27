@@ -24,6 +24,7 @@ public abstract class Magic {
 	
 	protected float damage;
 	protected float cooldown;
+	protected float cooldownMultiplier;
 	protected float timePassed;
 	 
 	private float bulletCost;
@@ -42,6 +43,8 @@ public abstract class Magic {
 		attacking = false;
 		
 		timeSinceLastAttack = cooldown;
+		
+		cooldownMultiplier = 1f;
 	}
 	
 	public void update(float deltaTime) {
@@ -50,9 +53,9 @@ public abstract class Magic {
 	}
 
 	private void attack(float deltaTime) {
-		if(attacking && owner.getCurrentMana() > bulletCost)
+		if(attacking && owner.getCurrentMana() >= bulletCost)
 		{
-			if(timeSinceLastAttack >= cooldown)
+			if(timeSinceLastAttack >= cooldown * cooldownMultiplier)
 			{
 				owner.useMana(bulletCost);
 				createBullet();
@@ -87,7 +90,7 @@ public abstract class Magic {
 	}
 	
 	public void setCooldownMultiplier(float multiplier) {
-		cooldown = cooldown * multiplier;
+		cooldownMultiplier = multiplier;
 	}
 	
 	public void setAttackPoint(Vector2 attackPoint) {

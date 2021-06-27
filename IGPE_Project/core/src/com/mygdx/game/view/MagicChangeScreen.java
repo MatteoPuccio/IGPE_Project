@@ -1,15 +1,13 @@
 package com.mygdx.game.view;
 
-import javax.sql.rowset.FilteredRowSet;
-
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
@@ -40,9 +38,8 @@ public class MagicChangeScreen extends DefaultScreen {
 	public MagicChangeScreen(GameView gameView) {
 		super(0.259f, 0.157f, 0.208f);
 		this.gameView = gameView;
-		
-		changeMagicPromptLabel = new Label("Click on the magic you'd like to swap for this one", skin);
-		yourMagicsLabel = new Label("Your active magics", skin);
+		changeMagicPromptLabel = new Label("Click on the magic you'd like to swap for this one", new LabelStyle(generalFont, Color.BLACK));
+		yourMagicsLabel = new Label("Your active magics", new LabelStyle(generalFont, Color.BLACK));
 		
 		keepMagic = new TextButton("I WOULD LIKE TO KEEP MY MAGICS", skin);
 		gamePort = gameView.getGamePort();
@@ -55,7 +52,6 @@ public class MagicChangeScreen extends DefaultScreen {
 		mainTable.setTransform(true);
 	    mainTable.setOrigin(mainTable.getWidth() / 2, mainTable.getHeight() / 2);
 	    mainTable.setScale(2);
-//		mainTable.setBackground(new SpriteDrawable(new Sprite(new Texture("UI/magic_change_screen_background.png"))));
 		
 		newMagic = new Image(gameView.getAnimationFrame(newMagicId));
 		

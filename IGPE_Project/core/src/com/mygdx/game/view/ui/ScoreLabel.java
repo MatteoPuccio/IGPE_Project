@@ -30,5 +30,6 @@ public class ScoreLabel {
 	public void dispose() {
 		texture.dispose();
 		background.dispose();
+		font.dispose();
 	}
 }

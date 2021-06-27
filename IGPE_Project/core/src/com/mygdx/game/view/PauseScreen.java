@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -24,7 +25,7 @@ public class PauseScreen extends DefaultScreen{
 		super(0.259f, 0.157f, 0.208f);
 		
         optionsLabel = new Label("Pause", titleStyle);
-        volumeLabel = new Label("Volume",skin);
+        volumeLabel = new Label("Volume",new LabelStyle(generalFont, Color.BLACK));
         
         optionsLabel.setColor(new Color(Color.BLACK));
         volumeLabel.setColor(new Color(Color.BLACK));

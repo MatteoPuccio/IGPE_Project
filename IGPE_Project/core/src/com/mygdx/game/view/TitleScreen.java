@@ -1,12 +1,14 @@
 package com.mygdx.game.view;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -14,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.SoundConstants;
 import com.mygdx.game.controller.SoundHandler;
+import com.mygdx.game.model.GameModel;
 import com.mygdx.game.view.animations.Animation;
 
 public class TitleScreen extends DefaultScreen{
@@ -25,9 +28,16 @@ public class TitleScreen extends DefaultScreen{
 	private TextButton tutorialButton, exitTutorialButton;
 	private Label title;
 	
-	private Label leftClickLabel, rightClickLabel, wasdLabel;
-	private Image leftClick,rightClick,wasd;
-	private Texture leftClickTexture, rightClickTexture, wasdTexture;
+	private Label leftClickLabel, rightClickLabel, wasdLabel, chestLabel;
+	private Image leftClick, rightClick, wasd, chest;
+	private Texture leftClickTexture, rightClickTexture, wasdTexture, chestTexture;
+	private Label maxCoinsLabel;
+	private Label maxFloorLabel;
+	
+	private Texture coinTexture;
+	private Texture floorTexture;
+	private Image coinImage;
+	private Image floorImage;
 	
 	public TitleScreen() {
 	    
@@ -50,6 +60,15 @@ public class TitleScreen extends DefaultScreen{
 	    exitTutorialButton = new TextButton("CLOSE", skin);
 	    
 	    tutorialWindow = new Window("How To Play", skin);
+	    
+	    maxCoinsLabel = new Label("Highest coins obtained:", new LabelStyle(generalFont, Color.BLACK));
+	    maxFloorLabel = new Label("Lowest floor reached:", new LabelStyle(generalFont, Color.BLACK));
+	    maxFloorLabel.setColor(new Color(Color.BLACK));
+	    
+	    coinTexture = new Texture("images/coin.png");
+	    coinImage = new Image(coinTexture);
+	    floorTexture = new Texture("images/floor.png");
+	    floorImage = new Image(floorTexture);
 	    
         playButton.addListener(new ClickListener(){
             @Override
@@ -96,20 +115,22 @@ public class TitleScreen extends DefaultScreen{
         leftClickLabel = new Label("Primary Fire", skin);
         rightClickLabel = new Label("Secondary Fire", skin);
         wasdLabel = new Label("Move", skin);
+        chestLabel = new Label("Move to chests to open them", skin);
         
         leftClickLabel.setColor(Color.BLACK);
         rightClickLabel.setColor(Color.BLACK);
         wasdLabel.setColor(Color.BLACK); 
+        chestLabel.setColor(Color.BLACK);
         
         leftClickTexture = new Texture("tutorial/mouse-left.png");
         rightClickTexture = new Texture("tutorial/mouse-right.png");
         wasdTexture = new Texture("tutorial/wasd.png");
-        
+        chestTexture = new Texture("tutorial/chest.png");
         
         leftClick = new Image(leftClickTexture);
         rightClick = new Image(rightClickTexture);
         wasd = new Image(wasdTexture);
-        
+        chest = new Image(chestTexture);
 	}
 	
 	@Override
@@ -118,29 +139,55 @@ public class TitleScreen extends DefaultScreen{
 		tutorialWindow.setMovable(false);
 		tutorialWindow.setFillParent(true);
 		
-		mainTable.add(title).pad(0,0,100,0);
+		mainTable.add(title).pad(0,0,80,0).colspan(4);
         mainTable.row();
-        mainTable.add(playButton).growX().pad(20, 300, 20, 300);
+        mainTable.add(playButton).growX().pad(20, 300, 20, 300).colspan(4);
         mainTable.row();
-        mainTable.add(optionButton).growX().pad(20, 300, 20, 300);
+        mainTable.add(optionButton).growX().pad(20, 300, 20, 300).colspan(4);
         mainTable.row();
-        mainTable.add(tutorialButton).growX().pad(20, 300, 20, 300);
+        mainTable.add(tutorialButton).growX().pad(20, 300, 20, 300).colspan(4);
         mainTable.row();
-        mainTable.add(exitButton).growX().pad(20, 300, 20, 300);
+        mainTable.add(exitButton).growX().pad(20, 300, 20, 300).colspan(4);
         mainTable.row();
         
-        tutorialWindow.add(leftClick);
-        tutorialWindow.add(leftClickLabel);
+        tutorialWindow.add(leftClick).pad(0, 0, 35, 0);
+        tutorialWindow.add(leftClickLabel).pad(0, 0, 35, 0);
         tutorialWindow.row();
-        tutorialWindow.add(rightClick);
-        tutorialWindow.add(rightClickLabel);
+        tutorialWindow.add(rightClick).pad(35, 0, 35, 0);
+        tutorialWindow.add(rightClickLabel).pad(35, 0, 35, 0);
         tutorialWindow.row();
-        tutorialWindow.add(wasd);
-        tutorialWindow.add(wasdLabel);
+        tutorialWindow.add(wasd).pad(35, 0, 35, 0);
+        tutorialWindow.add(wasdLabel).pad(35, 0, 35, 0);
+        tutorialWindow.row();
+        tutorialWindow.add(chest).pad(35, 0, 35, 0);
+        tutorialWindow.add(chestLabel).pad(35, 0, 35, 0);
         tutorialWindow.row();
         tutorialWindow.add(exitTutorialButton).colspan(2);
 
+        Preferences preferences = Gdx.app.getPreferences("Game preferences");
+        maxCoinsLabel.setText("Most coins obtained: " + preferences.getInteger("Max Coins"));
+        mainTable.add(maxCoinsLabel).colspan(1);
+        mainTable.add(coinImage).colspan(1).size(50).padRight(200);
+        
+        String prefix;
+        if(preferences.getInteger("Max Floor") != 0)
+        	prefix = "-";
+        else
+        	prefix = "";
+        maxFloorLabel.setText("Lowest floor reached: " + prefix + preferences.getInteger("Max Floor"));
+        mainTable.add(floorImage).colspan(1).size(50).padLeft(200);
+        mainTable.add(maxFloorLabel).colspan(1);
+        
         stage.addActor(tutorialWindow);
+        
+		preferences = Gdx.app.getPreferences("Game preferences");
+		if(GameModel.getInstance().getFloor() > preferences.getInteger("Max Floor"))
+			preferences.putInteger("Max Floor", GameModel.getInstance().getFloor());
+		if(GameModel.getInstance().getCoins() > preferences.getInteger("Max Coins"))
+			preferences.putInteger("Max Coins", GameModel.getInstance().getCoins());
+		preferences.flush();
+		
+//		mainTable.debugAll();
 	}
 
 	@Override
@@ -158,6 +205,12 @@ public class TitleScreen extends DefaultScreen{
 			titleScreenFrames.get(i).getTexture().dispose();
 		}
 		titleScreenFrames.clear();
+		coinTexture.dispose();
+		floorTexture.dispose();
+		chestTexture.dispose();
+		leftClickTexture.dispose();
+		rightClickTexture.dispose();
+		wasdTexture.dispose();
 	}
 	
 	@Override

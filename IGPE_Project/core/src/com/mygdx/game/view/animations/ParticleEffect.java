@@ -1,6 +1,5 @@
 package com.mygdx.game.view.animations;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 public class ParticleEffect extends Animation {

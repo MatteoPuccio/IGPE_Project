@@ -33,7 +33,6 @@ public class RoomHandler {
 		rooms.clear();
 		rooms = RandomRoomGenerator.getInstance().createRooms();
 		setCurrentRoom(rooms.first());
-		rooms.get(0).setPowerupSpawnPosition(new Vector2(10, 10));
 		changeMap = true;
 	}
 	
