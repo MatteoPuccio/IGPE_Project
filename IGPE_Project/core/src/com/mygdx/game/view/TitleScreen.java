@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -23,6 +24,11 @@ public class TitleScreen extends DefaultScreen{
 	private TextButton playButton, optionButton, exitButton;
 	private TextButton tutorialButton, exitTutorialButton;
 	private Label title;
+	
+	private Label leftClickLabel, rightClickLabel, wasdLabel;
+	private Image leftClick,rightClick,wasd;
+	private Texture leftClickTexture, rightClickTexture, wasdTexture;
+	
 	public TitleScreen() {
 	    
 		super(0, 0, 0);
@@ -32,6 +38,7 @@ public class TitleScreen extends DefaultScreen{
 	    for(int i = 0; i < 6; ++i) {
 	    	titleScreenFrames.add(new TextureRegion(new Texture("title_screen/title-screen" + i + ".png")));
 	    }
+	    
 	    titleScreenAnimation = new Animation(titleScreenFrames, 6, 0.5f);
         title = new Label("No Way To Go But Down",titleStyle);
         title.setColor(new Color(Color.BLACK));
@@ -83,7 +90,26 @@ public class TitleScreen extends DefaultScreen{
         		mainTable.setVisible(true);
         		tutorialWindow.setVisible(false);
         	}
-        });        
+        });
+        
+        //inizializzazione tutorialWindow
+        leftClickLabel = new Label("Primary Fire", skin);
+        rightClickLabel = new Label("Secondary Fire", skin);
+        wasdLabel = new Label("Move", skin);
+        
+        leftClickLabel.setColor(Color.BLACK);
+        rightClickLabel.setColor(Color.BLACK);
+        wasdLabel.setColor(Color.BLACK); 
+        
+        leftClickTexture = new Texture("tutorial/mouse-left.png");
+        rightClickTexture = new Texture("tutorial/mouse-right.png");
+        wasdTexture = new Texture("tutorial/wasd.png");
+        
+        
+        leftClick = new Image(leftClickTexture);
+        rightClick = new Image(rightClickTexture);
+        wasd = new Image(wasdTexture);
+        
 	}
 	
 	@Override
@@ -103,8 +129,18 @@ public class TitleScreen extends DefaultScreen{
         mainTable.add(exitButton).growX().pad(20, 300, 20, 300);
         mainTable.row();
         
-        tutorialWindow.add(exitTutorialButton).pad(500,0,0,0);
-        
+        tutorialWindow.add(leftClick);
+        tutorialWindow.add(leftClickLabel);
+        tutorialWindow.row();
+        tutorialWindow.add(rightClick);
+        tutorialWindow.add(rightClickLabel);
+        tutorialWindow.row();
+        tutorialWindow.add(wasd);
+        tutorialWindow.add(wasdLabel);
+        tutorialWindow.row();
+        tutorialWindow.add(exitTutorialButton).colspan(2);
+
+        tutorialWindow.debugAll();
         stage.addActor(tutorialWindow);
 	}
 
@@ -123,5 +159,11 @@ public class TitleScreen extends DefaultScreen{
 			titleScreenFrames.get(i).getTexture().dispose();
 		}
 		titleScreenFrames.clear();
+	}
+	
+	@Override
+	public void hide() {
+		super.hide();
+		tutorialWindow.clear();
 	}
 }

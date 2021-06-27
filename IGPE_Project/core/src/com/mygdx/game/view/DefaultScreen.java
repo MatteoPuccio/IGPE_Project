@@ -95,8 +95,10 @@ public abstract class DefaultScreen implements Screen {
 		skin.dispose();
 		atlas.dispose();
 		batch.dispose();
-		if(stage != null)
+		if(stage != null) {
+			stage.clear();
 			stage.dispose();
+		}
 		titleFont.dispose();
 	}
 
