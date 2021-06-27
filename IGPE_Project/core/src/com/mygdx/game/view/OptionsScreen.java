@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.Settings;
 import com.mygdx.game.constants.SoundConstants;
-import com.mygdx.game.view.audio.SoundHandler;
+import com.mygdx.game.controller.SoundHandler;
 
 public class OptionsScreen extends DefaultScreen{
 
@@ -136,23 +136,5 @@ public class OptionsScreen extends DefaultScreen{
         mainTable.row();
         mainTable.add(backButton).colspan(2).center();
         
-	}
-	
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
 	}
 }

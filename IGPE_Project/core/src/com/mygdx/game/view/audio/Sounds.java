@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.mygdx.game.constants.Settings;
 import com.mygdx.game.constants.SoundConstants;
+import com.mygdx.game.controller.SoundHandler;
 
 /*	Sounds è una classe singleton che conserva le istanze di tutti gli effetti sonori del gioco. 
  * 	Collabora con SoundHandler per gestire la riproduzione dei suoni nei vari momenti del gioco 

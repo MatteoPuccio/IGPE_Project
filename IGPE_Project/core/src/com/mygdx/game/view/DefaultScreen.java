@@ -75,9 +75,7 @@ public abstract class DefaultScreen implements Screen {
         stage.draw();	
 	}
 	
-	protected void draw(float delta) {
-		
-	}
+	protected void draw(float delta) {}
 	
 	@Override
 	public void hide() {
@@ -101,4 +99,11 @@ public abstract class DefaultScreen implements Screen {
 			stage.dispose();
 		titleFont.dispose();
 	}
+	
+
+	@Override
+	public void pause() {}
+
+	@Override
+	public void resume() {}
 }

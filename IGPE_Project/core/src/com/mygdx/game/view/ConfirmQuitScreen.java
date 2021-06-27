@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.SoundConstants;
-import com.mygdx.game.view.audio.SoundHandler;
+import com.mygdx.game.controller.SoundHandler;
 
 public class ConfirmQuitScreen extends DefaultScreen{
 
@@ -61,30 +61,4 @@ public class ConfirmQuitScreen extends DefaultScreen{
 		viewport.apply();
 		Gdx.input.setInputProcessor(stage);
 	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dispose() {
-		
-	}
-
-	
-	
 }

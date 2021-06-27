@@ -24,7 +24,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.Settings;
 import com.mygdx.game.constants.SoundConstants;
-import com.mygdx.game.view.audio.SoundHandler;
+import com.mygdx.game.controller.SoundHandler;
 import com.mygdx.game.view.audio.Sounds;
 
 public class PauseScreen extends DefaultScreen{
@@ -99,26 +99,6 @@ public class PauseScreen extends DefaultScreen{
         mainTable.add(backButton).colspan(2).center();
         mainTable.row();
         mainTable.add(menuButton).colspan(2).center();
-	}
-	
-	
-	
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void hide() {
-		stage.clear();
 	}
 	
 }

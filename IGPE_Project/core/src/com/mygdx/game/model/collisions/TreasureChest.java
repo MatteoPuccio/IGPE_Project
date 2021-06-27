@@ -8,10 +8,10 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.mygdx.game.constants.AnimationConstants;
-import com.mygdx.game.model.Animated;
 import com.mygdx.game.model.GameModel;
 import com.mygdx.game.model.entities.Character;
 import com.mygdx.game.model.level.RoomHandler;
+import com.mygdx.game.view.animations.Animated;
 
 public class TreasureChest implements Collidable, Animated {
 

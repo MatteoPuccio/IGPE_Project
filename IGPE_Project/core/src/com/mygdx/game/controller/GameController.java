@@ -51,12 +51,11 @@ public class GameController implements InputProcessor {
 		else
 			GameModel.getInstance().getCharacter().stopMoving();
 		
-		if(RoomHandler.getInstance().changeMap()) {
+		if(RoomHandler.getInstance().changeMap()) 
 			view.changeMap(RoomHandler.getInstance().getCurrentRoom().getTileMap());
-		}
 		
 		view.setBlackScreen(RoomHandler.getInstance().getCurrentRoom().getElapsedTeleportTime());
-		if(RoomHandler.getInstance().getCurrentRoom().getElapsedTeleportTime() < RoomHandler.getInstance().getCurrentRoom().getTeleportTime())
+		if(!RoomHandler.getInstance().canTeleport())
 			view.render(deltaTime, false);
 		else
 			view.render(deltaTime,true);

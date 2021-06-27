@@ -1,6 +1,8 @@
 package com.mygdx.game.view.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -23,6 +25,12 @@ public class InterfaceBar {
 		this.position = position;
 		barPosition = new Vector2(position.x+12,position.y+10);	 
 
+	}
+	
+	public void draw(SpriteBatch batchUI) {
+		 batchUI.draw(background, position.x,position.y,background.getWidth(),background.getHeight());
+	     batchUI.draw(barFilled,barPosition.x,barPosition.y,barFilled.getRegionWidth(),barFilled.getRegionHeight());
+	     batchUI.draw(icon, position.x + background.getWidth()/2 - icon.getWidth() /2, (barPosition.y + position.y) / 2, icon.getWidth() ,icon.getHeight());
 	}
 	
 	public void setPercentage(float percentage)

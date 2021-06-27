@@ -24,10 +24,9 @@ import com.mygdx.game.GameMain;
 import com.mygdx.game.constants.AnimationConstants;
 import com.mygdx.game.constants.ParticleEffectConstants;
 import com.mygdx.game.constants.Settings;
-import com.mygdx.game.model.Animated;
+import com.mygdx.game.controller.ParticleHandler;
+import com.mygdx.game.controller.ParticleHandler.Particle;
 import com.mygdx.game.model.GameModel;
-import com.mygdx.game.model.ParticleHandler;
-import com.mygdx.game.model.ParticleHandler.Particle;
 import com.mygdx.game.model.collisions.TreasureChest;
 import com.mygdx.game.model.entities.EnemiesHandler;
 import com.mygdx.game.model.entities.Enemy;
@@ -35,6 +34,8 @@ import com.mygdx.game.model.level.RoomHandler;
 import com.mygdx.game.model.pickups.Pickup;
 import com.mygdx.game.model.weapons.Bullet;
 import com.mygdx.game.model.weapons.BulletHandler;
+import com.mygdx.game.model.weapons.Magic;
+import com.mygdx.game.view.animations.Animated;
 import com.mygdx.game.view.animations.Animation;
 import com.mygdx.game.view.animations.ParticleEffect;
 import com.mygdx.game.view.audio.Sounds;
@@ -57,6 +58,8 @@ public class GameView implements Screen{
 	private ShapeRenderer shapeRenderer;
 	private float blackScreenAlpha;
 	
+	private UserInterface ui;
+	
 	public GameView() {	
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -71,14 +74,14 @@ public class GameView implements Screen{
 		batch = new SpriteBatch();
 		batchUI = new SpriteBatch();
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(RoomHandler.getInstance().getCurrentRoom().getTileMap(), 1 / Settings.PPM);
-//		weaponAnimation = new WeaponSlashAnimation();
 		
-		Pixmap pm = new Pixmap(Gdx.files.internal("game_cursor.png"));
+		Pixmap pm = new Pixmap(Gdx.files.internal("UI/game_cursor.png"));
 		cursor = Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2);
-		Gdx.graphics.setCursor(cursor);
 		pm.dispose();
 		
 		shapeRenderer = new ShapeRenderer();
+		
+		ui = new UserInterface();
 	}
 	
 	public void render(float deltaTime, boolean updateAnimations) {
@@ -90,7 +93,7 @@ public class GameView implements Screen{
 		tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
         
-        UserInterface.getInstance().update();
+        ui.update();
         
 		batch.begin();	
 		batch.setProjectionMatrix(camera.combined);
@@ -101,8 +104,7 @@ public class GameView implements Screen{
 		batch.end();
 		
 		batchUI.begin();
-        drawInterfaceBar(UserInterface.getInstance().getManaBar());
-        drawInterfaceBar(UserInterface.getInstance().getHealthBar());
+        drawUI();
         batchUI.end();
         
         
@@ -118,21 +120,17 @@ public class GameView implements Screen{
 //        debugRenderer.render(GameModel.getInstance().getWorld(), camera.combined);
 	}
 	
-	private void drawInterfaceBar(InterfaceBar bar) {
-		Texture background = bar.getBackground();
-		Texture icon = bar.getIcon();
-		
-		TextureRegion barFilled = bar.getBarFilled();
-		
-		Vector2 position = bar.getPosition();
-		Vector2 barPosition = bar.getBarPosition();
-		
-		int iconWidth = icon.getWidth();
-		int iconHeight = icon.getHeight();
-		
-		batchUI.draw(background, position.x,position.y,background.getWidth(),background.getHeight());
-		batchUI.draw(barFilled,barPosition.x,barPosition.y,barFilled.getRegionWidth(),barFilled.getRegionHeight());
-		batchUI.draw(icon, position.x + background.getWidth()/2 - iconWidth/2, (barPosition.y + position.y) / 2, iconWidth,iconHeight);
+	private void drawUI() {
+		ui.getManaBar().draw(batchUI);
+		ui.getHealthBar().draw(batchUI);
+		ui.getFirstEquippedMagic().draw(animations.get(GameModel.getInstance().getCharacter().getFirstMagic().getRespectivePickupAnimationId()).getFrame().getTexture(), batchUI);
+		Magic magic = GameModel.getInstance().getCharacter().getSecondMagic();
+		if(magic == null)
+			ui.getSecondEquippedMagic().draw(batchUI);
+		else
+			ui.getSecondEquippedMagic().draw(animations.get(magic.getRespectivePickupAnimationId()).getFrame().getTexture(), batchUI);
+		ui.getCoinsLabel().draw(batchUI, "" + GameModel.getInstance().getCoins());
+		ui.getFloorLabel().draw(batchUI, "" + GameModel.getInstance().getFloor());
 	}
 
 	private void updateCamera() {
@@ -151,7 +149,7 @@ public class GameView implements Screen{
 		cursor.dispose();
 		batch.dispose();
 		shapeRenderer.dispose();
-		UserInterface.getInstance().dispose();
+		ui.dispose();
 		batchUI.dispose();
 		
 		for(Integer i : animations.keys())
@@ -181,21 +179,21 @@ public class GameView implements Screen{
 		animations.put(AnimationConstants.FLYING_CREATURE_FLYING_ANIMATION, new Animation("animations/fly_anim_spritesheet.png", 4, 0.5f));
 		animations.put(AnimationConstants.SLIME_IDLE_ANIMATION, new Animation("animations/slime_idle_spritesheet.png",6, 0.5f));
 		
-		animations.put(AnimationConstants.HEALTH_POTION_ANIMATION, new Animation("health_potion.png",1,1));
-		animations.put(AnimationConstants.COIN_ANIMATION, new Animation("coin.png",1,1));
-		animations.put(AnimationConstants.COIN_BAG_ANIMATION, new Animation("coin_bag.png",1,1));
-		animations.put(AnimationConstants.MANA_RECHARGE_POWERUP_ANIMATION,new Animation("mana_recharge_powerup.png",1,1));
-		animations.put(AnimationConstants.SPEED_POWERUP_ANIMATION, new Animation("speed_powerup.png",1,1));
-		animations.put(AnimationConstants.INVINCIBILITY_POWERUP_ANIMATION, new Animation("invincibility_powerup.png",1,1));
-		animations.put(AnimationConstants.MAGIC_COOLDOWN_POWERUP_ANIMATION, new Animation("magic_cooldown_powerup.png",1,1));
-		animations.put(AnimationConstants.FIRE_MAGIC_ANIMATION, new Animation("fire_magic.png",1,1));
-		animations.put(AnimationConstants.LIGHTNING_MAGIC_ANIMATION, new Animation("lightning_magic.png",1,1));
-		animations.put(AnimationConstants.ROCK_MAGIC_ANIMATION, new Animation("rock_magic.png", 1, 1));
-		animations.put(AnimationConstants.EXPLOSION_MAGIC_ANIMATION, new Animation("explosion_magic.png",1,1));
-		animations.put(AnimationConstants.WATER_MAGIC_ANIMATION, new Animation("water_magic.png",1,1));
+		animations.put(AnimationConstants.HEALTH_POTION_ANIMATION, new Animation("images/health_potion.png",1,1));
+		animations.put(AnimationConstants.COIN_ANIMATION, new Animation("images/coin.png",1,1));
+		animations.put(AnimationConstants.COIN_BAG_ANIMATION, new Animation("images/coin_bag.png",1,1));
+		animations.put(AnimationConstants.MANA_RECHARGE_POWERUP_ANIMATION,new Animation("images/mana_recharge_powerup.png",1,1));
+		animations.put(AnimationConstants.SPEED_POWERUP_ANIMATION, new Animation("images/speed_powerup.png",1,1));
+		animations.put(AnimationConstants.INVINCIBILITY_POWERUP_ANIMATION, new Animation("images/invincibility_powerup.png",1,1));
+		animations.put(AnimationConstants.MAGIC_COOLDOWN_POWERUP_ANIMATION, new Animation("images/magic_cooldown_powerup.png",1,1));
+		animations.put(AnimationConstants.FIRE_MAGIC_ANIMATION, new Animation("images/fire_magic.png",1,1));
+		animations.put(AnimationConstants.LIGHTNING_MAGIC_ANIMATION, new Animation("images/lightning_magic.png",1,1));
+		animations.put(AnimationConstants.ROCK_MAGIC_ANIMATION, new Animation("images/rock_magic.png", 1, 1));
+		animations.put(AnimationConstants.EXPLOSION_MAGIC_ANIMATION, new Animation("images/explosion_magic.png",1,1));
+		animations.put(AnimationConstants.WATER_MAGIC_ANIMATION, new Animation("images/water_magic.png",1,1));
 		
 		animations.put(AnimationConstants.CHEST_CLOSED_ANIMATION, new Animation("animations/chest_closed_spritesheet.png",8,1));
-		animations.put(AnimationConstants.CHEST_OPEN_ANIMATION, new Animation("chest_open.png",1,1));
+		animations.put(AnimationConstants.CHEST_OPEN_ANIMATION, new Animation("images/chest_open.png",1,1));
 		
 		
 		initParticles();
@@ -326,21 +324,6 @@ public class GameView implements Screen{
 		blackScreenAlpha = 1f;
 	}
 
-	@Override
-	public void pause() {
-		
-	}
-
-	@Override
-	public void resume() {
-		
-	}
-
-	@Override
-	public void hide() {
-		
-	}
-
 	public void setBlackScreen(float elapsedTeleportTime) {
 		//opacità del rettangolo disegnato per fare effetto di fade in
 		blackScreenAlpha = RoomHandler.getInstance().getCurrentRoom().getTeleportTime() - elapsedTeleportTime;
@@ -350,6 +333,15 @@ public class GameView implements Screen{
 
 	@Override
 	public void render(float delta) {}
+
+	@Override
+	public void pause() {}
+
+	@Override
+	public void resume() {}
+
+	@Override
+	public void hide() {}
 }
 
 
